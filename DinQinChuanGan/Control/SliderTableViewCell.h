@@ -10,4 +10,9 @@
 
 @interface SliderTableViewCell : UITableViewCell
 
+//@property (nonatomic, strong) UIView *backgoundView;
+@property (nonatomic, strong) UILabel *signLabel;
+
+
+
 @end

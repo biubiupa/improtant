@@ -11,12 +11,14 @@
 #import "Masonry.h"
 
 @interface SliderTableViewCell ()
+
 @property (nonatomic, strong) UIImageView *imageVC;
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UIView *grayView;
 @property (nonatomic, strong) UIProgressView *progressVC;
 @property (nonatomic, strong) UILabel *begin;
 @property (nonatomic, strong) UILabel *end;
+
 @end
 
 @implementation SliderTableViewCell
@@ -30,6 +32,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     self.userInteractionEnabled=NO;
+//    [self.contentView addSubview:self.backgoundView];
     [self.contentView addSubview:self.imageVC];
     [self.imageVC mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(25, 36));
@@ -68,6 +71,14 @@
         make.right.equalTo(self.contentView).with.offset(-20);
         make.bottom.equalTo(self.contentView).with.offset(-14);
     }];
+    
+    [self.contentView addSubview:self.signLabel];
+    [self.signLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(190, 31));
+        make.centerY.equalTo(self.contentView);
+        make.left.equalTo(self.contentView).with.offset(28);
+    }];
+
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
@@ -75,6 +86,14 @@
 }
 
 #pragma mark - 初始化属性
+//- (UIView *)backgoundView {
+//    if (!_backgoundView) {
+//        _backgoundView=[[UIView alloc] init];
+//        _backgoundView.frame=self.contentView.frame;
+//    }
+//    return _backgoundView;
+//}
+
 - (UIImageView *)imageVC {
     if (!_imageVC) {
         _imageVC=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"xunzhang"]];
@@ -126,6 +145,15 @@
         _end.font=[UIFont systemFontOfSize:12];
     }
     return _end;
+}
+
+- (UILabel *)signLabel {
+    if (!_signLabel) {
+        _signLabel=[[UILabel alloc] init];
+        _signLabel.textAlignment=NSTextAlignmentCenter;
+        _signLabel.text=@"登录后才能查看等级哦~";
+    }
+    return _signLabel;
 }
 
 

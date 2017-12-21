@@ -10,10 +10,11 @@
 #import "Masonry.h"
 #import "WRNavigationBar.h"
 #import "WRCustomNavigationBar.h"
-#import "SliderTableViewCell.h"
 #import "ControlTableViewCell.h"
+#import "SliderTableViewCell.h"
 
-#define CONTROL_COLOR [UIColor colorWithRed:95.0/255.0 green:108.0/255.0 blue:230.0/255.0 alpha:1.0]
+
+#define CONTROL_COLOR [UIColor colorWithRed:114.0/255.0 green:132.0/255.0 blue:235.0/255.0 alpha:1.0]
 
 @interface ControlViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
@@ -21,6 +22,11 @@
 @property (nonatomic, strong) UIImageView *iconView;
 @property (nonatomic, strong) UILabel *accountLabel;
 @property (nonatomic, strong) UILabel *numberLabel;
+@property (nonatomic, strong) UILabel *signInLabel;
+@property (nonatomic, strong) UIButton *signInBtn;
+@property (nonatomic, strong) SliderTableViewCell *cellOne;
+@property (nonatomic, strong) ControlTableViewCell *cellTwo;
+
 @end
 
 @implementation ControlViewController
@@ -45,6 +51,21 @@
         make.centerX.equalTo(self.iconView);
         make.bottom.equalTo(self.iconView).with.offset(60);
     }];
+    [self.topView addSubview:self.signInLabel];
+    [self.signInLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(230, 17));
+        make.center.equalTo(self.topView);
+    }];
+    [self.topView addSubview:self.signInBtn];
+    [self.signInBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(109, 31));
+        make.centerX.equalTo(self.topView);
+        make.bottom.equalTo(self.topView).with.offset(-41);
+    }];
+    [_signInBtn addTarget:self action:@selector(signInAcction) forControlEvents:UIControlEventTouchUpInside];
+    self.iconView.hidden=YES;
+    self.accountLabel.hidden=YES;
+    self.numberLabel.hidden=YES;
 }
 
 - (void)setNavigationBar {
@@ -110,6 +131,40 @@
     }
     return _numberLabel;
 }
+
+- (UILabel *)signInLabel {
+    if (!_signInLabel) {
+        _signInLabel=[[UILabel alloc] init];
+        _signInLabel.text=@"登录AirBoB，成为环保主义者";
+        _signInLabel.textColor=[UIColor whiteColor];
+        _signInLabel.textAlignment=NSTextAlignmentCenter;
+    }
+    return _signInLabel;
+}
+
+- (UIButton *)signInBtn {
+    if (!_signInBtn) {
+        _signInBtn=[UIButton buttonWithType:UIButtonTypeSystem];
+        [_signInBtn setTitle:@"登录" forState:UIControlStateNormal];
+        _signInBtn.layer.borderWidth=1;
+        _signInBtn.layer.borderColor=[UIColor whiteColor].CGColor;
+        _signInBtn.layer.cornerRadius=15;
+        [_signInBtn setTintColor:[UIColor whiteColor]];
+        
+    }
+    return _signInBtn;
+}
+
+- (void)signInAcction {
+    self.iconView.hidden=NO;
+    self.accountLabel.hidden=NO;
+    self.numberLabel.hidden=NO;
+    self.signInLabel.hidden=YES;
+    self.signInBtn.hidden=YES;
+//    [self.control.backgoundView setHidden:NO];
+    self.cellOne.signLabel.hidden=YES;
+
+}
 #pragma mark - delegate / datasorce
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -120,14 +175,18 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    SliderTableViewCell *cellOne=[SliderTableViewCell new];
-    ControlTableViewCell *cellTwo=[ControlTableViewCell new];
+    self.cellOne=[SliderTableViewCell new];
+    self.cellTwo=[ControlTableViewCell new];
     if (indexPath.row == 0) {
-        return cellOne;
+        return self.cellOne;
     }else {
-        return cellTwo;
+        return self.cellTwo;
     }
     
+    
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
 }
 
@@ -151,7 +210,6 @@
 #pragma mark - viewWillAppear
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-//    self.topView.hidden=YES;
 }
 - (void)viewWillDisappear:(BOOL)animated {
     

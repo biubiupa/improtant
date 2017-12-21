@@ -39,7 +39,7 @@ static NSString *identifier=@"identifier";
 - (UICollectionView *)collectView {
     if (!_collectView) {
         UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
-        flowLayout.itemSize=CGSizeMake(90, 85);
+        flowLayout.estimatedItemSize=CGSizeMake(90, 85);
         flowLayout.minimumLineSpacing=15;
         flowLayout.minimumInteritemSpacing=5;
         flowLayout.scrollDirection=UICollectionViewScrollDirectionVertical;
