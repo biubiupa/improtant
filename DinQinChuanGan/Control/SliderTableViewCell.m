@@ -22,10 +22,24 @@
 @end
 
 @implementation SliderTableViewCell
-
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    // Initialization code
+// 初始化
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self=[super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        [self.contentView addSubview:self.signLabel];
+        [self.signLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.size.mas_equalTo(CGSizeMake(190, 31));
+            make.centerY.equalTo(self.contentView);
+            make.left.equalTo(self.contentView).with.offset(28);
+        }];
+        self.signLabel.hidden=self.ishidden;
+    }
+    return self;
+}
+//设置状态
+- (void)setIshidden:(BOOL)ishidden {
+    _ishidden=ishidden;
+    self.signLabel.hidden=ishidden;
 }
 #pragma mark - 需求，布局
 
@@ -72,14 +86,16 @@
         make.bottom.equalTo(self.contentView).with.offset(-14);
     }];
     
-    [self.contentView addSubview:self.signLabel];
-    [self.signLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(190, 31));
-        make.centerY.equalTo(self.contentView);
-        make.left.equalTo(self.contentView).with.offset(28);
-    }];
-
+//    [self.contentView addSubview:self.signLabel];
+//    [self.signLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.size.mas_equalTo(CGSizeMake(190, 31));
+//        make.centerY.equalTo(self.contentView);
+//        make.left.equalTo(self.contentView).with.offset(28);
+//    }];
+//    self.signLabel.hidden=self.ishidden;
 }
+
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

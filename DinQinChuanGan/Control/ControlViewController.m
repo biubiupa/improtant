@@ -74,12 +74,7 @@
     UIBarButtonItem *leftBI=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tianjia"] style:UIBarButtonItemStylePlain target:self action:nil];
     self.navigationItem.rightBarButtonItem=rightBI;
     self.navigationItem.leftBarButtonItem=leftBI;
-//  Item中的  titleView，设置用户头像图片
-
-//    self.navigationController.navigationBar.translucent=NO;
-//    self.navigationController.navigationBar.barTintColor=[UIColor colorWithRed:95.0/255.0 green:108.0/255.0 blue:230.0/255.0 alpha:1.0];
     self.navigationController.navigationBar.tintColor=[UIColor whiteColor];
-//    self.navigationController.navigationBar.barStyle=UIBarStyleBlack;
     [self wr_setNavBarBackgroundAlpha:0];
     [self wr_setStatusBarStyle:UIStatusBarStyleLightContent];
 }
@@ -154,7 +149,7 @@
     }
     return _signInBtn;
 }
-
+//button点击事件
 - (void)signInAcction {
     self.iconView.hidden=NO;
     self.accountLabel.hidden=NO;
@@ -162,7 +157,9 @@
     self.signInLabel.hidden=YES;
     self.signInBtn.hidden=YES;
 //    [self.control.backgoundView setHidden:NO];
-    self.cellOne.signLabel.hidden=YES;
+    self.cellOne.ishidden=YES;
+
+    [self.tableView reloadData];
 
 }
 #pragma mark - delegate / datasorce

@@ -13,6 +13,7 @@
 //@property (nonatomic, strong) UIView *backgoundView;
 @property (nonatomic, strong) UILabel *signLabel;
 
+@property(nonatomic,assign) BOOL ishidden;
 
 
 @end
