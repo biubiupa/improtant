@@ -12,8 +12,8 @@
 
 //@property (nonatomic, strong) UIView *backgoundView;
 @property (nonatomic, strong) UILabel *signLabel;
+@property (nonatomic, strong) UIView *curtainView;
 
-@property(nonatomic,assign) BOOL ishidden;
 
 
 @end

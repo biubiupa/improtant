@@ -26,73 +26,65 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self=[super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [self.contentView addSubview:self.signLabel];
-        [self.signLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.size.mas_equalTo(CGSizeMake(190, 31));
-            make.centerY.equalTo(self.contentView);
-            make.left.equalTo(self.contentView).with.offset(28);
-        }];
-        self.signLabel.hidden=self.ishidden;
+        
     }
     return self;
 }
-//设置状态
-- (void)setIshidden:(BOOL)ishidden {
-    _ishidden=ishidden;
-    self.signLabel.hidden=ishidden;
-}
+
+
 #pragma mark - 需求，布局
 
 - (void)layoutSubviews {
     [super layoutSubviews];
     self.userInteractionEnabled=NO;
-//    [self.contentView addSubview:self.backgoundView];
-    [self.contentView addSubview:self.imageVC];
+    self.curtainView.frame=self.contentView.frame;
+    [self.contentView addSubview:self.curtainView];
+    [self.curtainView addSubview:self.imageVC];
     [self.imageVC mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(25, 36));
-        make.left.equalTo(self.contentView).with.offset(22);
-        make.top.equalTo(self.contentView).with.offset(8);
+        make.left.equalTo(self.curtainView).with.offset(22);
+        make.top.equalTo(self.curtainView).with.offset(8);
     }];
-    [self.contentView addSubview:self.nameLabel];
+    [self.curtainView addSubview:self.nameLabel];
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(28, 14));
-        make.left.equalTo(self.contentView).with.offset(22);
-        make.bottom.equalTo(self.contentView).with.offset(-8);
+        make.left.equalTo(self.curtainView).with.offset(22);
+        make.bottom.equalTo(self.curtainView).with.offset(-8);
     }];
-    [self.contentView addSubview:self.grayView];
+    [self.curtainView addSubview:self.grayView];
     [self.grayView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(1, 72));
-        make.centerY.equalTo(self.contentView);
-        make.left.equalTo(self.contentView).with.offset(69);
+        make.centerY.equalTo(self.curtainView);
+        make.left.equalTo(self.curtainView).with.offset(69);
     }];
-    [self.contentView addSubview:self.progressVC];
+    [self.curtainView addSubview:self.progressVC];
     [self.progressVC mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.size.mas_equalTo(CGSizeMake(315, 5));
+        //        make.size.mas_equalTo(CGSizeMake(315, 5));
         make.size.width.mas_equalTo(5);
-        make.centerY.equalTo(self.contentView);
-        make.left.equalTo(self.contentView).with.offset(86);
-        make.right.equalTo(self.contentView).with.offset(-16);
+        make.centerY.equalTo(self.curtainView);
+        make.left.equalTo(self.curtainView).with.offset(86);
+        make.right.equalTo(self.curtainView).with.offset(-16);
     }];
-    [self.contentView addSubview:self.begin];
+    [self.curtainView addSubview:self.begin];
     [self.begin mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(16, 9));
-        make.left.equalTo(self.contentView).with.offset(87);
-        make.bottom.equalTo(self.contentView).with.offset(-14);
+        make.left.equalTo(self.curtainView).with.offset(87);
+        make.bottom.equalTo(self.curtainView).with.offset(-14);
     }];
-    [self.contentView addSubview:self.end];
+    [self.curtainView addSubview:self.end];
     [self.end mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(16, 9));
-        make.right.equalTo(self.contentView).with.offset(-20);
-        make.bottom.equalTo(self.contentView).with.offset(-14);
+        make.right.equalTo(self.curtainView).with.offset(-20);
+        make.bottom.equalTo(self.curtainView).with.offset(-14);
     }];
-    
-//    [self.contentView addSubview:self.signLabel];
-//    [self.signLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.size.mas_equalTo(CGSizeMake(190, 31));
-//        make.centerY.equalTo(self.contentView);
-//        make.left.equalTo(self.contentView).with.offset(28);
-//    }];
-//    self.signLabel.hidden=self.ishidden;
+    self.backgroundColor=[UIColor colorWithRed:247.0/255.0 green:248.0/255.0 blue:250.0/255.0 alpha:1.0];
+    [self.contentView addSubview:self.signLabel];
+    [self.signLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(190, 31));
+        make.centerY.equalTo(self.contentView);
+        make.left.equalTo(self.contentView).with.offset(28);
+    }];
+
 }
 
 
@@ -102,13 +94,14 @@
 }
 
 #pragma mark - 初始化属性
-//- (UIView *)backgoundView {
-//    if (!_backgoundView) {
-//        _backgoundView=[[UIView alloc] init];
-//        _backgoundView.frame=self.contentView.frame;
-//    }
-//    return _backgoundView;
-//}
+- (UIView *)curtainView {
+    if (!_curtainView) {
+        _curtainView=[[UIView alloc] init];
+//        _curtainView.center=self.contentView.center;
+//        _curtainView.bounds=self.contentView.bounds;
+    }
+    return _curtainView;
+}
 
 - (UIImageView *)imageVC {
     if (!_imageVC) {

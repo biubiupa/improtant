@@ -24,6 +24,8 @@
 @property (nonatomic, strong) UILabel *numberLabel;
 @property (nonatomic, strong) UILabel *signInLabel;
 @property (nonatomic, strong) UIButton *signInBtn;
+@property (nonatomic, assign) BOOL Hidden;
+@property (nonatomic, assign) BOOL lowHidden;
 @property (nonatomic, strong) SliderTableViewCell *cellOne;
 @property (nonatomic, strong) ControlTableViewCell *cellTwo;
 
@@ -33,6 +35,7 @@
 #pragma mark - viewDidLoad
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.view.backgroundColor=[UIColor whiteColor];
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.topView];
@@ -66,6 +69,51 @@
     self.iconView.hidden=YES;
     self.accountLabel.hidden=YES;
     self.numberLabel.hidden=YES;
+    self.lowHidden=YES;
+}
+
+#pragma mark - delegate / datasorce
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 2;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    self.cellOne=[SliderTableViewCell new];
+    self.cellTwo=[ControlTableViewCell new];
+    if (indexPath.row == 0) {
+        self.cellOne.signLabel.hidden=self.Hidden;
+        self.cellOne.curtainView.hidden=self.lowHidden;
+        return self.cellOne;
+    }else {
+        return self.cellTwo;
+    }
+    
+    
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == 0) {
+        return 72.0;
+    }else {
+        return 450.0;
+    }
+}
+
+- (int)navBarBottom {
+    if ([WRNavigationBar isIphoneX]) {
+        return 88;
+    }else {
+        return 64;
+    }
+    
 }
 
 - (void)setNavigationBar {
@@ -156,53 +204,16 @@
     self.numberLabel.hidden=NO;
     self.signInLabel.hidden=YES;
     self.signInBtn.hidden=YES;
+    
 //    [self.control.backgoundView setHidden:NO];
-    self.cellOne.ishidden=YES;
-
+    self.Hidden=YES;
+    self.lowHidden=NO;
     [self.tableView reloadData];
 
 }
-#pragma mark - delegate / datasorce
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
-}
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    self.cellOne=[SliderTableViewCell new];
-    self.cellTwo=[ControlTableViewCell new];
-    if (indexPath.row == 0) {
-        return self.cellOne;
-    }else {
-        return self.cellTwo;
-    }
-    
-    
-}
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        return 72.0;
-    }else {
-        return 450.0;
-    }
-}
-
-- (int)navBarBottom {
-    if ([WRNavigationBar isIphoneX]) {
-        return 88;
-    }else {
-        return 64;
-    }
-    
-}
 
 #pragma mark - viewWillAppear
 - (void)viewWillAppear:(BOOL)animated {
