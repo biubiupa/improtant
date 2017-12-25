@@ -6,6 +6,7 @@ target 'DinQinChuanGan' do
 pod 'Masonry'
 pod 'AFNetworking'
 pod 'SDWebImage'
+pod 'MJRefresh'
 
 end
 
