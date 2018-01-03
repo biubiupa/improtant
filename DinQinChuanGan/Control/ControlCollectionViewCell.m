@@ -8,13 +8,14 @@
 
 #import "ControlCollectionViewCell.h"
 #import "Masonry.h"
-
+@interface ControlCollectionViewCell ()
+@end
 @implementation ControlCollectionViewCell
 
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.backgroundColor=[UIColor colorWithRed:247.0/255.0 green:248.0/255.0 blue:250.0/255.0 alpha:1.0];
+    self.backgroundColor=[UIColor whiteColor];
     [self.contentView addSubview:self.imageView];
     [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(29, 29));
@@ -31,7 +32,7 @@
 
 - (UIImageView *)imageView {
     if (_imageView == nil) {
-        _imageView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"building"]];
+        _imageView=[[UIImageView alloc] init];
     }
     return _imageView;
 }

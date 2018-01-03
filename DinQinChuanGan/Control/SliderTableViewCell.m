@@ -33,7 +33,7 @@
 
 
 #pragma mark - 需求，布局
-
+/*
 - (void)layoutSubviews {
     [super layoutSubviews];
     self.userInteractionEnabled=NO;
@@ -87,7 +87,7 @@
 
 }
 
-
+*/
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

@@ -8,5 +8,9 @@
 
 #import <UIKit/UIKit.h>
 @interface ControlViewController : UIViewController
-
+@property (nonatomic, strong) UIImageView *iconView;
+@property (nonatomic, strong) UILabel *accountLabel;
+@property (nonatomic, strong) UILabel *numberLabel;
+@property (nonatomic, strong) UILabel *signInLabel;
+@property (nonatomic, strong) UIButton *signInBtn;
 @end

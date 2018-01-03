@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "Header.h"
 #import "ShujuViewController.h"
 #import "AutomateViewController.h"
 #import "ControlViewController.h"
@@ -35,7 +36,7 @@
     self.array=@[shujuVC, automatVC, controlNav];
     self.rootTabVC.viewControllers=self.array;
     self.rootTabVC.tabBar.translucent=NO;
-    self.rootTabVC.tabBar.tintColor=[UIColor colorWithRed:95.0/255 green:108.0/255 blue:230.0/255 alpha:1.0];
+    self.rootTabVC.tabBar.tintColor=CONTROL_COLOR;
     self.rootTabVC.selectedIndex=2;
 //设置item的图片
     UITabBarItem *item0=[self.rootTabVC.tabBar.items objectAtIndex:0];
@@ -44,9 +45,9 @@
     item0.title=@"数据";
     item1.title=@"自动化";
     item2.title=@"管理";
-    item0.image=[UIImage imageNamed:@"shujuNormal"];
-    item1.image=[UIImage imageNamed:@"automateNormal"];
-    item2.image=[UIImage imageNamed:@"controlNormal"];
+    item0.image=[UIImage imageNamed:@"database"];
+    item1.image=[UIImage imageNamed:@"automate"];
+    item2.image=[UIImage imageNamed:@"control"];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

@@ -10,11 +10,15 @@
 		02193B2377721D8C6608F586 /* libPods-DinQinChuanGan.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 273F8BF59F656DA022A81BEB /* libPods-DinQinChuanGan.a */; };
 		A2112FA61FE27B5A00891A99 /* AutomateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2112FA51FE27B5A00891A99 /* AutomateViewController.m */; };
 		A2112FA91FE27B6A00891A99 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2112FA81FE27B6A00891A99 /* ControlViewController.m */; };
+		A236EA361FF4BC8100063DFC /* RHSignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A236EA351FF4BC8100063DFC /* RHSignInViewController.m */; };
 		A249901F1FE8EB55004B046F /* SliderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A249901E1FE8EB55004B046F /* SliderTableViewCell.m */; };
 		A24990221FE8EBB9004B046F /* ControlTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A24990211FE8EBB9004B046F /* ControlTableViewCell.m */; };
 		A25D34DE1FEB60CC00CED82A /* ControlCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A25D34DD1FEB60CC00CED82A /* ControlCollectionViewCell.m */; };
 		A262ECB81FE7C47B00B55454 /* WRNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A262ECB41FE7C47B00B55454 /* WRNavigationBar.m */; };
 		A262ECB91FE7C47B00B55454 /* WRCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A262ECB71FE7C47B00B55454 /* WRCustomNavigationBar.m */; };
+		A2BB686C1FF242B100EB2246 /* RHRightBarButtonItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2BB686B1FF242B100EB2246 /* RHRightBarButtonItemViewController.m */; };
+		A2BBDF5A1FF3985F00CCE9DF /* cat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A2BBDF591FF3985F00CCE9DF /* cat.jpg */; };
+		A2D06E341FFC74EF004FB3E4 /* RHBindAccViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2D06E331FFC74EF004FB3E4 /* RHBindAccViewController.m */; };
 		A2EB2D2C1FE20FCB00B87825 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EB2D2B1FE20FCB00B87825 /* AppDelegate.m */; };
 		A2EB2D2F1FE20FCB00B87825 /* ShujuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EB2D2E1FE20FCB00B87825 /* ShujuViewController.m */; };
 		A2EB2D321FE20FCB00B87825 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2EB2D301FE20FCB00B87825 /* Main.storyboard */; };
@@ -29,6 +33,8 @@
 		A2112FA51FE27B5A00891A99 /* AutomateViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutomateViewController.m; sourceTree = "<group>"; };
 		A2112FA71FE27B6A00891A99 /* ControlViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControlViewController.h; sourceTree = "<group>"; };
 		A2112FA81FE27B6A00891A99 /* ControlViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ControlViewController.m; sourceTree = "<group>"; };
+		A236EA341FF4BC8100063DFC /* RHSignInViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHSignInViewController.h; sourceTree = "<group>"; };
+		A236EA351FF4BC8100063DFC /* RHSignInViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHSignInViewController.m; sourceTree = "<group>"; };
 		A249901D1FE8EB55004B046F /* SliderTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SliderTableViewCell.h; sourceTree = "<group>"; };
 		A249901E1FE8EB55004B046F /* SliderTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SliderTableViewCell.m; sourceTree = "<group>"; };
 		A24990201FE8EBB9004B046F /* ControlTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControlTableViewCell.h; sourceTree = "<group>"; };
@@ -40,6 +46,11 @@
 		A262ECB51FE7C47B00B55454 /* WRCustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WRCustomNavigationBar.h; sourceTree = "<group>"; };
 		A262ECB61FE7C47B00B55454 /* WRNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WRNavigationBar.h; sourceTree = "<group>"; };
 		A262ECB71FE7C47B00B55454 /* WRCustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WRCustomNavigationBar.m; sourceTree = "<group>"; };
+		A2BB686A1FF242B100EB2246 /* RHRightBarButtonItemViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHRightBarButtonItemViewController.h; sourceTree = "<group>"; };
+		A2BB686B1FF242B100EB2246 /* RHRightBarButtonItemViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHRightBarButtonItemViewController.m; sourceTree = "<group>"; };
+		A2BBDF591FF3985F00CCE9DF /* cat.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cat.jpg; sourceTree = "<group>"; };
+		A2D06E321FFC74EF004FB3E4 /* RHBindAccViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHBindAccViewController.h; sourceTree = "<group>"; };
+		A2D06E331FFC74EF004FB3E4 /* RHBindAccViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHBindAccViewController.m; sourceTree = "<group>"; };
 		A2EB2D271FE20FCB00B87825 /* DinQinChuanGan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DinQinChuanGan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2EB2D2A1FE20FCB00B87825 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A2EB2D2B1FE20FCB00B87825 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -96,6 +107,12 @@
 			children = (
 				A2112FA71FE27B6A00891A99 /* ControlViewController.h */,
 				A2112FA81FE27B6A00891A99 /* ControlViewController.m */,
+				A236EA341FF4BC8100063DFC /* RHSignInViewController.h */,
+				A236EA351FF4BC8100063DFC /* RHSignInViewController.m */,
+				A2D06E321FFC74EF004FB3E4 /* RHBindAccViewController.h */,
+				A2D06E331FFC74EF004FB3E4 /* RHBindAccViewController.m */,
+				A2BB686A1FF242B100EB2246 /* RHRightBarButtonItemViewController.h */,
+				A2BB686B1FF242B100EB2246 /* RHRightBarButtonItemViewController.m */,
 				A249901D1FE8EB55004B046F /* SliderTableViewCell.h */,
 				A249901E1FE8EB55004B046F /* SliderTableViewCell.m */,
 				A24990201FE8EBB9004B046F /* ControlTableViewCell.h */,
@@ -174,6 +191,7 @@
 				A2EB2D301FE20FCB00B87825 /* Main.storyboard */,
 				A2EB2D351FE20FCB00B87825 /* LaunchScreen.storyboard */,
 				A2EB2D381FE20FCB00B87825 /* Info.plist */,
+				A2BBDF591FF3985F00CCE9DF /* cat.jpg */,
 				A2EB2D331FE20FCB00B87825 /* Assets.xcassets */,
 				A2EB2D391FE20FCB00B87825 /* main.m */,
 			);
@@ -243,6 +261,7 @@
 			files = (
 				A2EB2D371FE20FCB00B87825 /* LaunchScreen.storyboard in Resources */,
 				A2EB2D341FE20FCB00B87825 /* Assets.xcassets in Resources */,
+				A2BBDF5A1FF3985F00CCE9DF /* cat.jpg in Resources */,
 				A2EB2D321FE20FCB00B87825 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -310,14 +329,17 @@
 			files = (
 				A24990221FE8EBB9004B046F /* ControlTableViewCell.m in Sources */,
 				A2EB2D2F1FE20FCB00B87825 /* ShujuViewController.m in Sources */,
+				A2D06E341FFC74EF004FB3E4 /* RHBindAccViewController.m in Sources */,
 				A2EB2D3A1FE20FCB00B87825 /* main.m in Sources */,
 				A2112FA61FE27B5A00891A99 /* AutomateViewController.m in Sources */,
 				A262ECB91FE7C47B00B55454 /* WRCustomNavigationBar.m in Sources */,
 				A2EB2D2C1FE20FCB00B87825 /* AppDelegate.m in Sources */,
 				A25D34DE1FEB60CC00CED82A /* ControlCollectionViewCell.m in Sources */,
 				A262ECB81FE7C47B00B55454 /* WRNavigationBar.m in Sources */,
+				A236EA361FF4BC8100063DFC /* RHSignInViewController.m in Sources */,
 				A249901F1FE8EB55004B046F /* SliderTableViewCell.m in Sources */,
 				A2112FA91FE27B6A00891A99 /* ControlViewController.m in Sources */,
+				A2BB686C1FF242B100EB2246 /* RHRightBarButtonItemViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

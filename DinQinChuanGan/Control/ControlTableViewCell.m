@@ -7,12 +7,16 @@
 //
 
 #import "ControlTableViewCell.h"
+#import "Header.h"
 #import "Masonry.h"
 #import "ControlCollectionViewCell.h"
-
+#import "WRNavigationBar.h"
+#import "WRCustomNavigationBar.h"
+#define SCREEN [UIScreen mainScreen].bounds.size.width
 @interface ControlTableViewCell ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong) UICollectionView *collectView;
 @property (nonatomic, copy) NSArray *arrName;
+@property (nonatomic, copy) NSArray *imageArr;
 @end
 
 @implementation ControlTableViewCell
@@ -21,16 +25,18 @@
 static NSString *identifier=@"identifier";
 
 - (void)layoutSubviews {
+    
     [super layoutSubviews];
+    self.backgroundColor=BACKGROUND_COLOR;
     [self.contentView addSubview:self.collectView];
     [self.collectView mas_makeConstraints:^(MASConstraintMaker *make) {
 //        这种对上下左右添加的集合约束，insets中为绝对值，自动识别下和上（具体看版本）
         make.edges.equalTo(self.contentView).with.insets(UIEdgeInsetsMake(13, 15, 13, 15));
 //        这种分散式对上下左右做约束，要用-区别下和上
-        make.top.equalTo(self.contentView).with.offset(13);
-        make.left.equalTo(self.contentView).with.offset(15);
-        make.bottom.equalTo(self.contentView).with.offset(-13);
-        make.right.equalTo(self.contentView).with.offset(-15);
+//        make.top.equalTo(self.contentView).with.offset(13);
+//        make.left.equalTo(self.contentView).with.offset(15);
+//        make.bottom.equalTo(self.contentView).with.offset(-13);
+//        make.right.equalTo(self.contentView).with.offset(-15);
     }];
     
 }
@@ -39,7 +45,14 @@ static NSString *identifier=@"identifier";
 - (UICollectionView *)collectView {
     if (!_collectView) {
         UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
-        flowLayout.estimatedItemSize=CGSizeMake(90, 85);
+        if (SCREEN == 414) {
+            flowLayout.estimatedItemSize=CGSizeMake(123, 96);
+        }else if (SCREEN == 375) {
+            flowLayout.estimatedItemSize=CGSizeMake(108, 85);
+        }
+        else {
+            flowLayout.estimatedItemSize=CGSizeMake(90, 85);
+        }
         flowLayout.minimumLineSpacing=15;
         flowLayout.minimumInteritemSpacing=5;
         flowLayout.scrollDirection=UICollectionViewScrollDirectionVertical;
@@ -47,7 +60,7 @@ static NSString *identifier=@"identifier";
 //        _collectView.collectionViewLayout=flowLayout;
         _collectView.delegate=self;
         _collectView.dataSource=self;
-        _collectView.backgroundColor=[UIColor whiteColor];
+        _collectView.backgroundColor=BACKGROUND_COLOR;
         [_collectView registerClass:[ControlCollectionViewCell class] forCellWithReuseIdentifier:identifier];
     }
     return _collectView;
@@ -58,6 +71,13 @@ static NSString *identifier=@"identifier";
         _arrName=@[@"我的场所", @"我的区域", @"我的设备", @"报警", @"在线报修", @"报告", @"用户管理", @"消息", @"帮助", @"商城"];
     }
     return _arrName;
+}
+//图片名称
+- (NSArray *)imageArr {
+    if (!_imageArr) {
+        _imageArr=@[@"building",@"area",@"equipment",@"warning",@"repair",@"tips",@"accountC",@"message",@"help",@"market"];
+    }
+    return _imageArr;
 }
 
 #pragma mark - delegate/datasource
@@ -74,6 +94,7 @@ static NSString *identifier=@"identifier";
     ControlCollectionViewCell * cell=[collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 //    cell.backgroundColor=[UIColor redColor];
     cell.nameLabel.text=self.arrName[indexPath.row];
+    cell.imageView.image=[UIImage imageNamed:self.imageArr[indexPath.row]];
     return cell;
 }
 
