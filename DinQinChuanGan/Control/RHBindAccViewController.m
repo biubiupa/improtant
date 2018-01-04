@@ -10,6 +10,7 @@
 #import "Masonry.h"
 #import "Header.h"
 #import "AFNetworking.h"
+#import "RHProveViewController.h"
 
 
 
@@ -29,7 +30,7 @@
 #pragma mark - layoutSubviews
 - (void)layoutViews {
     self.view.backgroundColor=BACKGROUND_COLOR;
-
+    self.navigationItem.title=@"账号绑定";
 //  添加文本框
     [self.view addSubview:self.textField];
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -40,10 +41,8 @@
 //    添加下一步
     [self.view addSubview:self.nextBtn];
     [self.nextBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.height.mas_equalTo(45);
+        make.size.mas_equalTo(CGSizeMake(293, 45));
         make.centerX.equalTo(self.view);
-        make.left.equalTo(self.view).with.offset(60);
-        make.right.equalTo(self.view).with.offset(-60);
         make.top.equalTo(self.textField).with.offset(151);
     }];
 }
@@ -76,10 +75,15 @@
 //获取验证码事件
 - (void)netRequestAction {
     [self setUserInFo];
-    NSString *urlString=@"http://192.168.2.62:8089/diqin_app/user";
+    NSString *urlString=USER_API;
     AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
     [manager POST:urlString parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"===发送成功");
+        NSLog(@"===发送成功：%@",responseObject[@"head"][@"msg"]);
+        UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:nil action:nil];
+        self.navigationItem.backBarButtonItem=backItem;
+        RHProveViewController *proVC=[RHProveViewController new];
+        proVC.phoneNumber=self.textField.text;
+        [self.navigationController pushViewController:proVC animated:YES];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"---ERROR:%@",error);
     }];
@@ -88,21 +92,19 @@
 //参数设置
 - (void)setUserInFo {
     NSString *phoneNumber=self.textField.text;
-    NSDate *date=[NSDate date];
-    NSString *time=[NSString stringWithFormat:@"%@",date];
     NSDictionary *head=@{
                          @"aid": @"1and6uu",
                          @"ver": @"1.0",
                          @"ln": @"cn",
                          @"mod": @"ios",
-                         @"de": time,
+                         @"de": @"2017-07-13 00:00:00",
                          @"sync": @"1",
                          @"uuid": @"188111",
                          @"cmd": @"10004",
                          @"chcode": @"ef19843298ae8f2134f"
                          };
     NSDictionary *con=@{
-                        @"toolNumber": @"17621631698",
+                        @"toolNumber": phoneNumber,
                         @"toolType": @"1",
                         @"userId": @"100001",
                         @"userType":@"0"

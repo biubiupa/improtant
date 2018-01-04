@@ -8,6 +8,7 @@
 
 #import "RHSignInViewController.h"
 #import <CommonCrypto/CommonDigest.h>
+#import "Header.h"
 #import "Masonry.h"
 #import "AFNetworking.h"
 #import "RHBindAccViewController.h"
@@ -26,7 +27,8 @@
 @property (nonatomic, copy) NSString *strMD5;
 @property (nonatomic, copy) NSDictionary *responseDict;
 @property (nonatomic,assign) BOOL Hiden;
-@property (nonatomic, strong) ControlViewController *controlVC;
+@property (nonatomic, copy) NSString *parameter;
+@property (nonatomic, strong) RHControlViewController *controlVC;
 
 @end
 
@@ -219,30 +221,12 @@
     return _signInBtn;
 }
 - (void)signAcction {
-
-
 //    返回到上一层
-    self.strMD5=[self MD5:self.password.text];
-    NSString *urlString=@"http://192.168.2.62:8089/diqin_app/user";
-    NSDictionary *head=@{@"aid":@"1and6uu",
-                         @"ver":@"1.0",
-                         @"ln":@"cn",
-                         @"mod":@"ios",
-                         @"de":@"2017-11-14 00:00:00",
-                         @"sync":@"1",
-                         @"uuid":@"188111",
-                         @"cmd":@"10001",
-                         @"chcode":@"ef19843298ae8f2134f"};
-    NSDictionary *con=@{@"account":self.account.text,
-                        @"password":self.strMD5,
-                        @"userType":@"0"};
-    NSDictionary *dict=@{@"head":head, @"con":con};
-    NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
-    NSString *parameters=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    [self userInFor];
+    NSString *urlString=USER_API;
     AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
-    [manager POST:urlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:urlString parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"请求成功-------%@",responseObject);
-       
         self.responseDict=responseObject;
         NSString *st=[NSString stringWithFormat:@"%@",self.responseDict[@"head"][@"st"]];
 //        判断登录是否成功
@@ -265,6 +249,27 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"ERROR:%@",error);
     }];
+    
+}
+//参数
+- (void)userInFor {
+    self.strMD5=[self MD5:self.password.text];
+    NSDictionary *head=@{@"aid":@"1and6uu",
+                         @"ver":@"1.0",
+                         @"ln":@"cn",
+                         @"mod":@"ios",
+                         @"de":@"2017-11-14 00:00:00",
+                         @"sync":@"1",
+                         @"uuid":@"188111",
+                         @"cmd":@"10001",
+                         @"chcode":@"ef19843298ae8f2134f"};
+    NSDictionary *con=@{@"account":self.account.text,
+                        @"password":self.strMD5,
+                        @"userType":@"0"};
+    NSDictionary *dict=@{@"head":head, @"con":con};
+    NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *parameters=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    self.parameter=parameters;
 }
 //MD5算法
 - (NSString *)MD5:(NSString *)input {

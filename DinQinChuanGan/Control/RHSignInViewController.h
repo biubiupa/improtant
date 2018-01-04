@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ControlViewController.h"
+#import "RHControlViewController.h"
 
 typedef void(^boolBlock)(BOOL hiden, NSString *accText, NSString *userID);
 

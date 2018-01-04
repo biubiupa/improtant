@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@interface ControlViewController : UIViewController
+@interface RHControlViewController : UIViewController
 @property (nonatomic, strong) UIImageView *iconView;
 @property (nonatomic, strong) UILabel *accountLabel;
 @property (nonatomic, strong) UILabel *numberLabel;

@@ -9,7 +9,8 @@
 /* Begin PBXBuildFile section */
 		02193B2377721D8C6608F586 /* libPods-DinQinChuanGan.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 273F8BF59F656DA022A81BEB /* libPods-DinQinChuanGan.a */; };
 		A2112FA61FE27B5A00891A99 /* AutomateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2112FA51FE27B5A00891A99 /* AutomateViewController.m */; };
-		A2112FA91FE27B6A00891A99 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2112FA81FE27B6A00891A99 /* ControlViewController.m */; };
+		A2112FA91FE27B6A00891A99 /* RHControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2112FA81FE27B6A00891A99 /* RHControlViewController.m */; };
+		A21EA84B1FFDCD2C00AC1C8B /* RHProveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A21EA84A1FFDCD2C00AC1C8B /* RHProveViewController.m */; };
 		A236EA361FF4BC8100063DFC /* RHSignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A236EA351FF4BC8100063DFC /* RHSignInViewController.m */; };
 		A249901F1FE8EB55004B046F /* SliderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A249901E1FE8EB55004B046F /* SliderTableViewCell.m */; };
 		A24990221FE8EBB9004B046F /* ControlTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A24990211FE8EBB9004B046F /* ControlTableViewCell.m */; };
@@ -31,8 +32,10 @@
 		273F8BF59F656DA022A81BEB /* libPods-DinQinChuanGan.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DinQinChuanGan.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2112FA41FE27B5A00891A99 /* AutomateViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutomateViewController.h; sourceTree = "<group>"; };
 		A2112FA51FE27B5A00891A99 /* AutomateViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutomateViewController.m; sourceTree = "<group>"; };
-		A2112FA71FE27B6A00891A99 /* ControlViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControlViewController.h; sourceTree = "<group>"; };
-		A2112FA81FE27B6A00891A99 /* ControlViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ControlViewController.m; sourceTree = "<group>"; };
+		A2112FA71FE27B6A00891A99 /* RHControlViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHControlViewController.h; sourceTree = "<group>"; };
+		A2112FA81FE27B6A00891A99 /* RHControlViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHControlViewController.m; sourceTree = "<group>"; };
+		A21EA8491FFDCD2C00AC1C8B /* RHProveViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHProveViewController.h; sourceTree = "<group>"; };
+		A21EA84A1FFDCD2C00AC1C8B /* RHProveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHProveViewController.m; sourceTree = "<group>"; };
 		A236EA341FF4BC8100063DFC /* RHSignInViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHSignInViewController.h; sourceTree = "<group>"; };
 		A236EA351FF4BC8100063DFC /* RHSignInViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHSignInViewController.m; sourceTree = "<group>"; };
 		A249901D1FE8EB55004B046F /* SliderTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SliderTableViewCell.h; sourceTree = "<group>"; };
@@ -105,12 +108,14 @@
 		A24990231FE8EBF2004B046F /* Control */ = {
 			isa = PBXGroup;
 			children = (
-				A2112FA71FE27B6A00891A99 /* ControlViewController.h */,
-				A2112FA81FE27B6A00891A99 /* ControlViewController.m */,
+				A2112FA71FE27B6A00891A99 /* RHControlViewController.h */,
+				A2112FA81FE27B6A00891A99 /* RHControlViewController.m */,
 				A236EA341FF4BC8100063DFC /* RHSignInViewController.h */,
 				A236EA351FF4BC8100063DFC /* RHSignInViewController.m */,
 				A2D06E321FFC74EF004FB3E4 /* RHBindAccViewController.h */,
 				A2D06E331FFC74EF004FB3E4 /* RHBindAccViewController.m */,
+				A21EA8491FFDCD2C00AC1C8B /* RHProveViewController.h */,
+				A21EA84A1FFDCD2C00AC1C8B /* RHProveViewController.m */,
 				A2BB686A1FF242B100EB2246 /* RHRightBarButtonItemViewController.h */,
 				A2BB686B1FF242B100EB2246 /* RHRightBarButtonItemViewController.m */,
 				A249901D1FE8EB55004B046F /* SliderTableViewCell.h */,
@@ -336,9 +341,10 @@
 				A2EB2D2C1FE20FCB00B87825 /* AppDelegate.m in Sources */,
 				A25D34DE1FEB60CC00CED82A /* ControlCollectionViewCell.m in Sources */,
 				A262ECB81FE7C47B00B55454 /* WRNavigationBar.m in Sources */,
+				A21EA84B1FFDCD2C00AC1C8B /* RHProveViewController.m in Sources */,
 				A236EA361FF4BC8100063DFC /* RHSignInViewController.m in Sources */,
 				A249901F1FE8EB55004B046F /* SliderTableViewCell.m in Sources */,
-				A2112FA91FE27B6A00891A99 /* ControlViewController.m in Sources */,
+				A2112FA91FE27B6A00891A99 /* RHControlViewController.m in Sources */,
 				A2BB686C1FF242B100EB2246 /* RHRightBarButtonItemViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

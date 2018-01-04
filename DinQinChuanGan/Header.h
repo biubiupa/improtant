@@ -9,6 +9,8 @@
 #ifndef Header_h
 #define Header_h
 
+#define USER_API    @"http://192.168.2.160:8080/diqin_app/user"
+
 #define M_WIDTH     [UIScreen mainScreen].bounds.size.width
 #define M_HEIGHT    [UIScreen mainScreen].bounds.size.height
 

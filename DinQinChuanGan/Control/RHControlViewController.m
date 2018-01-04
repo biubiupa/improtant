@@ -6,7 +6,7 @@
 //  Copyright © 2017年 DST. All rights reserved.
 //
 
-#import "ControlViewController.h"
+#import "RHControlViewController.h"
 #import "Header.h"
 #import "Masonry.h"
 #import "WRNavigationBar.h"
@@ -18,7 +18,7 @@
 
 #define CONTROL_COLOR [UIColor colorWithRed:114.0/255.0 green:132.0/255.0 blue:235.0/255.0 alpha:1.0]
 
-@interface ControlViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface RHControlViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *topView;
 @property (nonatomic, strong) UIView *backgroundView;
@@ -30,7 +30,7 @@
 
 @end
 
-@implementation ControlViewController
+@implementation RHControlViewController
 #pragma mark - viewDidLoad
 - (void)viewDidLoad {
     [super viewDidLoad];

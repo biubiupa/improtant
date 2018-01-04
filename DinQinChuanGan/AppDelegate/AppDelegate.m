@@ -10,7 +10,7 @@
 #import "Header.h"
 #import "ShujuViewController.h"
 #import "AutomateViewController.h"
-#import "ControlViewController.h"
+#import "RHControlViewController.h"
 @interface AppDelegate ()
 @property (nonatomic, copy) NSArray *array;
 @property (nonatomic, strong) UITabBarController *rootTabVC;
@@ -30,7 +30,7 @@
 - (void)setControllers {
     UIViewController *shujuVC=[ShujuViewController new];
     UIViewController *automatVC=[AutomateViewController new];
-    UIViewController *controlVC=[ControlViewController new];
+    UIViewController *controlVC=[RHControlViewController new];
     UINavigationController *controlNav=[[UINavigationController alloc] initWithRootViewController:controlVC];
 //   设置item对应的页面控制器
     self.array=@[shujuVC, automatVC, controlNav];
