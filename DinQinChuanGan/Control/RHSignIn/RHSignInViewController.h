@@ -9,8 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "RHControlViewController.h"
 
-typedef void(^boolBlock)(BOOL hiden, NSString *accText, NSString *userID);
+typedef void(^boolBlock)(BOOL hiden, NSString *accText, NSString *corporationNum);
 
 @interface RHSignInViewController : UIViewController
 @property (nonatomic, strong) boolBlock callbackBlock;
+@property (nonatomic, copy) NSString *userId;
+@property (nonatomic, copy) NSString *st;
 @end
+
+

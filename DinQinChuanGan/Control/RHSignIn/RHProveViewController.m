@@ -9,15 +9,19 @@
 #import "RHProveViewController.h"
 #import "Header.h"
 #import "Masonry.h"
+#import "AFNetworking.h"
 
 @interface RHProveViewController ()<UITextFieldDelegate>
 @property (nonatomic, strong) UILabel *tipLabel;
 @property (nonatomic, strong) UILabel *proveLabel;
 @property (nonatomic, strong) UITextField *textField;
-@property (nonatomic, strong) UILabel *timeLabel;
+@property (nonatomic, strong) UIButton *timeBtn;
 @property (nonatomic, strong) UIButton *bindBtn;
 @property (nonatomic, strong) UIView *bacgroundView;
 @property (nonatomic, strong) UIView *lineView;
+@property (nonatomic, copy) NSString *url;
+@property (nonatomic, copy) NSString *parameter;
+@property (nonatomic, assign) BOOL Hiden;
 
 @end
 
@@ -26,10 +30,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self layoutViews];
+    self.Hiden=0;
 }
 
 #pragma mark - 处理布局
 - (void)layoutViews {
+    self.edgesForExtendedLayout=UIRectEdgeNone;
     self.view.backgroundColor=BACKGROUND_COLOR;
     self.navigationItem.title=@"手机号绑定";
 //    提示框已发送
@@ -37,12 +43,12 @@
     [self.tipLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(250, 15));
         make.left.equalTo(self.view).with.offset(12);
-        make.top.equalTo(self.view).with.offset(90);
+        make.top.equalTo(self.view).with.offset(22);
     }];
 //    背景图
     [self.view addSubview:self.bacgroundView];
     [self.bacgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(M_WIDTH, 41));
+        make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH, 41));
         make.centerX.equalTo(self.view);
         make.top.equalTo(self.tipLabel).with.offset(27);
     }];
@@ -61,8 +67,8 @@
         make.left.equalTo(self.proveLabel).with.offset(70);
     }];
 //    倒计时
-    [self.bacgroundView addSubview:self.timeLabel];
-    [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.bacgroundView addSubview:self.timeBtn];
+    [self.timeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(92, 14));
         make.centerY.equalTo(self.bacgroundView);
         make.right.equalTo(self.bacgroundView).with.offset(-5);
@@ -80,7 +86,7 @@
     [self.bindBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(293, 45));
         make.centerX.equalTo(self.view);
-        make.top.equalTo(self.view).with.offset(268);
+        make.top.equalTo(self.view).with.offset(204);
     }];
 }
 
@@ -111,15 +117,15 @@
     return _textField;
 }
 
-- (UILabel *)timeLabel {
-    if (!_timeLabel) {
-        _timeLabel=[[UILabel alloc] init];
-        _timeLabel.text=@"59秒后重新获取";
-        _timeLabel.textAlignment=NSTextAlignmentCenter;
-        _timeLabel.font=[UIFont systemFontOfSize:12];
-        _timeLabel.textColor=[UIColor lightGrayColor];
+- (UIButton *)timeBtn {
+    if (!_timeBtn) {
+        _timeBtn=[UIButton buttonWithType:UIButtonTypeSystem];
+        NSMutableAttributedString *title=[[NSMutableAttributedString alloc] initWithString:@"59秒后重新获取"];
+        [title addAttribute:NSForegroundColorAttributeName value:[UIColor lightGrayColor] range:NSMakeRange(0, 8)];
+        [title addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:NSMakeRange(0, 8)];
+        [_timeBtn setAttributedTitle:title forState:UIControlStateNormal];
     }
-    return _timeLabel;
+    return _timeBtn;
 }
 
 - (UIButton *)bindBtn {
@@ -154,7 +160,47 @@
 //  绑定点击事件
 - (void)clickBtnAction {
     [self.textField resignFirstResponder];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self userInFor];
+    AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
+    [manager POST:self.url parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"---%@",responseObject);
+        NSString *st=[[NSString alloc] initWithFormat:@"%@",responseObject[@"head"][@"st"]];
+        NSDictionary *dict=@{@"Hiden":@(1), @"account":self.account, @"corporationNum":self.corporationNum};
+        if ([st isEqualToString:@"0"]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"change" object:self userInfo:dict];
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"====error:%@",error);
+    }];
+    
+}
+
+//      request参数设置
+- (void)userInFor {
+    NSString *toolnumber=self.phoneNumber;
+    NSString *verficationCode=self.textField.text;
+    NSDictionary *head=@{
+                         @"aid": @"1and6uu",
+                         @"ver": @"1.0",
+                         @"ln": @"cn",
+                         @"mod":@"ios",
+                         @"de": @"2017-11-14 00:00:00",
+                         @"sync":@"1",
+                         @"uuid":@"188111",
+                         @"cmd":@"10003",
+                         @"chcode": @" ef19843298ae8f2134f "
+                         };
+    NSDictionary *con=@{
+                        @"toolNumber":toolnumber,
+                        @"userId": @"100001",
+                        @"toolType":@"1",
+                        @"verficationCode":verficationCode
+                        };
+    NSDictionary *dictJson=@{@"head":head, @"con":con};
+    NSData *data=[NSJSONSerialization dataWithJSONObject:dictJson options:NSJSONWritingPrettyPrinted error:nil];
+    self.parameter=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    self.url=USER_API;
 }
 
 //    代理设置按钮响应状态
@@ -164,6 +210,8 @@
     self.bindBtn.backgroundColor=nil;
     return YES;
 }
+
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;

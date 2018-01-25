@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface RHBindAccViewController : UIViewController
+@property (nonatomic, copy) NSString *account;
+@property (nonatomic, copy) NSString *corporationNum;
 
 @end

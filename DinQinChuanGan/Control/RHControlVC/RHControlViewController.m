@@ -12,9 +12,10 @@
 #import "WRNavigationBar.h"
 #import "WRCustomNavigationBar.h"
 #import "ControlTableViewCell.h"
-#import "SliderTableViewCell.h"
 #import "RHRightBarButtonItemViewController.h"
 #import "RHSignInViewController.h"
+#import "RHMyPlaceViewController.h"
+#import "RHMyAreaViewController.h"
 
 #define CONTROL_COLOR [UIColor colorWithRed:114.0/255.0 green:132.0/255.0 blue:235.0/255.0 alpha:1.0]
 
@@ -25,8 +26,9 @@
 
 @property (nonatomic, assign) BOOL Hidden;
 @property (nonatomic, assign) BOOL lowHidden;
-@property (nonatomic, strong) SliderTableViewCell *cellOne;
 @property (nonatomic, strong) ControlTableViewCell *cellTwo;
+@property (nonatomic, strong) RHMyAreaViewController *areaVC;
+@property (nonatomic, strong) RHMyPlaceViewController *placeVC;
 
 @end
 
@@ -35,14 +37,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self layoutViews];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeSignIn:) name:@"change" object:nil];
+    
+}
+//处理布局
+- (void)layoutViews {
     self.view.backgroundColor=[UIColor whiteColor];
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.topView];
     [self.topView addSubview:self.backgroundView];
-
+    
     self.tableView.tableHeaderView=self.topView;
-
-
+    
+    
     [self setNavigationBar];
     [self.backgroundView addSubview:self.iconView];
     [self.iconView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -53,28 +61,28 @@
     [self.backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.topView).with.insets(UIEdgeInsetsMake([self navHeight]+12, 12, 0, 12));
     }];
-//    帐号
+    //    帐号
     [self.backgroundView addSubview:self.accountLabel];
     [self.accountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(148, 16));
         make.centerX.equalTo(self.backgroundView);
         make.bottom.equalTo(self.iconView).with.offset(32);
     }];
-//    企业编号
+    //    企业编号
     [self.backgroundView addSubview:self.numberLabel];
     [self.numberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(120, 16));
         make.centerX.equalTo(self.iconView);
         make.bottom.equalTo(self.iconView).with.offset(55);
     }];
-//    登录提示语
+    //    登录提示语
     [self.backgroundView addSubview:self.signInLabel];
     [self.signInLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(230, 17));
         make.centerX.equalTo(self.backgroundView);
         make.top.equalTo(self.backgroundView).with.offset(45);
     }];
-//    登录按钮
+    //    登录按钮
     [self.backgroundView addSubview:self.signInBtn];
     [self.signInBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(109, 31));
@@ -85,42 +93,34 @@
     self.iconView.hidden=YES;
     self.accountLabel.hidden=YES;
     self.numberLabel.hidden=YES;
+    RHMyAreaViewController *areaVC=[RHMyAreaViewController new];
+    RHMyPlaceViewController *placeVC=[RHMyPlaceViewController new];
+    self.areaVC=areaVC;
+    self.placeVC=placeVC;
 }
-
 #pragma mark - delegate / datasorce
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
+    return 1;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    self.cellOne=[SliderTableViewCell new];
     self.cellTwo=[ControlTableViewCell new];
-    if (indexPath.row == 0) {
-        self.cellOne.signLabel.hidden=self.Hidden;
-        self.cellOne.curtainView.hidden=self.lowHidden;
-        self.cellOne.hidden=YES;
-        return self.cellOne;
-    }else {
-        return self.cellTwo;
-    }
+    return self.cellTwo;
     
     
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        return 0;
-    }else {
-        return 450.0;
-    }
+    return 450.0;
 }
 
 - (int)navBarBottom {
@@ -156,6 +156,8 @@
 }
 
 - (void)rightbtnAction {
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem=backItem;
     [self.navigationController pushViewController:[RHRightBarButtonItemViewController new] animated:YES];
 }
 #pragma mark - 设置头视图
@@ -165,6 +167,8 @@
         _tableView.backgroundColor=[UIColor colorWithRed:248.0/255.0 green:248.0/255.0 blue:248.0/255.0 alpha:1.0];
         _tableView.delegate=self;
         _tableView.dataSource=self;
+        _tableView.estimatedRowHeight=44;
+        _tableView.rowHeight=UITableViewAutomaticDimension;
         _tableView.contentInset=UIEdgeInsetsMake(-[self navBarBottom], 0, 0, 0);
     }
     return _tableView;
@@ -243,48 +247,65 @@
 }
 //button点击事件
 - (void)signInAcction {
+    
 
     RHSignInViewController *rhVC=[RHSignInViewController new];
     __weak typeof(self) weakSelf=self;
-    rhVC.callbackBlock = ^(BOOL hiden, NSString *accText, NSString *userID) {
+    rhVC.callbackBlock = ^(BOOL hiden, NSString *accText, NSString *corporationNum) {
         weakSelf.signInLabel.hidden=!hiden;
         weakSelf.signInBtn.hidden=!hiden;
         weakSelf.iconView.hidden=hiden;
         weakSelf.accountLabel.hidden=hiden;
         weakSelf.numberLabel.hidden=hiden;
         weakSelf.accountLabel.text=[NSString stringWithFormat:@"帐号%@",accText];
-        weakSelf.numberLabel.text=[NSString stringWithFormat:@"企业编号%@",userID];
+        weakSelf.numberLabel.text=[NSString stringWithFormat:@"企业编号%@",corporationNum];
     };
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem=backItem;
+    self.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:rhVC animated:YES];
+    self.hidesBottomBarWhenPushed=NO;
+}
+//接收通知后的处理事件
+- (void)changeSignIn:(NSNotification *)notification {
+    NSDictionary *dict=notification.userInfo;
+    BOOL hiden=dict[@"Hiden"];
+    NSString *account=dict[@"account"];
+    NSString *corporationNum=dict[@"corporationNum"];
+    self.signInLabel.hidden=!hiden;
+    self.signInBtn.hidden=!hiden;
+    self.iconView.hidden=hiden;
+    self.accountLabel.hidden=hiden;
+    self.numberLabel.hidden=hiden;
+    self.accountLabel.text=[NSString stringWithFormat:@"帐号%@",account];
+    self.numberLabel.text=[NSString stringWithFormat:@"企业编号%@",corporationNum];
+}
+//    跳转
+- (void)tiaozhuan:(NSNotification *)notification {
+    NSDictionary *dict=notification.userInfo;
+    int index=[dict[@"index"] intValue];
+    NSArray *arr=@[self.placeVC, self.areaVC];
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem=backItem;
+    self.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:arr[index] animated:YES];
+    self.hidesBottomBarWhenPushed=NO;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"tiaozhuan" object:nil];
     
 }
-
-
 
 
 #pragma mark - viewWillAppear
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tiaozhuan:) name:@"tiaozhuan" object:nil];
 }
-- (void)viewWillDisappear:(BOOL)animated {
+
+
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"change" object:nil];
     
-    
 }
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

@@ -18,6 +18,7 @@
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UIButton *nextBtn;
 @property (nonatomic, copy) NSString *parameter;
+@property (nonatomic, strong) UIAlertController *alertCon;
 @end
 
 @implementation RHBindAccViewController
@@ -31,12 +32,13 @@
 - (void)layoutViews {
     self.view.backgroundColor=BACKGROUND_COLOR;
     self.navigationItem.title=@"账号绑定";
+    self.edgesForExtendedLayout=UIRectEdgeNone;
 //  添加文本框
     [self.view addSubview:self.textField];
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(M_WIDTH, 41));
+        make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH, 41));
         make.centerX.equalTo(self.view);
-        make.top.equalTo(self.view).with.offset(73);
+        make.top.equalTo(self.view).with.offset(22);
     }];
 //    添加下一步
     [self.view addSubview:self.nextBtn];
@@ -59,6 +61,15 @@
     }
     return _textField;
 }
+//提示框
+- (UIAlertController *)alertCon {
+    if (!_alertCon) {
+        _alertCon=[UIAlertController alertControllerWithTitle:@"获取验证码失败" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *done=[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+        [_alertCon addAction:done];
+    }
+    return _alertCon;
+}
 
 //下一步
 - (UIButton *)nextBtn {
@@ -74,19 +85,34 @@
 }
 //获取验证码事件
 - (void)netRequestAction {
-    [self setUserInFo];
-    NSString *urlString=USER_API;
-    AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
-    [manager POST:urlString parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"===发送成功：%@",responseObject[@"head"][@"msg"]);
-        UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:nil action:nil];
-        self.navigationItem.backBarButtonItem=backItem;
-        RHProveViewController *proVC=[RHProveViewController new];
-        proVC.phoneNumber=self.textField.text;
-        [self.navigationController pushViewController:proVC animated:YES];
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"---ERROR:%@",error);
-    }];
+    if (self.textField.text.length==11) {
+        [self setUserInFo];
+        NSString *urlString=USER_API;
+        AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
+        [manager POST:urlString parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:nil action:nil];
+            self.navigationItem.backBarButtonItem=backItem;
+            RHProveViewController *proVC=[RHProveViewController new];
+            proVC.phoneNumber=self.textField.text;
+            proVC.account=self.account;
+            proVC.corporationNum=self.corporationNum;
+            [self.navigationController pushViewController:proVC animated:YES];
+            /*
+            if ([st isEqualToString:@"0"]) {
+                RHProveViewController *proVC=[RHProveViewController new];
+                proVC.phoneNumber=self.textField.text;
+                [self.navigationController pushViewController:proVC animated:YES];
+            }else {
+                [self presentViewController:self.alertCon animated:YES completion:nil];
+            }
+             */
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"---ERROR:%@",error);
+        }];
+    }else {
+        NSLog(@"请重新输入手机号！");
+    }
+    
     
 }
 //参数设置

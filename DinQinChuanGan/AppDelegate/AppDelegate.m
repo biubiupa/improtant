@@ -24,6 +24,7 @@
     self.rootTabVC=[[UITabBarController alloc] init];
     [self setControllers];
     self.window.rootViewController=self.rootTabVC;
+    self.window.backgroundColor=[UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
 }

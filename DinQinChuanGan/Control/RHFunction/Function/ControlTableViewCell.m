@@ -12,17 +12,23 @@
 #import "ControlCollectionViewCell.h"
 #import "WRNavigationBar.h"
 #import "WRCustomNavigationBar.h"
+#import "RHMyPlaceViewController.h"
+
 #define SCREEN [UIScreen mainScreen].bounds.size.width
+
 @interface ControlTableViewCell ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+
 @property (nonatomic, strong) UICollectionView *collectView;
 @property (nonatomic, copy) NSArray *arrName;
 @property (nonatomic, copy) NSArray *imageArr;
+
 @end
 
 @implementation ControlTableViewCell
 
 #pragma mark - setneedslayout
 static NSString *identifier=@"identifier";
+
 
 - (void)layoutSubviews {
     
@@ -32,12 +38,9 @@ static NSString *identifier=@"identifier";
     [self.collectView mas_makeConstraints:^(MASConstraintMaker *make) {
 //        这种对上下左右添加的集合约束，insets中为绝对值，自动识别下和上（具体看版本）
         make.edges.equalTo(self.contentView).with.insets(UIEdgeInsetsMake(13, 15, 13, 15));
-//        这种分散式对上下左右做约束，要用-区别下和上
-//        make.top.equalTo(self.contentView).with.offset(13);
-//        make.left.equalTo(self.contentView).with.offset(15);
-//        make.bottom.equalTo(self.contentView).with.offset(-13);
-//        make.right.equalTo(self.contentView).with.offset(-15);
+        
     }];
+    
     
 }
 
@@ -100,9 +103,9 @@ static NSString *identifier=@"identifier";
 
 
 #pragma mark - setSelected
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-    // Configure the view for the selected state
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *dict=@{@"index":@(indexPath.row)};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"tiaozhuan" object:self userInfo:dict];
 }
 
 @end
