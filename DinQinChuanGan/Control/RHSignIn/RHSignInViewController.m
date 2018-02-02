@@ -235,6 +235,7 @@
 //            把常用的userid保存到本地
             NSUserDefaults *userDefault=[NSUserDefaults standardUserDefaults];
             [userDefault setObject:self.userId forKey:@"userId"];
+            [userDefault setObject:self.account.text forKey:@"account"];
             [userDefault synchronize];
 //            请求用户信息
             [self userMessageRequest];

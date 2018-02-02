@@ -92,8 +92,7 @@
     NSString *urlString=MANAGE_API;
     AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
     [manager POST:urlString parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        //        NSLog(@"---%@",responseObject);
-//        NSInteger st=[responseObject[@"head"][@"st"] integerValue];
+                NSLog(@"---%@",responseObject);
         [self.navigationController popViewControllerAnimated:YES];
 
         
@@ -130,11 +129,10 @@
                             @"userId":userId,
                             @"placeName":self.nameTF.text,
                             @"placeUrl": @"",
-                            @"placeId":@(0),
+                            @"placeId":@0,
                             @"placeArea":self.areaTF.text
                             };
         NSDictionary *dict=@{@"head":head, @"con":con};
-        NSLog(@"%@",dict);
         NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
         _parameter=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     }

@@ -161,7 +161,7 @@
     }
 }
 
-- (void)beginRefreshingWithCompletionBlock:(void (^)())completionBlock
+- (void)beginRefreshingWithCompletionBlock:(void (^)(void))completionBlock
 {
     self.beginRefreshingCompletionBlock = completionBlock;
     
@@ -174,7 +174,7 @@
     self.state = MJRefreshStateIdle;
 }
 
-- (void)endRefreshingWithCompletionBlock:(void (^)())completionBlock
+- (void)endRefreshingWithCompletionBlock:(void (^)(void))completionBlock
 {
     self.endRefreshingCompletionBlock = completionBlock;
     
@@ -257,11 +257,15 @@
     CGSize size = CGSizeMake(MAXFLOAT, MAXFLOAT);
     if (self.text.length > 0) {
 #if defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
-        stringWidth =[self.text
-                      boundingRectWithSize:size
-                      options:NSStringDrawingUsesLineFragmentOrigin
-                      attributes:@{NSFontAttributeName:self.font}
-                      context:nil].size.width;
+        if (@available(iOS 7.0, *)) {
+            stringWidth =[self.text
+                          boundingRectWithSize:size
+                          options:NSStringDrawingUsesLineFragmentOrigin
+                          attributes:@{NSFontAttributeName:self.font}
+                          context:nil].size.width;
+        } else {
+            // Fallback on earlier versions
+        }
 #else
         
         stringWidth = [self.text sizeWithFont:self.font

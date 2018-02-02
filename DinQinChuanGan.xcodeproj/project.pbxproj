@@ -8,20 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		02193B2377721D8C6608F586 /* libPods-DinQinChuanGan.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 273F8BF59F656DA022A81BEB /* libPods-DinQinChuanGan.a */; };
+		A20E04A22021A5C5000AB27A /* RHChoosePicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A20E04A12021A5C5000AB27A /* RHChoosePicViewController.m */; };
+		A20E04B12021B2FA000AB27A /* three.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A20E04AD2021B2F9000AB27A /* three.jpeg */; };
+		A20E04B22021B2FA000AB27A /* bacimage.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A20E04AE2021B2F9000AB27A /* bacimage.jpeg */; };
+		A20E04B32021B2FA000AB27A /* one.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A20E04AF2021B2F9000AB27A /* one.jpeg */; };
+		A20E04B42021B2FA000AB27A /* two.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A20E04B02021B2FA000AB27A /* two.jpeg */; };
 		A2112FA61FE27B5A00891A99 /* AutomateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2112FA51FE27B5A00891A99 /* AutomateViewController.m */; };
 		A2112FA91FE27B6A00891A99 /* RHControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2112FA81FE27B6A00891A99 /* RHControlViewController.m */; };
 		A212BDD420085A9000C3941B /* RHAddPlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A212BDD320085A9000C3941B /* RHAddPlaceViewController.m */; };
 		A21EA84B1FFDCD2C00AC1C8B /* RHProveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A21EA84A1FFDCD2C00AC1C8B /* RHProveViewController.m */; };
 		A22F8C9620119BA3008CC997 /* RHPlaceMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A22F8C9520119BA3008CC997 /* RHPlaceMessageViewController.m */; };
 		A236EA361FF4BC8100063DFC /* RHSignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A236EA351FF4BC8100063DFC /* RHSignInViewController.m */; };
+		A23ECB0E2022B22200FA6797 /* RHAreaContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A23ECB0D2022B22200FA6797 /* RHAreaContentViewController.m */; };
 		A24990221FE8EBB9004B046F /* ControlTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A24990211FE8EBB9004B046F /* ControlTableViewCell.m */; };
+		A25732ED202010AF00C9CC6D /* RHAddAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A25732EC202010AF00C9CC6D /* RHAddAreaViewController.m */; };
 		A25D34DE1FEB60CC00CED82A /* ControlCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A25D34DD1FEB60CC00CED82A /* ControlCollectionViewCell.m */; };
-		A260292E2015E7EC00684847 /* RHDropDownButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A260292D2015E7EC00684847 /* RHDropDownButton.m */; };
 		A262ECB81FE7C47B00B55454 /* WRNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A262ECB41FE7C47B00B55454 /* WRNavigationBar.m */; };
 		A262ECB91FE7C47B00B55454 /* WRCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A262ECB71FE7C47B00B55454 /* WRCustomNavigationBar.m */; };
 		A2684A992005FABA00EC8339 /* RHMyPlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2684A982005FABA00EC8339 /* RHMyPlaceViewController.m */; };
+		A2A6B411201EC8470088AEFE /* PlaceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A2A6B410201EC8470088AEFE /* PlaceModel.m */; };
 		A2BB686C1FF242B100EB2246 /* RHRightBarButtonItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2BB686B1FF242B100EB2246 /* RHRightBarButtonItemViewController.m */; };
 		A2BBDF5A1FF3985F00CCE9DF /* cat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A2BBDF591FF3985F00CCE9DF /* cat.jpg */; };
+		A2C45B762024660B00387B6D /* RHDfaultImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2C45B752024660B00387B6D /* RHDfaultImageViewController.m */; };
 		A2CEDC031FFF669D009A9CF9 /* RHAmendPassWViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2CEDC021FFF669D009A9CF9 /* RHAmendPassWViewController.m */; };
 		A2D06E341FFC74EF004FB3E4 /* RHBindAccViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2D06E331FFC74EF004FB3E4 /* RHBindAccViewController.m */; };
 		A2E3D1C220074E180076D624 /* RHMyAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E3D1C120074E180076D624 /* RHMyAreaViewController.m */; };
@@ -37,6 +45,12 @@
 
 /* Begin PBXFileReference section */
 		273F8BF59F656DA022A81BEB /* libPods-DinQinChuanGan.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DinQinChuanGan.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20E04A02021A5C5000AB27A /* RHChoosePicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHChoosePicViewController.h; sourceTree = "<group>"; };
+		A20E04A12021A5C5000AB27A /* RHChoosePicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHChoosePicViewController.m; sourceTree = "<group>"; };
+		A20E04AD2021B2F9000AB27A /* three.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = three.jpeg; path = ImagePictures/three.jpeg; sourceTree = "<group>"; };
+		A20E04AE2021B2F9000AB27A /* bacimage.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = bacimage.jpeg; path = ImagePictures/bacimage.jpeg; sourceTree = "<group>"; };
+		A20E04AF2021B2F9000AB27A /* one.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = one.jpeg; path = ImagePictures/one.jpeg; sourceTree = "<group>"; };
+		A20E04B02021B2FA000AB27A /* two.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = two.jpeg; path = ImagePictures/two.jpeg; sourceTree = "<group>"; };
 		A2112FA41FE27B5A00891A99 /* AutomateViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutomateViewController.h; sourceTree = "<group>"; };
 		A2112FA51FE27B5A00891A99 /* AutomateViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutomateViewController.m; sourceTree = "<group>"; };
 		A2112FA71FE27B6A00891A99 /* RHControlViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHControlViewController.h; sourceTree = "<group>"; };
@@ -49,22 +63,28 @@
 		A22F8C9520119BA3008CC997 /* RHPlaceMessageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHPlaceMessageViewController.m; sourceTree = "<group>"; };
 		A236EA341FF4BC8100063DFC /* RHSignInViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHSignInViewController.h; sourceTree = "<group>"; };
 		A236EA351FF4BC8100063DFC /* RHSignInViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHSignInViewController.m; sourceTree = "<group>"; };
+		A23ECB0C2022B22200FA6797 /* RHAreaContentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHAreaContentViewController.h; sourceTree = "<group>"; };
+		A23ECB0D2022B22200FA6797 /* RHAreaContentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHAreaContentViewController.m; sourceTree = "<group>"; };
 		A24990201FE8EBB9004B046F /* ControlTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControlTableViewCell.h; sourceTree = "<group>"; };
 		A24990211FE8EBB9004B046F /* ControlTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ControlTableViewCell.m; sourceTree = "<group>"; };
 		A24990271FE911CF004B046F /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
+		A25732EB202010AF00C9CC6D /* RHAddAreaViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHAddAreaViewController.h; sourceTree = "<group>"; };
+		A25732EC202010AF00C9CC6D /* RHAddAreaViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHAddAreaViewController.m; sourceTree = "<group>"; };
 		A25D34DC1FEB60CC00CED82A /* ControlCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControlCollectionViewCell.h; sourceTree = "<group>"; };
 		A25D34DD1FEB60CC00CED82A /* ControlCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ControlCollectionViewCell.m; sourceTree = "<group>"; };
-		A260292C2015E7EC00684847 /* RHDropDownButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHDropDownButton.h; sourceTree = "<group>"; };
-		A260292D2015E7EC00684847 /* RHDropDownButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHDropDownButton.m; sourceTree = "<group>"; };
 		A262ECB41FE7C47B00B55454 /* WRNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WRNavigationBar.m; sourceTree = "<group>"; };
 		A262ECB51FE7C47B00B55454 /* WRCustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WRCustomNavigationBar.h; sourceTree = "<group>"; };
 		A262ECB61FE7C47B00B55454 /* WRNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WRNavigationBar.h; sourceTree = "<group>"; };
 		A262ECB71FE7C47B00B55454 /* WRCustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WRCustomNavigationBar.m; sourceTree = "<group>"; };
 		A2684A972005FABA00EC8339 /* RHMyPlaceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHMyPlaceViewController.h; sourceTree = "<group>"; };
 		A2684A982005FABA00EC8339 /* RHMyPlaceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHMyPlaceViewController.m; sourceTree = "<group>"; };
+		A2A6B40F201EC8470088AEFE /* PlaceModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlaceModel.h; sourceTree = "<group>"; };
+		A2A6B410201EC8470088AEFE /* PlaceModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlaceModel.m; sourceTree = "<group>"; };
 		A2BB686A1FF242B100EB2246 /* RHRightBarButtonItemViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHRightBarButtonItemViewController.h; sourceTree = "<group>"; };
 		A2BB686B1FF242B100EB2246 /* RHRightBarButtonItemViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHRightBarButtonItemViewController.m; sourceTree = "<group>"; };
 		A2BBDF591FF3985F00CCE9DF /* cat.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cat.jpg; sourceTree = "<group>"; };
+		A2C45B742024660B00387B6D /* RHDfaultImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHDfaultImageViewController.h; sourceTree = "<group>"; };
+		A2C45B752024660B00387B6D /* RHDfaultImageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHDfaultImageViewController.m; sourceTree = "<group>"; };
 		A2CEDC011FFF669D009A9CF9 /* RHAmendPassWViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHAmendPassWViewController.h; sourceTree = "<group>"; };
 		A2CEDC021FFF669D009A9CF9 /* RHAmendPassWViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHAmendPassWViewController.m; sourceTree = "<group>"; };
 		A2D06E321FFC74EF004FB3E4 /* RHBindAccViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHBindAccViewController.h; sourceTree = "<group>"; };
@@ -244,8 +264,14 @@
 			children = (
 				A2E3D1C020074E180076D624 /* RHMyAreaViewController.h */,
 				A2E3D1C120074E180076D624 /* RHMyAreaViewController.m */,
-				A260292C2015E7EC00684847 /* RHDropDownButton.h */,
-				A260292D2015E7EC00684847 /* RHDropDownButton.m */,
+				A23ECB0C2022B22200FA6797 /* RHAreaContentViewController.h */,
+				A23ECB0D2022B22200FA6797 /* RHAreaContentViewController.m */,
+				A25732EB202010AF00C9CC6D /* RHAddAreaViewController.h */,
+				A25732EC202010AF00C9CC6D /* RHAddAreaViewController.m */,
+				A20E04A02021A5C5000AB27A /* RHChoosePicViewController.h */,
+				A20E04A12021A5C5000AB27A /* RHChoosePicViewController.m */,
+				A2C45B742024660B00387B6D /* RHDfaultImageViewController.h */,
+				A2C45B752024660B00387B6D /* RHDfaultImageViewController.m */,
 			);
 			path = RHMyArea;
 			sourceTree = "<group>";
@@ -321,6 +347,15 @@
 			path = RHMyMarket;
 			sourceTree = "<group>";
 		};
+		A2A6B412201EC8500088AEFE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A2A6B40F201EC8470088AEFE /* PlaceModel.h */,
+				A2A6B410201EC8470088AEFE /* PlaceModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		A2EB2D1E1FE20FCB00B87825 = {
 			isa = PBXGroup;
 			children = (
@@ -344,6 +379,7 @@
 			isa = PBXGroup;
 			children = (
 				A24990271FE911CF004B046F /* Header.h */,
+				A2A6B412201EC8500088AEFE /* Model */,
 				A24990261FE8EC8C004B046F /* AppDelegate */,
 				A24990241FE8EC68004B046F /* Shuju */,
 				A24990251FE8EC77004B046F /* Automate */,
@@ -352,6 +388,10 @@
 				A2EB2D351FE20FCB00B87825 /* LaunchScreen.storyboard */,
 				A2EB2D381FE20FCB00B87825 /* Info.plist */,
 				A2BBDF591FF3985F00CCE9DF /* cat.jpg */,
+				A20E04AE2021B2F9000AB27A /* bacimage.jpeg */,
+				A20E04AF2021B2F9000AB27A /* one.jpeg */,
+				A20E04AD2021B2F9000AB27A /* three.jpeg */,
+				A20E04B02021B2FA000AB27A /* two.jpeg */,
 				A2EB2D331FE20FCB00B87825 /* Assets.xcassets */,
 				A2EB2D391FE20FCB00B87825 /* main.m */,
 			);
@@ -423,6 +463,10 @@
 				A2EB2D341FE20FCB00B87825 /* Assets.xcassets in Resources */,
 				A2BBDF5A1FF3985F00CCE9DF /* cat.jpg in Resources */,
 				A2EB2D321FE20FCB00B87825 /* Main.storyboard in Resources */,
+				A20E04B22021B2FA000AB27A /* bacimage.jpeg in Resources */,
+				A20E04B32021B2FA000AB27A /* one.jpeg in Resources */,
+				A20E04B42021B2FA000AB27A /* two.jpeg in Resources */,
+				A20E04B12021B2FA000AB27A /* three.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,16 +532,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				A24990221FE8EBB9004B046F /* ControlTableViewCell.m in Sources */,
-				A260292E2015E7EC00684847 /* RHDropDownButton.m in Sources */,
 				A2EB2D2F1FE20FCB00B87825 /* ShujuViewController.m in Sources */,
 				A2D06E341FFC74EF004FB3E4 /* RHBindAccViewController.m in Sources */,
 				A2EB2D3A1FE20FCB00B87825 /* main.m in Sources */,
 				A22F8C9620119BA3008CC997 /* RHPlaceMessageViewController.m in Sources */,
+				A25732ED202010AF00C9CC6D /* RHAddAreaViewController.m in Sources */,
+				A2C45B762024660B00387B6D /* RHDfaultImageViewController.m in Sources */,
 				A212BDD420085A9000C3941B /* RHAddPlaceViewController.m in Sources */,
 				A2112FA61FE27B5A00891A99 /* AutomateViewController.m in Sources */,
 				A262ECB91FE7C47B00B55454 /* WRCustomNavigationBar.m in Sources */,
 				A2E3D1C520076F260076D624 /* RHMyEquipmentViewController.m in Sources */,
 				A2EB2D2C1FE20FCB00B87825 /* AppDelegate.m in Sources */,
+				A2A6B411201EC8470088AEFE /* PlaceModel.m in Sources */,
 				A25D34DE1FEB60CC00CED82A /* ControlCollectionViewCell.m in Sources */,
 				A2CEDC031FFF669D009A9CF9 /* RHAmendPassWViewController.m in Sources */,
 				A262ECB81FE7C47B00B55454 /* WRNavigationBar.m in Sources */,
@@ -505,7 +551,9 @@
 				A2E3D1C220074E180076D624 /* RHMyAreaViewController.m in Sources */,
 				A236EA361FF4BC8100063DFC /* RHSignInViewController.m in Sources */,
 				A2112FA91FE27B6A00891A99 /* RHControlViewController.m in Sources */,
+				A20E04A22021A5C5000AB27A /* RHChoosePicViewController.m in Sources */,
 				A2684A992005FABA00EC8339 /* RHMyPlaceViewController.m in Sources */,
+				A23ECB0E2022B22200FA6797 /* RHAreaContentViewController.m in Sources */,
 				A2BB686C1FF242B100EB2246 /* RHRightBarButtonItemViewController.m in Sources */,
 				A2E3D1C820076F400076D624 /* RHMyWarningViewController.m in Sources */,
 			);

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface RHPlaceMessageViewController : UIViewController
-@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *titles;
 @property (nonatomic, copy) NSString *placeName;
 @property (nonatomic, assign) NSInteger placeArea;
 @property (nonatomic, assign) NSInteger deviceNum;

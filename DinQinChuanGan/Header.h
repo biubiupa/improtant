@@ -17,5 +17,6 @@
 
 #define CONTROL_COLOR [UIColor colorWithRed:114.0/255.0 green:132.0/255.0 blue:235.0/255.0 alpha:1.0]
 #define BACKGROUND_COLOR [UIColor colorWithRed:248.0/255.0 green:248.0/255.0 blue:248.0/255.0 alpha:1.0]
+#define DEFAULTCOLOR [UIColor colorWithRed:46.0/255.0 green:128.0/255.0 blue:255.0/255.0 alpha:1.0]
 
 #endif /* Header_h */

@@ -83,7 +83,11 @@
         self.loadingView.center = arrowCenter;
     }
     
-    self.arrowView.tintColor = self.stateLabel.textColor;
+    if (@available(iOS 7.0, *)) {
+        self.arrowView.tintColor = self.stateLabel.textColor;
+    } else {
+        // Fallback on earlier versions
+    }
 }
 
 - (void)setState:(MJRefreshState)state

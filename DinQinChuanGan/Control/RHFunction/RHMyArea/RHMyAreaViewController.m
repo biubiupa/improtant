@@ -8,6 +8,11 @@
 
 #import "RHMyAreaViewController.h"
 #import "Header.h"
+#import "MJRefresh.h"
+#import "PlaceModel.h"
+#import "AFNetworking.h"
+#import "RHAddAreaViewController.h"
+#import "RHAreaContentViewController.h"
 
 @interface RHMyAreaViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
@@ -17,6 +22,10 @@
 @property (nonatomic, copy) NSArray *list;
 @property (nonatomic, strong) UIButton *dropBtn;
 @property (nonatomic, strong) UITableViewCell *cell;
+@property (nonatomic, assign) NSInteger placeId;
+@property (nonatomic, copy) NSMutableArray *areaList;
+@property (nonatomic, copy) NSArray *arr;
+@property (nonatomic, assign) NSInteger areaId;
 
 
 
@@ -27,6 +36,8 @@
 static NSString *identifier=@"identifier";
 static NSString *ident=@"ident";
 
+
+
 //初始化视图
 
 
@@ -35,21 +46,41 @@ static NSString *ident=@"ident";
     [self layoutViews];
 
 }
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:YES];
+    NSUserDefaults *ud=[NSUserDefaults standardUserDefaults];
+    self.list=[ud objectForKey:@"at"];
+    [self listRequest];
+}
 
-
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:YES];
+    if (self.listView.frame.size.height > 0) {
+        [self pickUpAnimation];
+        self.status=!self.status;
+    }
+}
+#pragma mark - 界面布局
 //处理布局
 - (void)layoutViews {
     self.edgesForExtendedLayout=UIRectEdgeNone;
 //    点击第一次的初始状态
     self.status=YES;
-    self.list=@[@"zhangsan", @"lisi",@"wahaha"];
-//    self.view.backgroundColor=[UIColor purpleColor];
+    NSUserDefaults *ud=[NSUserDefaults standardUserDefaults];
+    NSArray *arr=[NSArray array];
+    arr=[ud objectForKey:@"at"];
+    NSString *title=[NSString stringWithFormat:@"%@",arr[0][@"placeName"]];
     UIButton *dropBtn=[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 200, 50)];
-    [dropBtn setTitle:@"我又来了" forState:UIControlStateNormal];
+    [dropBtn setTitle:title forState:UIControlStateNormal];
     [dropBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [dropBtn addTarget:self action:@selector(clickDropOrPick) forControlEvents:UIControlEventTouchUpInside];
     self.dropBtn=dropBtn;
     self.navigationItem.titleView=self.dropBtn;
+//    添加区域
+    UIBarButtonItem *rightBI=[[UIBarButtonItem alloc] initWithTitle:@"添加区域" style:UIBarButtonItemStylePlain target:self action:@selector(addAreaAction)];
+    UIBarButtonItem *backBI=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem=backBI;
+    self.navigationItem.rightBarButtonItem=rightBI;
     
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.markView];
@@ -57,12 +88,13 @@ static NSString *ident=@"ident";
 
 }
 
+
 #pragma mark - 实现tableview的代理和数据源
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (tableView == self.listView) {
         return 1;
     }else {
-        return 5;
+        return self.arr.count;
     }
     
 }
@@ -79,13 +111,13 @@ static NSString *ident=@"ident";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (tableView == self.listView) {
         UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:ident];
-        cell.textLabel.text=self.list[indexPath.row];
+        cell.textLabel.text=self.list[indexPath.row][@"placeName"];
         cell.backgroundColor=BACKGROUND_COLOR;
         
         return cell;
     } else {
         UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:identifier];
-        cell.textLabel.text=@"34567890-";
+        cell.textLabel.text=self.arr[indexPath.section][@"areaName"];
         cell.textLabel.textAlignment=NSTextAlignmentCenter;
         self.cell=cell;
         return self.cell;
@@ -93,14 +125,44 @@ static NSString *ident=@"ident";
     
 }
 
-//下拉列表点击事件
+#pragma mark - 点击事件
+//添加区域事件
+- (void)addAreaAction {
+    RHAddAreaViewController *areaVC=[RHAddAreaViewController new];
+    areaVC.placeId=self.placeId;
+    self.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:areaVC animated:YES];
+}
+
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    //下拉列表点击事件
     if (tableView == self.listView) {
-        [self.dropBtn setTitle:self.list[indexPath.row] forState:UIControlStateNormal];
+        [self.dropBtn setTitle:self.list[indexPath.row][@"placeName"] forState:UIControlStateNormal];
         [self pickUpAnimation];
         self.status=!self.status;
+        if (self.placeId) {
+            self.placeId=[self.list[indexPath.row][@"placeId"] integerValue];
+        }
+        [self listRequest];
     } else {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        RHAreaContentViewController *areaConVC=[RHAreaContentViewController new];
+        areaConVC.titleN=self.arr[indexPath.section][@"areaName"];
+        self.areaId=[self.arr[indexPath.section][@"areaId"] integerValue];
+        AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
+        [manager POST:MANAGE_API parameters:[self conParameter:self.areaId] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSDictionary *body=responseObject[@"body"];
+            areaConVC.areaName=[NSString stringWithFormat:@"%@",body[@"areaName"]];
+            areaConVC.ratio=[NSString stringWithFormat:@"%@",body[@"area"]];
+            areaConVC.equipName=[NSString stringWithFormat:@"%@",body[@"deviceNum"]];
+            areaConVC.areaId=[body[@"areaId"] integerValue];
+            areaConVC.placeId=self.placeId;
+            self.hidesBottomBarWhenPushed=YES;
+            [self.navigationController pushViewController:areaConVC animated:YES];
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"=====error:%@",error);
+        }];
         
     }
     
@@ -153,9 +215,30 @@ static NSString *ident=@"ident";
     
     self.status ? [self dropDownAnimation] : [self pickUpAnimation];
     self.status=!self.status;
+   
     
     [self.listView reloadData];
 }
+
+#pragma mark - 网络请求事件
+//首次进入请求区域列表
+- (void)listRequest {
+    if (!self.placeId) {
+        self.placeId=[self.list[0][@"placeId"] integerValue];
+    }
+    AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
+    [manager POST:MANAGE_API parameters:[self parameter:self.placeId] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSInteger st=[responseObject[@"head"][@"st"] integerValue];
+        if (st == 0) {
+            NSLog(@"%@",responseObject);
+            self.arr=responseObject[@"body"][@"list"];
+            [self.tableView reloadData];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"--error:%@",error);
+    }];
+}
+
 
 #pragma mark - 懒加载
 //下拉列表
@@ -190,11 +273,52 @@ static NSString *ident=@"ident";
     return _markView;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+//区域列表请求参数
+- (NSString *)parameter:(NSInteger) placeId{
+        NSDictionary *head=@{
+            @"aid": @"1and6uu",
+            @"ver": @"1.0",
+            @"ln": @"cn",
+            @"mod": @"ios",
+            @"de": @"2017-07-13 00:00:00",
+            @"sync": @"1",
+            @"uuid": @"188111",
+            @"cmd": @"30005",
+            @"chcode": @" ef19843298ae8f2134f "
+            };
+        NSDictionary *con=@{
+                            @"placeId": @(placeId),
+                            @"page": @1,
+                            @"pageSize": @6
+                            };
+        NSDictionary *dict=@{@"head":head, @"con":con};
+        NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *parameter=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
+    return parameter;
 }
 
+//区域详情请求参数
+- (NSString *)conParameter:(NSInteger)areaId {
+        NSDictionary *head=@{
+                             @"aid": @"1and6uu",
+                             @"ver": @"1.0",
+                             @"ln": @"cn",
+                             @"mod": @"ios",
+                             @"de": @"2011-07-13 00:00:00",
+                             @"sync": @1,
+                             @"uuid": @"188111",
+                             @"cmd": @30006,
+                             @"chcode": @" ef19843298ae8f2134f "
+                             };
+        NSDictionary *con=@{@"areaId": @(areaId)};
+        NSDictionary *dict=@{@"head":head, @"con":con};
+        NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
+    
+        NSString *parameter=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
+    return parameter;
+}
 
 
 @end

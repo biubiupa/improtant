@@ -11,17 +11,19 @@
 #import "Header.h"
 #import "AFNetworking.h"
 #import "RHPlaceMessageViewController.h"
+#import "PlaceModel.h"
 
 @interface RHMyPlaceViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UIBarButtonItem *rightBI;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, assign) NSInteger cellCount;
-@property (nonatomic, copy) NSString *parameter;
-@property (nonatomic, copy) NSString *userId;
-@property (nonatomic, copy) NSMutableArray *list;
 @property (nonatomic, assign) NSInteger st;
 @property (nonatomic, assign) NSInteger placeId;
 @property (nonatomic, copy) NSString *placeName;
+@property (nonatomic, copy) NSArray *placeArr;
+@property (nonatomic, copy) NSString *parameter;
+@property (nonatomic, copy) NSString *userId;
+@property (nonatomic, copy) NSMutableArray *list;
 
 
 @end
@@ -67,7 +69,7 @@ static NSString *identifier=@"identifier";
         cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     
-    self.placeName=[NSString stringWithFormat:@"%@",self.list[(_list.count-1)-indexPath.section][@"placeName"]];
+    self.placeName=[NSString stringWithFormat:@"%@",self.list[indexPath.section][@"placeName"]];
     cell.textLabel.text=self.placeName;
     cell.textLabel.textAlignment=NSTextAlignmentCenter;
     return cell;
@@ -76,9 +78,9 @@ static NSString *identifier=@"identifier";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     RHPlaceMessageViewController *pmVC=[RHPlaceMessageViewController new];
-    self.placeId=[self.list[(_list.count-1)-indexPath.section][@"placeId"] integerValue];
+    self.placeId=[self.list[indexPath.section][@"placeId"] integerValue];
     NSString *str=[NSString stringWithFormat:@"%@",self.list[(_list.count-1)-indexPath.section][@"placeName"]];
-    pmVC.title=str;
+    pmVC.titles=str;
 //请求场所详情
     NSString *urlString=MANAGE_API;
     NSDictionary *head=@{
@@ -124,10 +126,13 @@ static NSString *identifier=@"identifier";
 
 #pragma mark - 初始化
 
+
+
 - (NSString *)parameter {
     if (!_parameter) {
         NSUserDefaults *userDef=[NSUserDefaults standardUserDefaults];
         self.userId=[userDef stringForKey:@"userId"];
+        
         NSDictionary *head=@{
                          @"aid": @"1and6uu",
                          @"ver": @"1.0",
@@ -182,17 +187,23 @@ static NSString *identifier=@"identifier";
     AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
     
     [manager POST:MANAGE_API parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        NSString *st=[NSString stringWithFormat:@"%@",responseObject[@"head"][@"st"]];
-        self.st=[responseObject[@"head"][@"st"] integerValue];
-        if (self.st==0) {
-            self.list=responseObject[@"body"][@"list"];
-            [self.tableView reloadData];
-        }
-        
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"----ERROR:%@",error);
-    }];
+            NSString *st=[NSString stringWithFormat:@"%@",responseObject[@"head"][@"st"]];
+            self.st=[st integerValue];
+            if (self.st==0) {
+                self.list=responseObject[@"body"][@"list"];
+                //            存储
+                NSUserDefaults *userDefault=[NSUserDefaults standardUserDefaults];
+                [userDefault setObject:self.list forKey:@"at"];
+                [userDefault synchronize];
+                [self.tableView reloadData];
+            }
+            
+            
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"----ERROR:%@",error);
+        }];
+    
+    
 }
 
 

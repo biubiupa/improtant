@@ -24,7 +24,15 @@
 {
     static UIImage *arrowImage = nil;
     if (arrowImage == nil) {
-        arrowImage = [[UIImage imageWithContentsOfFile:[[self mj_refreshBundle] pathForResource:@"arrow@2x" ofType:@"png"]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        if (@available(iOS 7.0, *)) {
+            arrowImage = [[UIImage imageWithContentsOfFile:[[self mj_refreshBundle] pathForResource:@"arrow@2x" ofType:@"png"]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        } else {
+            // Fallback on earlier versions
+        }if (@available(iOS 7.0, *)) {
+            arrowImage = [[UIImage imageWithContentsOfFile:[[self mj_refreshBundle] pathForResource:@"arrow@2x" ofType:@"png"]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        } else {
+            // Fallback on earlier versions
+        }
     }
     return arrowImage;
 }

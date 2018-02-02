@@ -17,18 +17,27 @@
 @property (nonatomic, copy) NSArray *arrone;
 @property (nonatomic, copy) NSArray *arrtwo;
 @property (nonatomic, copy) NSArray *arrthree;
+@property (nonatomic, copy) NSString *account;
 @property (nonatomic, strong) UISwitch *noticeS;
 @property (nonatomic, strong) UISwitch *publicS;
+@property (nonatomic, strong) UILabel *accountLabel;
+@property (nonatomic, strong) UILabel *clearLabel;
 @end
 
 @implementation RHRightBarButtonItemViewController
 #pragma mark - viewDidLoad
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self layoutViews];
+}
+- (void)layoutViews {
     self.view.backgroundColor=[UIColor purpleColor];
     self.navigationItem.title=@"设置";
     [self.view addSubview:self.tableView];
+    NSUserDefaults *userd=[NSUserDefaults standardUserDefaults];
+    self.account=[userd objectForKey:@"account"];
 }
+
 #pragma mark - delegate/datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 3;
@@ -39,7 +48,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     cell.textLabel.text=self.array[indexPath.section][indexPath.row];
-    cell.selectionStyle=UITableViewCellSelectionStyleDefault;
     if (indexPath.section == 2) {
         cell.textLabel.textAlignment=NSTextAlignmentCenter;
     }
@@ -58,6 +66,23 @@
             make.centerY.equalTo(cell.contentView);
             make.right.equalTo(cell.contentView).with.offset(-15);
         }];
+    }
+    if (indexPath.row == 0) {
+        if (indexPath.section == 0) {
+            [cell.contentView addSubview:self.accountLabel];
+            [self.accountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.size.mas_equalTo(CGSizeMake(100, 15));
+                make.centerY.equalTo(cell.contentView);
+                make.right.equalTo(cell.contentView).with.offset(-15);
+            }];
+        }else if (indexPath.section == 1) {
+            [cell.contentView addSubview:self.clearLabel];
+            [self.clearLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.size.mas_equalTo (CGSizeMake(50, 15));
+                make.centerY.equalTo(cell.contentView);
+                make.right.equalTo(cell.contentView).with.offset(-15);
+            }];
+        }
     }
     return cell;
 }
@@ -139,6 +164,25 @@
         _publicS.onTintColor=CONTROL_COLOR;
     }
     return _publicS;
+}
+
+- (UILabel *)accountLabel {
+    if (!_accountLabel) {
+        _accountLabel=[[UILabel alloc] init];
+        _accountLabel.text=self.account;
+        _accountLabel.textColor=[UIColor grayColor];
+        _accountLabel.textAlignment=NSTextAlignmentRight;
+    }
+    return _accountLabel;
+}
+
+- (UILabel *)clearLabel  {
+    if (!_clearLabel) {
+        _clearLabel=[[UILabel alloc] init];
+        _clearLabel.textAlignment=NSTextAlignmentRight;
+        _clearLabel.backgroundColor=[UIColor grayColor];
+    }
+    return _clearLabel;
 }
 
 

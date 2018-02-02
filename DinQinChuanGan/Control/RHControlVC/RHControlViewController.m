@@ -23,12 +23,14 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *topView;
 @property (nonatomic, strong) UIView *backgroundView;
+@property (nonatomic, copy) NSString *userId;
 
 @property (nonatomic, assign) BOOL Hidden;
 @property (nonatomic, assign) BOOL lowHidden;
 @property (nonatomic, strong) ControlTableViewCell *cellTwo;
 @property (nonatomic, strong) RHMyAreaViewController *areaVC;
 @property (nonatomic, strong) RHMyPlaceViewController *placeVC;
+@property (nonatomic, strong) RHRightBarButtonItemViewController *setVC;
 
 @end
 
@@ -36,7 +38,6 @@
 #pragma mark - viewDidLoad
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self layoutViews];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeSignIn:) name:@"change" object:nil];
     
@@ -95,6 +96,8 @@
     self.numberLabel.hidden=YES;
     RHMyAreaViewController *areaVC=[RHMyAreaViewController new];
     RHMyPlaceViewController *placeVC=[RHMyPlaceViewController new];
+    RHRightBarButtonItemViewController *setVC=[RHRightBarButtonItemViewController new];
+    self.setVC=setVC;
     self.areaVC=areaVC;
     self.placeVC=placeVC;
 }
@@ -155,10 +158,11 @@
     [self wr_setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
+#pragma mark - 设置
 - (void)rightbtnAction {
     UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem=backItem;
-    [self.navigationController pushViewController:[RHRightBarButtonItemViewController new] animated:YES];
+    [self.navigationController pushViewController:self.setVC animated:YES];
 }
 #pragma mark - 设置头视图
 - (UITableView *)tableView {
@@ -287,9 +291,15 @@
     NSArray *arr=@[self.placeVC, self.areaVC];
     UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem=backItem;
-    self.hidesBottomBarWhenPushed=YES;
-    [self.navigationController pushViewController:arr[index] animated:YES];
-    self.hidesBottomBarWhenPushed=NO;
+    NSUserDefaults *userDef=[NSUserDefaults standardUserDefaults];
+    self.userId=[userDef stringForKey:@"userId"];
+    if (self.userId) {
+        self.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:arr[index] animated:YES];
+        self.hidesBottomBarWhenPushed=NO;
+    }else {
+        NSLog(@"请先登录！！！");
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"tiaozhuan" object:nil];
     
 }
