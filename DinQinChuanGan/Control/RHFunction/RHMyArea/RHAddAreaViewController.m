@@ -12,6 +12,9 @@
 #import "Header.h"
 #import "RHChoosePicViewController.h"
 
+#define UploadImageBoundary @"KhTmLbOuNdArY0001KhTmLbOuNdArY0001"
+
+
 @interface RHAddAreaViewController ()<UITextFieldDelegate>
 @property (nonatomic, strong) UILabel *areaNameL;
 @property (nonatomic, strong) UILabel *areaRatioL;
@@ -24,7 +27,11 @@
 @property (nonatomic, strong) UIImageView *photoIV;
 @property (nonatomic, strong) UIButton *chooseBtn;
 @property (nonatomic, copy) NSString *parameter;
-@property (nonatomic,strong) RHChoosePicViewController *chooseVC;
+@property (nonatomic, copy) NSString *surverPara;
+@property (nonatomic, strong) RHChoosePicViewController *chooseVC;
+@property (nonatomic, copy) NSDictionary *aparagrams;
+@property (nonatomic, copy) NSString *areaUrl;
+
 
 @end
 
@@ -44,8 +51,8 @@
     self.navigationItem.title=@"添加区域";
     UIBarButtonItem *barBI=[[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(saveRequest)];
     UIBarButtonItem *backBI=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
-    barBI.tintColor=[UIColor lightGrayColor];
-    barBI.enabled=NO;
+//    barBI.tintColor=[UIColor lightGrayColor];
+//    barBI.enabled=NO;
     self.rightBI=barBI;
     self.navigationItem.rightBarButtonItem=self.rightBI;
     self.navigationItem.backBarButtonItem=backBI;
@@ -121,18 +128,61 @@
 
 #pragma mark - chooseAction
 - (void)chooseAction {
+    __weak typeof(self) weakSelf=self;
+    self.chooseVC.block = ^(UIImage *image) {
+        weakSelf.imageView.image=image;
+    };
     [self.navigationController pushViewController:self.chooseVC animated:YES];
+    
+    
 }
 
+#pragma mark - 上传图片.保存上传
 - (void)saveRequest {
+//    避免照片名字重复，用时间辅助命名
+    NSDateFormatter *formatter=[[NSDateFormatter alloc] init];
+    formatter.dateFormat=@"yyyy-MMdd-HH:mm:ss";
+    NSString *str=[formatter stringFromDate:[NSDate date]];
+//    把照片转化为数据流
+    NSData *imageData=UIImageJPEGRepresentation(self.imageView.image, 1.0f);
+    NSString *fileName=[NSString stringWithFormat:@"%@.jpeg",str];
+    NSString *mimeType=@"image/jpg";
+    if (imageData==nil) {
+        imageData=UIImagePNGRepresentation(self.imageView.image);
+        fileName=[NSString stringWithFormat:@"%@.png",str];
+        mimeType=@"image/png";
+    }
+//    建立网络请求
     AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
-    [manager POST:MANAGE_API parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [self.navigationController popViewControllerAnimated:YES];
+    [manager POST:ASSETSERVER_API parameters:self.aparagrams constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        [formData appendPartWithFileData:imageData name:@"file" fileName:fileName mimeType:mimeType];
+    } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        NSLog(@"%@",responseObject);
+        NSDictionary *returnDict=responseObject;
+        NSInteger st=[returnDict[@"st"] integerValue];
+        if (st == 0) {
+            self.areaUrl=[NSString stringWithFormat:@"%@",returnDict[@"fileUrl"]];
+            [self uploadRequest];
+        }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"--error:%@",error);
+        NSLog(@"---error--:%@",error);
     }];
     
 }
+
+//保存上传
+- (void)uploadRequest {
+    AFHTTPSessionManager *manage=[AFHTTPSessionManager manager];
+    [manage POST:MANAGE_API parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSInteger st=[responseObject[@"head"][@"st"] integerValue];
+        if (st == 0) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"---error:%@",error);
+    }];
+}
+
 
 #pragma mark - 控件初始化
 - (UILabel *)areaNameL {
@@ -187,7 +237,13 @@
 
 - (UIImageView *)imageView {
     if (!_imageView) {
-        _imageView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bacimage.jpeg"]];
+        _imageView=[[UIImageView alloc] init];
+//        _imageView.image=[UIImage imageNamed:@"bacimage.jpeg"];
+//       防止图片变形，作保持比例可裁剪填充
+        _imageView.clipsToBounds=YES;
+        _imageView.contentMode=UIViewContentModeScaleAspectFill;
+
+
     }
     return _imageView;
 }
@@ -216,11 +272,25 @@
     }
     return _chooseBtn;
 }
+
+//图片上传参数
+- (NSDictionary *)aparagrams {
+    if (!_aparagrams) {
+        NSUserDefaults *user=[NSUserDefaults standardUserDefaults];
+        NSString *userId=[user objectForKey:@"userId"];
+        
+        NSDictionary *dict=@{@"userId": userId, @"fileType":@0, @"file":@""};
+        
+        _aparagrams=dict;
+
+    }
+    return _aparagrams;
+}
+
 - (NSString *)parameter {
     if (!_parameter) {
 //        图片转string后作为参数上传
-        NSData *imageData=UIImageJPEGRepresentation(self.imageView.image, 1.0f);
-        NSString *areaURL=[imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+        
         NSDictionary *head=@{
                              @"aid": @"1and6uu",
                              @"ver": @"1.0",
@@ -235,15 +305,15 @@
         NSDictionary *con=@{
                             @"placeId": @(self.placeId),
                             @"areaName": self.nameT.text,
-                            @"areaUrl": areaURL,
+                            @"areaPicture": self.areaUrl,
                             @"area": self.ratioT.text,
                             @"areaId": @0
                             };
 
-        
         NSDictionary *dict=@{@"head":head, @"con":con};
         NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
         _parameter=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"%@",_parameter);
     }
     return _parameter;
 }

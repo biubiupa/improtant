@@ -136,6 +136,7 @@
         [_bindBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _bindBtn.backgroundColor=[UIColor lightGrayColor];
         _bindBtn.enabled=NO;
+        [_bindBtn addTarget:self action:@selector(clickBtnAction) forControlEvents:UIControlEventTouchUpInside];
         
     }
     return _bindBtn;
@@ -160,13 +161,19 @@
 //  绑定点击事件
 - (void)clickBtnAction {
     [self.textField resignFirstResponder];
-    [self userInFor];
     AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
-    [manager POST:self.url parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"---%@",responseObject);
-        NSString *st=[[NSString alloc] initWithFormat:@"%@",responseObject[@"head"][@"st"]];
-        NSDictionary *dict=@{@"Hiden":@(1), @"account":self.account, @"corporationNum":self.corporationNum};
-        if ([st isEqualToString:@"0"]) {
+    [manager POST:USER_API parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"---%@",MSG);
+        NSDictionary *dict=@{@"Hiden":@(0), @"account":self.account, @"corporationNum":self.corporationNum};
+        if (STATUS == 0) {
+            NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
+            if (self.phoneNumber.length == 11) {
+                [userDefaults setObject:self.phoneNumber forKey:@"phone"];
+            }else {
+                [userDefaults setObject:self.phoneNumber forKey:@"mailbox"];
+            }
+            
+            [userDefaults synchronize];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"change" object:self userInfo:dict];
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
@@ -177,30 +184,34 @@
 }
 
 //      request参数设置
-- (void)userInFor {
-    NSString *toolnumber=self.phoneNumber;
-    NSString *verficationCode=self.textField.text;
-    NSDictionary *head=@{
-                         @"aid": @"1and6uu",
-                         @"ver": @"1.0",
-                         @"ln": @"cn",
-                         @"mod":@"ios",
-                         @"de": @"2017-11-14 00:00:00",
-                         @"sync":@"1",
-                         @"uuid":@"188111",
-                         @"cmd":@"10003",
-                         @"chcode": @" ef19843298ae8f2134f "
-                         };
-    NSDictionary *con=@{
-                        @"toolNumber":toolnumber,
-                        @"userId": @"100001",
-                        @"toolType":@"1",
-                        @"verficationCode":verficationCode
-                        };
-    NSDictionary *dictJson=@{@"head":head, @"con":con};
-    NSData *data=[NSJSONSerialization dataWithJSONObject:dictJson options:NSJSONWritingPrettyPrinted error:nil];
-    self.parameter=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    self.url=USER_API;
+- (NSString *)parameter {
+    if (!_parameter) {
+        NSUserDefaults *userd=[NSUserDefaults standardUserDefaults];
+        NSString *userId=[userd stringForKey:@"userId"];
+        NSString *toolnumber=self.phoneNumber;
+        NSString *verficationCode=self.textField.text;
+        NSDictionary *head=@{
+                             @"aid": @"1and6uu",
+                             @"ver": @"1.0",
+                             @"ln": @"cn",
+                             @"mod":@"ios",
+                             @"de": @"2017-11-14 00:00:00",
+                             @"sync":@"1",
+                             @"uuid":@"188111",
+                             @"cmd":@"10003",
+                             @"chcode": @" ef19843298ae8f2134f "
+                             };
+        NSDictionary *con=@{
+                            @"toolNumber":toolnumber,
+                            @"userId":userId,
+                            @"toolType":@1,
+                            @"verficationCode":verficationCode
+                            };
+        NSDictionary *dictJson=@{@"head":head, @"con":con};
+        NSData *data=[NSJSONSerialization dataWithJSONObject:dictJson options:NSJSONWritingPrettyPrinted error:nil];
+        _parameter=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    }
+    return _parameter;
 }
 
 //    代理设置按钮响应状态

@@ -14,6 +14,7 @@
 
 
 
+
 @interface RHBindAccViewController ()
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UIButton *nextBtn;
@@ -30,6 +31,8 @@
 
 #pragma mark - layoutSubviews
 - (void)layoutViews {
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem=backItem;
     self.view.backgroundColor=BACKGROUND_COLOR;
     self.navigationItem.title=@"账号绑定";
     self.edgesForExtendedLayout=UIRectEdgeNone;
@@ -90,22 +93,16 @@
         NSString *urlString=USER_API;
         AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
         [manager POST:urlString parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:nil action:nil];
-            self.navigationItem.backBarButtonItem=backItem;
-            RHProveViewController *proVC=[RHProveViewController new];
-            proVC.phoneNumber=self.textField.text;
-            proVC.account=self.account;
-            proVC.corporationNum=self.corporationNum;
-            [self.navigationController pushViewController:proVC animated:YES];
-            /*
-            if ([st isEqualToString:@"0"]) {
+            if (STATUS == 0) {
                 RHProveViewController *proVC=[RHProveViewController new];
                 proVC.phoneNumber=self.textField.text;
+                proVC.account=self.account;
+                proVC.corporationNum=self.corporationNum;
                 [self.navigationController pushViewController:proVC animated:YES];
             }else {
                 [self presentViewController:self.alertCon animated:YES completion:nil];
             }
-             */
+            
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             NSLog(@"---ERROR:%@",error);
         }];
@@ -117,6 +114,8 @@
 }
 //参数设置
 - (void)setUserInFo {
+    NSUserDefaults *userd=[NSUserDefaults standardUserDefaults];
+    NSString *userId=[userd stringForKey:@"userId"];
     NSString *phoneNumber=self.textField.text;
     NSDictionary *head=@{
                          @"aid": @"1and6uu",
@@ -132,7 +131,7 @@
     NSDictionary *con=@{
                         @"toolNumber": phoneNumber,
                         @"toolType": @"1",
-                        @"userId": @"100001",
+                        @"userId": userId,
                         @"userType":@"0"
                         };
     NSDictionary *dictJson=@{@"head":head, @"con":con};

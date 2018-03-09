@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+typedef void (^myBlock)(UIImage *image);
 
 @interface RHChoosePicViewController : UIViewController
+@property (nonatomic, copy)myBlock block;
 
 @end

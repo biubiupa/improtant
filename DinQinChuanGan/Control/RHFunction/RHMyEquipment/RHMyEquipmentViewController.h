@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface RHMyEquipmentViewController : UIViewController
+@property (nonatomic, copy) NSArray *listArr;
 
 @end

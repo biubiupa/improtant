@@ -9,6 +9,7 @@
 #import "RHControlViewController.h"
 #import "Header.h"
 #import "Masonry.h"
+#import "AFNetworking.h"
 #import "WRNavigationBar.h"
 #import "WRCustomNavigationBar.h"
 #import "ControlTableViewCell.h"
@@ -16,6 +17,7 @@
 #import "RHSignInViewController.h"
 #import "RHMyPlaceViewController.h"
 #import "RHMyAreaViewController.h"
+#import "RHMyEquipmentViewController.h"
 
 #define CONTROL_COLOR [UIColor colorWithRed:114.0/255.0 green:132.0/255.0 blue:235.0/255.0 alpha:1.0]
 
@@ -31,6 +33,9 @@
 @property (nonatomic, strong) RHMyAreaViewController *areaVC;
 @property (nonatomic, strong) RHMyPlaceViewController *placeVC;
 @property (nonatomic, strong) RHRightBarButtonItemViewController *setVC;
+@property (nonatomic, strong) RHMyEquipmentViewController *equipmentVC;
+@property (nonatomic, copy) NSString *paraPlace;
+@property (nonatomic, copy) NSArray *arr;
 
 @end
 
@@ -40,13 +45,13 @@
     [super viewDidLoad];
     [self layoutViews];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeSignIn:) name:@"change" object:nil];
-    
 }
 //处理布局
 - (void)layoutViews {
+    
     self.view.backgroundColor=[UIColor whiteColor];
     [self.view addSubview:self.tableView];
-    [self.view addSubview:self.topView];
+//    [self.view addSubview:self.topView];
     [self.topView addSubview:self.backgroundView];
     
     self.tableView.tableHeaderView=self.topView;
@@ -60,7 +65,7 @@
         make.centerX.equalTo(self.backgroundView);
     }];
     [self.backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.topView).with.insets(UIEdgeInsetsMake([self navHeight]+12, 12, 0, 12));
+        make.edges.equalTo(self.topView).with.insets(UIEdgeInsetsMake(12, 12, 0, 12));
     }];
     //    帐号
     [self.backgroundView addSubview:self.accountLabel];
@@ -97,6 +102,7 @@
     RHMyAreaViewController *areaVC=[RHMyAreaViewController new];
     RHMyPlaceViewController *placeVC=[RHMyPlaceViewController new];
     RHRightBarButtonItemViewController *setVC=[RHRightBarButtonItemViewController new];
+    self.equipmentVC=[RHMyEquipmentViewController new];
     self.setVC=setVC;
     self.areaVC=areaVC;
     self.placeVC=placeVC;
@@ -126,22 +132,6 @@
     return 450.0;
 }
 
-- (int)navBarBottom {
-    if ([WRNavigationBar isIphoneX]) {
-        return 88;
-    }else {
-        return 64;
-    }
-    
-}
-
-- (CGFloat)navHeight {
-    if ([WRNavigationBar isIphoneX]) {
-        return 88.0;
-    }else {
-        return 64.0;
-    }
-}
 //设置导航栏属性
 #pragma mark - 导航栏属性
 - (void)setNavigationBar {
@@ -164,6 +154,90 @@
     self.navigationItem.backBarButtonItem=backItem;
     [self.navigationController pushViewController:self.setVC animated:YES];
 }
+
+#pragma mark -点击事件
+ //button点击事件
+- (void)signInAcction {
+    RHSignInViewController *rhVC=[RHSignInViewController new];
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem=backItem;
+    self.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:rhVC animated:YES];
+    self.hidesBottomBarWhenPushed=NO;
+}
+//接收通知后的处理事件
+- (void)changeSignIn:(NSNotification *)notification {
+    NSDictionary *dict=notification.userInfo;
+    BOOL hiden=[dict[@"Hiden"] boolValue];
+    NSString *account=dict[@"account"];
+    NSString *corporationNum=dict[@"corporationNum"];
+    self.signInLabel.hidden=!hiden;
+    self.signInBtn.hidden=!hiden;
+    self.iconView.hidden=hiden;
+    self.accountLabel.hidden=hiden;
+    self.numberLabel.hidden=hiden;
+    self.accountLabel.text=[NSString stringWithFormat:@"帐号%@",account];
+    self.numberLabel.text=[NSString stringWithFormat:@"企业编号%@",corporationNum];
+}
+//    跳转
+- (void)tiaozhuan:(NSNotification *)notification {
+    NSDictionary *dict=notification.userInfo;
+    int index=[dict[@"index"] intValue];
+    self.arr=@[self.placeVC, self.areaVC, self.equipmentVC];
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem=backItem;
+    NSUserDefaults *userDef=[NSUserDefaults standardUserDefaults];
+    self.userId=[userDef stringForKey:@"userId"];
+    if (self.userId) {
+        if (index == 2) {
+            [self placeRequest];
+        }else {
+            self.hidesBottomBarWhenPushed=YES;
+            [self.navigationController pushViewController:self.arr[index] animated:YES];
+            self.hidesBottomBarWhenPushed=NO;
+        }
+    }else {
+        NSLog(@"请先登录！！！");
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"tiaozhuan" object:nil];
+    
+}
+
+#pragma mark - 请求场所列表
+//场所请求参数
+- (NSString *)paraPlace {
+    if (!_paraPlace) {
+        NSDictionary *head=@{
+                             @"aid": @"1and6uu",
+                             @"ver": @"1.0",
+                             @"ln": @"cn",
+                             @"mod": @"ios",
+                             @"de": @"2017-07-13 00:00:00",
+                             @"sync": @1,
+                             @"uuid": @"188111",
+                             @"cmd": @30003,
+                             @"chcode": @" ef19843298ae8f2134f "
+                             };
+        NSDictionary *con=@{@"userId": self.userId};
+        NSDictionary *dict=@{@"head":head, @"con":con};
+        NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
+        _paraPlace=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    }
+    return _paraPlace;
+}
+- (void)placeRequest {
+    AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
+    [manager POST:MANAGE_API parameters:self.paraPlace progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSArray *listArr=responseObject[@"body"][@"list"];
+        self.equipmentVC.listArr=listArr;
+        self.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:self.arr[2] animated:YES];
+        self.hidesBottomBarWhenPushed=NO;
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"Error:----%@",error);
+    }];
+}
+
 #pragma mark - 设置头视图
 - (UITableView *)tableView {
     if (!_tableView) {
@@ -173,15 +247,14 @@
         _tableView.dataSource=self;
         _tableView.estimatedRowHeight=44;
         _tableView.rowHeight=UITableViewAutomaticDimension;
-        _tableView.contentInset=UIEdgeInsetsMake(-[self navBarBottom], 0, 0, 0);
     }
     return _tableView;
 }
 
 - (UIView *)topView {
     if (!_topView) {
-//        _topView=[[UIView alloc] init];
-        _topView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 247)];
+        //        _topView=[[UIView alloc] init];
+        _topView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 184)];
         _topView.backgroundColor=BACKGROUND_COLOR;
     }
     return _topView;
@@ -190,7 +263,7 @@
 - (UIView *)backgroundView {
     if (!_backgroundView) {
         _backgroundView=[[UIView alloc] init];
-//        _backgroundView.bounds=CGRectMake(0, 0, self.view.frame.size.width-24, 172);
+        //        _backgroundView.bounds=CGRectMake(0, 0, self.view.frame.size.width-24, 172);
         _backgroundView.backgroundColor=[UIColor whiteColor];
     }
     return _backgroundView;
@@ -248,60 +321,6 @@
         
     }
     return _signInBtn;
-}
-//button点击事件
-- (void)signInAcction {
-    
-
-    RHSignInViewController *rhVC=[RHSignInViewController new];
-    __weak typeof(self) weakSelf=self;
-    rhVC.callbackBlock = ^(BOOL hiden, NSString *accText, NSString *corporationNum) {
-        weakSelf.signInLabel.hidden=!hiden;
-        weakSelf.signInBtn.hidden=!hiden;
-        weakSelf.iconView.hidden=hiden;
-        weakSelf.accountLabel.hidden=hiden;
-        weakSelf.numberLabel.hidden=hiden;
-        weakSelf.accountLabel.text=[NSString stringWithFormat:@"帐号%@",accText];
-        weakSelf.numberLabel.text=[NSString stringWithFormat:@"企业编号%@",corporationNum];
-    };
-    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem=backItem;
-    self.hidesBottomBarWhenPushed=YES;
-    [self.navigationController pushViewController:rhVC animated:YES];
-    self.hidesBottomBarWhenPushed=NO;
-}
-//接收通知后的处理事件
-- (void)changeSignIn:(NSNotification *)notification {
-    NSDictionary *dict=notification.userInfo;
-    BOOL hiden=dict[@"Hiden"];
-    NSString *account=dict[@"account"];
-    NSString *corporationNum=dict[@"corporationNum"];
-    self.signInLabel.hidden=!hiden;
-    self.signInBtn.hidden=!hiden;
-    self.iconView.hidden=hiden;
-    self.accountLabel.hidden=hiden;
-    self.numberLabel.hidden=hiden;
-    self.accountLabel.text=[NSString stringWithFormat:@"帐号%@",account];
-    self.numberLabel.text=[NSString stringWithFormat:@"企业编号%@",corporationNum];
-}
-//    跳转
-- (void)tiaozhuan:(NSNotification *)notification {
-    NSDictionary *dict=notification.userInfo;
-    int index=[dict[@"index"] intValue];
-    NSArray *arr=@[self.placeVC, self.areaVC];
-    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem=backItem;
-    NSUserDefaults *userDef=[NSUserDefaults standardUserDefaults];
-    self.userId=[userDef stringForKey:@"userId"];
-    if (self.userId) {
-        self.hidesBottomBarWhenPushed=YES;
-        [self.navigationController pushViewController:arr[index] animated:YES];
-        self.hidesBottomBarWhenPushed=NO;
-    }else {
-        NSLog(@"请先登录！！！");
-    }
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"tiaozhuan" object:nil];
-    
 }
 
 

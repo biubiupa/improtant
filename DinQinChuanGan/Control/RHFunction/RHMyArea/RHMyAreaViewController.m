@@ -152,12 +152,17 @@ static NSString *ident=@"ident";
         self.areaId=[self.arr[indexPath.section][@"areaId"] integerValue];
         AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
         [manager POST:MANAGE_API parameters:[self conParameter:self.areaId] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSLog(@"%@",responseObject);
             NSDictionary *body=responseObject[@"body"];
             areaConVC.areaName=[NSString stringWithFormat:@"%@",body[@"areaName"]];
             areaConVC.ratio=[NSString stringWithFormat:@"%@",body[@"area"]];
             areaConVC.equipName=[NSString stringWithFormat:@"%@",body[@"deviceNum"]];
             areaConVC.areaId=[body[@"areaId"] integerValue];
             areaConVC.placeId=self.placeId;
+            NSString *str=[NSString stringWithFormat:@"%@",body[@"areaPicture"]];
+            if (str) {
+                 areaConVC.imgUrl=[NSURL URLWithString:str];
+            }
             self.hidesBottomBarWhenPushed=YES;
             [self.navigationController pushViewController:areaConVC animated:YES];
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -230,7 +235,7 @@ static NSString *ident=@"ident";
     [manager POST:MANAGE_API parameters:[self parameter:self.placeId] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSInteger st=[responseObject[@"head"][@"st"] integerValue];
         if (st == 0) {
-            NSLog(@"%@",responseObject);
+//            NSLog(@"%@",responseObject);
             self.arr=responseObject[@"body"][@"list"];
             [self.tableView reloadData];
         }

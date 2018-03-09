@@ -79,7 +79,7 @@ static NSString *identifier=@"identifier";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     RHPlaceMessageViewController *pmVC=[RHPlaceMessageViewController new];
     self.placeId=[self.list[indexPath.section][@"placeId"] integerValue];
-    NSString *str=[NSString stringWithFormat:@"%@",self.list[(_list.count-1)-indexPath.section][@"placeName"]];
+    NSString *str=[NSString stringWithFormat:@"%@",self.list[indexPath.section][@"placeName"]];
     pmVC.titles=str;
 //请求场所详情
     NSString *urlString=MANAGE_API;

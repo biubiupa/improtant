@@ -15,5 +15,6 @@
 @property (nonatomic, copy) NSString *equipName;
 @property (nonatomic, assign) NSInteger areaId;
 @property (nonatomic, assign) NSInteger placeId;
+@property (nonatomic, strong) NSURL *imgUrl;
 
 @end

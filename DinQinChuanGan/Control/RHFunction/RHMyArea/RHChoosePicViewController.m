@@ -9,8 +9,10 @@
 #import "RHChoosePicViewController.h"
 #import "Header.h"
 #import "RHDfaultImageViewController.h"
+#import "RHAddAreaViewController.h"
 
-@interface RHChoosePicViewController ()<UITableViewDelegate, UITableViewDataSource>
+
+@interface RHChoosePicViewController ()<UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, copy) NSArray *arr;
 
@@ -31,6 +33,7 @@
     [self.view addSubview:self.tableView];
     UIBarButtonItem *backBBI=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem=backBBI;
+
     
 }
 
@@ -56,12 +59,60 @@
 #pragma mark - didSelectRow
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row == 0) {
+    UIImagePickerController *imagePC=[[UIImagePickerController alloc] init];
+    imagePC.delegate=self;
+    imagePC.allowsEditing=YES;
+
+    if (indexPath.row == 2) {
+        imagePC.sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
+        [self presentViewController:imagePC animated:YES completion:nil];
+    }else if (indexPath.row == 1) {
+        if ([self isFrantCameraAvailable] || [self isRearCameraAvailable]) {
+            imagePC.sourceType=UIImagePickerControllerSourceTypeCamera;
+            imagePC.showsCameraControls=YES;
+//            imagePC.cameraDevice=UIImagePickerControllerCameraDeviceFront;
+            [self presentViewController:imagePC animated:YES completion:nil];
+            
+        }else {
+            NSLog(@"没有摄像头可用！");
+        }
+    }else {
         RHDfaultImageViewController *defaultVC=[RHDfaultImageViewController new];
         [self.navigationController pushViewController:defaultVC animated:YES];
     }
 }
+//判断相机是否可用
+- (BOOL)isFrantCameraAvailable {
+    return [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront];
+}
+- (BOOL)isRearCameraAvailable {
+    return [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear];
+}
+//选取照片代理
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:nil];
+//    [self.navigationController popViewControllerAnimated:YES];
+    
+}
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    UIImage *image=[info objectForKey:UIImagePickerControllerEditedImage];
+    UIImage *original=[info objectForKey:UIImagePickerControllerOriginalImage];
+    self.block(image);
+    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        UIImageWriteToSavedPhotosAlbum(original, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+    }
 
+    
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
+    if (error == nil) {
+        NSLog(@"成功保存图片");
+    }
+    else{
+        ///图片未能保存到本地
+    }
+}
 #pragma mark - 控件初始化
 - (UITableView *)tableView {
     if (!_tableView) {

@@ -10,6 +10,8 @@
 #import "Masonry.h"
 #import "Header.h"
 #import "RHAmendPassWViewController.h"
+#import "RHAccountBDViewController.h"
+#import "UIImageView+WebCache.m"
 
 @interface RHRightBarButtonItemViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
@@ -29,16 +31,37 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self layoutViews];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+//    计算缓存大小
+    NSUInteger size=[[SDImageCache sharedImageCache] getSize];
+    CGFloat MBcache=size/1024/1024;
+    self.clearLabel.text=[NSString stringWithFormat:@"%.1lfM",MBcache];
+
 }
 - (void)layoutViews {
     self.view.backgroundColor=[UIColor purpleColor];
     self.navigationItem.title=@"设置";
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem=backItem;
     [self.view addSubview:self.tableView];
     NSUserDefaults *userd=[NSUserDefaults standardUserDefaults];
     self.account=[userd objectForKey:@"account"];
 }
 
 #pragma mark - delegate/datasource
+//    section之间的间距(组成：section的头视图高度和尾视图高度)
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 12;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 3;
 }
@@ -77,37 +100,67 @@
             }];
         }else if (indexPath.section == 1) {
             [cell.contentView addSubview:self.clearLabel];
+            cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
             [self.clearLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.size.mas_equalTo (CGSizeMake(50, 15));
                 make.centerY.equalTo(cell.contentView);
-                make.right.equalTo(cell.contentView).with.offset(-15);
+                make.right.equalTo(cell.contentView).with.offset(0);
             }];
         }
     }
     return cell;
 }
 
+#pragma mark - 事件处理
 //    处理点击事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
 //    点击cell时取消选中状态
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.section == 0 && indexPath.row == 1) {
-        RHAmendPassWViewController *amendVC=[RHAmendPassWViewController new];
-        UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:nil action:nil];
-        self.navigationItem.backBarButtonItem=backItem;
-        [self.navigationController pushViewController:amendVC animated:YES];
+    if (indexPath.section == 0) {
+        if (indexPath.row == 1) {
+            RHAmendPassWViewController *amendVC=[RHAmendPassWViewController new];
+            [self.navigationController pushViewController:amendVC animated:YES];
+        }else if (indexPath.row == 2) {
+            [self.navigationController pushViewController:[RHAccountBDViewController new] animated:YES];
+        }
+    }else if (indexPath.section == 1) {
+//        清除缓存
+        if (indexPath.row == 0) {
+            [self clearCache];
+        }else if (indexPath.row == 1) {
+            [self changeLangue];
+        }
     }
     
 }
-//    section之间的间距(组成：section的头视图高度和尾视图高度)
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 12;
+
+//清除缓存事件
+- (void)clearCache {
+    UIAlertController *alertCon=[UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertCon addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[SDImageCache sharedImageCache] clearDiskOnCompletion:nil];
+        self.clearLabel.text=@"0M";
+    }]];
+    [alertCon addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alertCon animated:YES completion:nil];
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 0;
+
+//切换语言
+- (void)changeLangue {
+    UIAlertController *alertCon=[UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertCon addAction:[UIAlertAction actionWithTitle:@"中文" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }]];
+    [alertCon addAction:[UIAlertAction actionWithTitle:@"英文" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }]];
+    [alertCon addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alertCon animated:YES completion:nil];
 }
+
+
 
 #pragma mark - lazyLoad
 - (UITableView *)tableView {
@@ -180,7 +233,7 @@
     if (!_clearLabel) {
         _clearLabel=[[UILabel alloc] init];
         _clearLabel.textAlignment=NSTextAlignmentRight;
-        _clearLabel.backgroundColor=[UIColor grayColor];
+        
     }
     return _clearLabel;
 }

@@ -12,6 +12,7 @@
 #import "Masonry.h"
 #import "AFNetworking.h"
 #import "RHBindAccViewController.h"
+#import "RHForgotPWViewController.h"
 
 
 @interface RHSignInViewController ()<UITextFieldDelegate>
@@ -40,6 +41,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.Hiden=NO;
+    
     self.view.backgroundColor=[UIColor whiteColor];
 //    调布局方法
     [self layoutSubivews];
@@ -48,6 +50,8 @@
 
 #pragma mark - 布局
 - (void)layoutSubivews {
+    UIBarButtonItem *backBBI=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem=backBBI;
     
 //    添加logo及其布局
     
@@ -205,11 +209,17 @@
         [title addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:NSMakeRange(0, 5)];
         [title addAttribute:NSUnderlineStyleAttributeName value:@(1) range:NSMakeRange(0, 5)];
         [_forgotBtn setAttributedTitle:title forState:UIControlStateNormal];
+        [_forgotBtn addTarget:self action:@selector(forgotAction) forControlEvents:UIControlEventTouchUpInside];
     }
     return _forgotBtn;
 }
 
+#pragma mark - 登录及其处理事件
 //登录及其处理事件
+- (void)forgotAction {
+    [self.navigationController pushViewController:[RHForgotPWViewController new] animated:YES];
+}
+
 - (UIButton *)signInBtn {
     if (!_signInBtn) {
         _signInBtn=[UIButton buttonWithType:UIButtonTypeSystem];
@@ -222,35 +232,30 @@
     }
     return _signInBtn;
 }
+
+#pragma mark - 登录（可返回userId、phone、email）
 - (void)signAcction {
     AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
     [manager POST:USER_API parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"请求成功-------%@",responseObject);
         self.responseDict=responseObject;
-        self.st=[NSString stringWithFormat:@"%@",self.responseDict[@"head"][@"st"]];
 //        登录成功
-        if ([self.st isEqualToString:@"0"]) {
+        if (STATUS == 0) {
             self.phone=[NSString stringWithFormat:@"%@",responseObject[@"body"][@"phone"]];
             self.userId=[NSString stringWithFormat:@"%@",responseObject[@"body"][@"userId"]];
+            NSString *email=[NSString stringWithFormat:@"%@",responseObject[@"body"][@"mailbox"]];
 //            把常用的userid保存到本地
             NSUserDefaults *userDefault=[NSUserDefaults standardUserDefaults];
             [userDefault setObject:self.userId forKey:@"userId"];
             [userDefault setObject:self.account.text forKey:@"account"];
+            [userDefault setObject:email forKey:@"mailbox"];
+            [userDefault setObject:self.phone forKey:@"phone"];
             [userDefault synchronize];
 //            请求用户信息
             [self userMessageRequest];
 
         }else {
-            /*
-            NSLog(@"请重新输入密码！");
-//            自定义返回按钮，即A控制器push到b控制器时，返回按钮是需要在A控制器push之前自定义的
-            UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:nil action:nil];
-            self.navigationItem.backBarButtonItem=backItem;
-            NSString *acc=@"account";
-            RHBindAccViewController *bindVC=[RHBindAccViewController new];
-            bindVC.account=acc;
-            [self.navigationController pushViewController:bindVC animated:YES];
-             */
+            
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -290,8 +295,7 @@
     
     AFHTTPSessionManager *managerUser=[AFHTTPSessionManager manager];
     [managerUser POST:USER_API parameters:self.userParameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSString *st=[NSString stringWithFormat:@"%@",responseObject[@"head"][@"st"]];
-        if ([st isEqualToString:@"0"]) {
+        if (STATUS == 0) {
             self.corporationNum=[NSString stringWithFormat:@"%@",responseObject[@"body"][@"corporationNum"]];
             //            判断是否已绑定手机
             if ([self.phone isEqualToString:@""]) {
@@ -303,8 +307,11 @@
                 [self.navigationController pushViewController:bindVC animated:YES];
             }else {
                 //        block逆向传值
-                self.callbackBlock(self.Hiden, self.account.text, self.corporationNum);
-                [self.navigationController popViewControllerAnimated:YES];
+                NSDictionary *dict=@{@"Hiden":@(0), @"account":self.account.text, @"corporationNum":self.corporationNum};
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"change" object:self userInfo:dict];
+                
+//                self.callbackBlock(self.Hiden, self.account.text, self.corporationNum);
+                [self.navigationController popToRootViewControllerAnimated:YES];
             }
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

@@ -11,6 +11,7 @@
 #import "Masonry.h"
 #import "AFNetworking.h"
 #import "RHChoosePicViewController.h"
+#import "UIImageView+WebCache.m"
 
 @interface RHAreaContentViewController ()<UIScrollViewDelegate,UITextFieldDelegate>
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -29,6 +30,8 @@
 @property (nonatomic, copy) NSString *parameter;
 @property (nonatomic, copy) NSString *doneParameter;
 @property (nonatomic, strong) UIBarButtonItem *rightBI;
+@property (nonatomic, copy) NSDictionary *surverPara;
+@property (nonatomic, copy) NSString *areauUrl;
 
 @end
 
@@ -148,7 +151,14 @@
 #pragma mark - 更换背景/移动区域/删除区域/编辑保存
 //更换背景
 - (void)changeBacImage {
-    [self.navigationController pushViewController:[RHChoosePicViewController new] animated:YES];
+    __weak typeof(self) weakSelf=self;
+    RHChoosePicViewController *chooseVC=[RHChoosePicViewController new];
+    chooseVC.block = ^(UIImage *image) {
+        weakSelf.imageView.image=image;
+    };
+    self.rightBI.tintColor=DEFAULTCOLOR;
+    self.rightBI.enabled=YES;
+    [self.navigationController pushViewController:chooseVC animated:YES];
 }
 
 //移动区域
@@ -174,6 +184,7 @@
     [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
     [self presentViewController:alertController animated:YES completion:nil];
 }
+//删除区域事件
 - (void)httpRequest {
     AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
     [manager POST:MANAGE_API parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -188,14 +199,41 @@
 - (void)upload {
     AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
     [manager POST:MANAGE_API parameters:self.doneParameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"%@",responseObject);
+//        NSLog(@"%@",responseObject);
         NSInteger st=[responseObject[@"head"][@"st"] integerValue];
         if (st == 0) {
             [self.navigationController popViewControllerAnimated:YES];
         }
-        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"===error:%@",error);
+    }];
+}
+//上传图片至资源服务器
+- (void)surverRequest {
+    NSDateFormatter *formatter=[[NSDateFormatter alloc] init];
+    formatter.dateFormat=@"yyyyMMddHHmmSS";
+    NSString *str=[formatter stringFromDate:[NSDate date]];
+    NSData *imageData=UIImageJPEGRepresentation(self.imageView.image, 1.0f);
+    NSString *fileName=[NSString stringWithFormat:@"%@.jpeg",str];
+    NSString *mineType=@"image/jpg";
+    if (imageData == nil) {
+        imageData=UIImagePNGRepresentation(self.imageView.image);
+        fileName=[NSString stringWithFormat:@"%@.png",str];
+        mineType=@"image/png";
+    }
+    
+    AFHTTPSessionManager *mange=[AFHTTPSessionManager manager];
+    [mange POST:ASSETSERVER_API parameters:self.surverPara constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        [formData appendPartWithFileData:imageData name:@"file" fileName:fileName mimeType:mineType];
+    } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        NSLog(@"%@",responseObject);
+        NSInteger st=[responseObject[@"status"] integerValue];
+        if (st == 0) {
+            self.areauUrl=[NSString stringWithFormat:@"%@",responseObject[@"fileUrl"]];
+            [self upload];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"error:%@",error);
     }];
 }
 
@@ -289,7 +327,12 @@
 
 - (UIImageView *)imageView {
     if (!_imageView) {
-        _imageView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"one.jpeg"]];
+        _imageView=[[UIImageView alloc] init];
+        _imageView.clipsToBounds=YES;
+        _imageView.contentMode=UIViewContentModeScaleAspectFill;
+        if (self.imgUrl) {
+            [_imageView sd_setImageWithURL:self.imgUrl];
+        }
     }
     return _imageView;
 }
@@ -339,14 +382,14 @@
 //右BI
 - (UIBarButtonItem *)rightBI {
     if (!_rightBI) {
-        _rightBI=[[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(upload)];
+        _rightBI=[[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(surverRequest)];
         _rightBI.enabled=NO;
         _rightBI.tintColor=[UIColor lightGrayColor];
     }
     return _rightBI;
 }
 
-//请求参数
+//删除区域参数
 - (NSString *)parameter {
     if (!_parameter) {
         NSDictionary *head=@{
@@ -371,8 +414,6 @@
 //修改区域参数
 - (NSString *)doneParameter {
     if (!_doneParameter) {
-        NSData *imageData=UIImageJPEGRepresentation(self.imageView.image, 1.0f);
-        NSString *areaURL=[imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
         NSDictionary *head=@{
                              @"aid": @"1and6uu",
                              @"ver": @"1.0",
@@ -387,7 +428,7 @@
         NSDictionary *con=@{
                             @"placeId": @(self.placeId),
                             @"areaName": self.areaTF.text,
-                            @"areaUrl": areaURL,
+                            @"areaPicture": self.areauUrl,
                             @"area": self.ratioTF.text,
                             @"areaId": @(self.areaId)
                             };
@@ -397,6 +438,19 @@
     }
     return _doneParameter;
 }
+
+//上传图片参数(至资源服务器)
+- (NSDictionary *)surverPara {
+    if (!_surverPara) {
+        NSUserDefaults *user=[NSUserDefaults standardUserDefaults];
+        NSString *userId=[user objectForKey:@"userId"];
+        
+        _surverPara=@{@"userId": userId, @"fileType":@0, @"file":@""};
+    }
+    return _surverPara;
+}
+
+
 
 
 
