@@ -11,7 +11,7 @@
 #import "Header.h"
 #import "AFNetworking.h"
 #import "RHProveViewController.h"
-
+#import "RHJudgeMethod.h"
 
 
 
@@ -57,7 +57,7 @@
 - (UITextField *)textField {
     if (!_textField) {
         _textField=[[UITextField alloc] init];
-        _textField.placeholder=@"绑定手机";
+        _textField.placeholder=@"绑定手机/邮箱";
         _textField.backgroundColor=[UIColor whiteColor];
         _textField.textAlignment=NSTextAlignmentCenter;
         _textField.clearButtonMode=UITextFieldViewModeWhileEditing;
@@ -88,13 +88,22 @@
 }
 //获取验证码事件
 - (void)netRequestAction {
-    if (self.textField.text.length==11) {
-        [self setUserInFo];
-        NSString *urlString=USER_API;
+//        判定手机号和邮箱是否合法，以及区分
+    RHProveViewController *proVC=[RHProveViewController new];
+    if ([RHJudgeMethod checkPhone:self.textField.text] == YES || [RHJudgeMethod checkEmail:self.textField.text] == YES) {
+        int tooltype;
+        if ([RHJudgeMethod checkPhone:self.textField.text] == YES) {
+            tooltype = 1;
+        }else {
+            tooltype = 2;
+        }
+        if (!self.toolType) {
+            self.toolType=tooltype;
+        }
+        proVC.toolType=self.toolType;
         AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
-        [manager POST:urlString parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager POST:USER_API parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             if (STATUS == 0) {
-                RHProveViewController *proVC=[RHProveViewController new];
                 proVC.phoneNumber=self.textField.text;
                 proVC.account=self.account;
                 proVC.corporationNum=self.corporationNum;
@@ -102,42 +111,42 @@
             }else {
                 [self presentViewController:self.alertCon animated:YES completion:nil];
             }
-            
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             NSLog(@"---ERROR:%@",error);
         }];
-    }else {
-        NSLog(@"请重新输入手机号！");
     }
+    
     
     
 }
 //参数设置
-- (void)setUserInFo {
-    NSUserDefaults *userd=[NSUserDefaults standardUserDefaults];
-    NSString *userId=[userd stringForKey:@"userId"];
-    NSString *phoneNumber=self.textField.text;
-    NSDictionary *head=@{
-                         @"aid": @"1and6uu",
-                         @"ver": @"1.0",
-                         @"ln": @"cn",
-                         @"mod": @"ios",
-                         @"de": @"2017-07-13 00:00:00",
-                         @"sync": @"1",
-                         @"uuid": @"188111",
-                         @"cmd": @"10004",
-                         @"chcode": @"ef19843298ae8f2134f"
-                         };
-    NSDictionary *con=@{
-                        @"toolNumber": phoneNumber,
-                        @"toolType": @"1",
-                        @"userId": userId,
-                        @"userType":@"0"
-                        };
-    NSDictionary *dictJson=@{@"head":head, @"con":con};
-    NSData *data=[NSJSONSerialization dataWithJSONObject:dictJson options:NSJSONWritingPrettyPrinted error:nil];
-    NSString *paragmeter=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    self.parameter=paragmeter;
+- (NSString *)parameter {
+    if (!_parameter) {
+        NSUserDefaults *userd=[NSUserDefaults standardUserDefaults];
+        NSString *userId=[userd stringForKey:@"userId"];
+        NSString *phoneNumber=self.textField.text;
+        NSDictionary *head=@{
+                             @"aid": @"1and6uu",
+                             @"ver": @"1.0",
+                             @"ln": @"cn",
+                             @"mod": @"ios",
+                             @"de": @"2017-07-13 00:00:00",
+                             @"sync": @"1",
+                             @"uuid": @"188111",
+                             @"cmd": @"10004",
+                             @"chcode": @"ef19843298ae8f2134f"
+                             };
+        NSDictionary *con=@{
+                            @"toolNumber": phoneNumber,
+                            @"toolType": @(self.toolType),
+                            @"userId": userId,
+                            @"userType":@"0"
+                            };
+        NSDictionary *dictJson=@{@"head":head, @"con":con};
+        NSData *data=[NSJSONSerialization dataWithJSONObject:dictJson options:NSJSONWritingPrettyPrinted error:nil];
+        _parameter=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    }
+    return _parameter;
 }
 
 

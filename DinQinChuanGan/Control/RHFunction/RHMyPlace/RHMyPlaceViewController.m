@@ -11,7 +11,7 @@
 #import "Header.h"
 #import "AFNetworking.h"
 #import "RHPlaceMessageViewController.h"
-#import "PlaceModel.h"
+//#import "PlaceModel.h"
 
 @interface RHMyPlaceViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UIBarButtonItem *rightBI;
@@ -129,7 +129,6 @@ static NSString *identifier=@"identifier";
 
 
 - (NSString *)parameter {
-    if (!_parameter) {
         NSUserDefaults *userDef=[NSUserDefaults standardUserDefaults];
         self.userId=[userDef stringForKey:@"userId"];
         
@@ -148,7 +147,6 @@ static NSString *identifier=@"identifier";
         NSDictionary *dict=@{@"head":head, @"con":con};
         NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
         _parameter=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    }
     return _parameter;
 }
 

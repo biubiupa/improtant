@@ -9,7 +9,6 @@
 #import "RHMyAreaViewController.h"
 #import "Header.h"
 #import "MJRefresh.h"
-#import "PlaceModel.h"
 #import "AFNetworking.h"
 #import "RHAddAreaViewController.h"
 #import "RHAreaContentViewController.h"
@@ -141,9 +140,11 @@ static NSString *ident=@"ident";
         [self.dropBtn setTitle:self.list[indexPath.row][@"placeName"] forState:UIControlStateNormal];
         [self pickUpAnimation];
         self.status=!self.status;
-        if (self.placeId) {
-            self.placeId=[self.list[indexPath.row][@"placeId"] integerValue];
-        }
+//        if (self.placeId) {
+//            self.placeId=[self.list[indexPath.row][@"placeId"] integerValue];
+//        }
+        self.placeId=[self.list[indexPath.row][@"placeId"] integerValue];
+
         [self listRequest];
     } else {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -152,7 +153,6 @@ static NSString *ident=@"ident";
         self.areaId=[self.arr[indexPath.section][@"areaId"] integerValue];
         AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
         [manager POST:MANAGE_API parameters:[self conParameter:self.areaId] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            NSLog(@"%@",responseObject);
             NSDictionary *body=responseObject[@"body"];
             areaConVC.areaName=[NSString stringWithFormat:@"%@",body[@"areaName"]];
             areaConVC.ratio=[NSString stringWithFormat:@"%@",body[@"area"]];

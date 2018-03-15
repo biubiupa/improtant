@@ -45,10 +45,12 @@
     [super viewDidLoad];
     [self layoutViews];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeSignIn:) name:@"change" object:nil];
+    
 }
 //处理布局
 - (void)layoutViews {
-    
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem=backItem;
     self.view.backgroundColor=[UIColor whiteColor];
     [self.view addSubview:self.tableView];
 //    [self.view addSubview:self.topView];
@@ -99,13 +101,13 @@
     self.iconView.hidden=YES;
     self.accountLabel.hidden=YES;
     self.numberLabel.hidden=YES;
-    RHMyAreaViewController *areaVC=[RHMyAreaViewController new];
-    RHMyPlaceViewController *placeVC=[RHMyPlaceViewController new];
-    RHRightBarButtonItemViewController *setVC=[RHRightBarButtonItemViewController new];
-    self.equipmentVC=[RHMyEquipmentViewController new];
-    self.setVC=setVC;
-    self.areaVC=areaVC;
-    self.placeVC=placeVC;
+//    RHMyAreaViewController *areaVC=[RHMyAreaViewController new];
+//    RHMyPlaceViewController *placeVC=[RHMyPlaceViewController new];
+//    RHRightBarButtonItemViewController *setVC=[RHRightBarButtonItemViewController new];
+//    self.equipmentVC=[RHMyEquipmentViewController new];
+//    self.setVC=setVC;
+//    self.areaVC=areaVC;
+//    self.placeVC=placeVC;
 }
 #pragma mark - delegate / datasorce
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -150,9 +152,9 @@
 
 #pragma mark - 设置
 - (void)rightbtnAction {
-    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem=backItem;
-    [self.navigationController pushViewController:self.setVC animated:YES];
+    if (UserId) {
+        [self.navigationController pushViewController:self.setVC animated:YES];
+    }
 }
 
 #pragma mark -点击事件
@@ -181,6 +183,14 @@
 }
 //    跳转
 - (void)tiaozhuan:(NSNotification *)notification {
+    RHMyAreaViewController *areaVC=[RHMyAreaViewController new];
+    RHMyPlaceViewController *placeVC=[RHMyPlaceViewController new];
+    RHRightBarButtonItemViewController *setVC=[RHRightBarButtonItemViewController new];
+    self.equipmentVC=[RHMyEquipmentViewController new];
+    self.setVC=setVC;
+    self.areaVC=areaVC;
+    self.placeVC=placeVC;
+    
     NSDictionary *dict=notification.userInfo;
     int index=[dict[@"index"] intValue];
     self.arr=@[self.placeVC, self.areaVC, self.equipmentVC];

@@ -11,5 +11,6 @@
 @interface RHBindAccViewController : UIViewController
 @property (nonatomic, copy) NSString *account;
 @property (nonatomic, copy) NSString *corporationNum;
+@property (nonatomic, assign) int toolType;
 
 @end

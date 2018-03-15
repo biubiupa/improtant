@@ -33,6 +33,7 @@
 @property (nonatomic, copy) NSString *corporationNum;
 @property (nonatomic, copy) NSString *phone;
 @property (nonatomic, strong) RHControlViewController *controlVC;
+@property (nonatomic, copy) NSString *email;
 
 @end
 
@@ -243,13 +244,13 @@
         if (STATUS == 0) {
             self.phone=[NSString stringWithFormat:@"%@",responseObject[@"body"][@"phone"]];
             self.userId=[NSString stringWithFormat:@"%@",responseObject[@"body"][@"userId"]];
-            NSString *email=[NSString stringWithFormat:@"%@",responseObject[@"body"][@"mailbox"]];
+            self.email=[NSString stringWithFormat:@"%@",responseObject[@"body"][@"mailbox"]];
 //            把常用的userid保存到本地
             NSUserDefaults *userDefault=[NSUserDefaults standardUserDefaults];
             [userDefault setObject:self.userId forKey:@"userId"];
             [userDefault setObject:self.account.text forKey:@"account"];
-            [userDefault setObject:email forKey:@"mailbox"];
-            [userDefault setObject:self.phone forKey:@"phone"];
+//            [userDefault setObject:self.email forKey:@"mailbox"];
+//            [userDefault setObject:self.phone forKey:@"phone"];
             [userDefault synchronize];
 //            请求用户信息
             [self userMessageRequest];
@@ -298,7 +299,7 @@
         if (STATUS == 0) {
             self.corporationNum=[NSString stringWithFormat:@"%@",responseObject[@"body"][@"corporationNum"]];
             //            判断是否已绑定手机
-            if ([self.phone isEqualToString:@""]) {
+            if ([self.phone isEqualToString:@""] && [self.email isEqualToString:@""]) {
                 UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:nil action:nil];
                 self.navigationItem.backBarButtonItem=backItem;
                 RHBindAccViewController *bindVC=[RHBindAccViewController new];

@@ -7,6 +7,7 @@ pod 'Masonry'
 pod 'AFNetworking'
 pod 'SDWebImage'
 pod 'MJRefresh'
+pod 'PNChart'
 
 end
 

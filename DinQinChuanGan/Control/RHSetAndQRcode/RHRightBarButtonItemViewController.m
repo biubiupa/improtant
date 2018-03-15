@@ -12,6 +12,7 @@
 #import "RHAmendPassWViewController.h"
 #import "RHAccountBDViewController.h"
 #import "UIImageView+WebCache.m"
+#import "AppDelegate.h"
 
 @interface RHRightBarButtonItemViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
@@ -132,7 +133,14 @@
         }else if (indexPath.row == 1) {
             [self changeLangue];
         }
+    }else {
+//        退出登录
+        self.accountLabel.text=@"";
+        AppDelegate *appdelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
+        [UserDefaults removeObjectForKey:@"userId"];
+        [appdelegate realloc];
     }
+    
     
 }
 
@@ -153,7 +161,7 @@
     [alertCon addAction:[UIAlertAction actionWithTitle:@"中文" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
     }]];
-    [alertCon addAction:[UIAlertAction actionWithTitle:@"英文" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [alertCon addAction:[UIAlertAction actionWithTitle:@"English" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
     }]];
     [alertCon addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];

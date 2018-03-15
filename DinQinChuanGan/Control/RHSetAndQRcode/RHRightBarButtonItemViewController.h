@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RHRightBarButtonItemViewController : UIViewController
 
+@interface RHRightBarButtonItemViewController : UIViewController
 
 @end

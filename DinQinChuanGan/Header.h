@@ -19,6 +19,9 @@
 #define STATUS  [responseObject[@"head"][@"st"] integerValue]
 #define MSG     responseObject[@"head"][@"msg"]
 
+#define UserDefaults    [NSUserDefaults standardUserDefaults]
+#define UserId  [UserDefaults stringForKey:@"userId"]
+
 #define WhiteColor  [UIColor whiteColor]
 #define GrayColor   [UIColor grayColor]
 #define LightGrayColor  [UIColor lightGrayColor]

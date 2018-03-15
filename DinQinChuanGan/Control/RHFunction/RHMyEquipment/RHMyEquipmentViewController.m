@@ -13,6 +13,7 @@
 #import "WRNavigationBar.h"
 #import "RHEquipMessageViewController.h"
 #import "RHEquipStandardViewController.h"
+#import "RHEquipMentTableViewCell.h"
 
 #define NavBarHeight [self navBarHeight]
 #define TransFormBound  [self transformBound]
@@ -84,7 +85,7 @@ static NSString *identifier=@"cell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:identifier];
+    RHEquipMentTableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:identifier];
     cell.textLabel.text=self.areaList[indexPath.section][@"areaName"];
     return cell;
 }
@@ -172,7 +173,7 @@ static NSString *identifier=@"cell";
         _tableView.backgroundColor=BACKGROUND_COLOR;
         _tableView.delegate=self;
         _tableView.dataSource=self;
-        [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:identifier];
+        [_tableView registerClass:[RHEquipMentTableViewCell class] forCellReuseIdentifier:identifier];
         _tableView.sectionHeaderHeight=10;
         _tableView.sectionFooterHeight=0;
         _tableView.tableFooterView=[UIView new];

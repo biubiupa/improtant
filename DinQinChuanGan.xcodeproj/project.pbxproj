@@ -18,6 +18,7 @@
 		A212BDD420085A9000C3941B /* RHAddPlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A212BDD320085A9000C3941B /* RHAddPlaceViewController.m */; };
 		A21EA84B1FFDCD2C00AC1C8B /* RHProveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A21EA84A1FFDCD2C00AC1C8B /* RHProveViewController.m */; };
 		A222B09420524DB600B0DB6E /* RHJudgeMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = A222B09320524DB600B0DB6E /* RHJudgeMethod.m */; };
+		A222B09720526D7800B0DB6E /* RHAccConViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A222B09620526D7800B0DB6E /* RHAccConViewController.m */; };
 		A22F8C9620119BA3008CC997 /* RHPlaceMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A22F8C9520119BA3008CC997 /* RHPlaceMessageViewController.m */; };
 		A236EA361FF4BC8100063DFC /* RHSignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A236EA351FF4BC8100063DFC /* RHSignInViewController.m */; };
 		A23ECB0E2022B22200FA6797 /* RHAreaContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A23ECB0D2022B22200FA6797 /* RHAreaContentViewController.m */; };
@@ -27,10 +28,12 @@
 		A25732ED202010AF00C9CC6D /* RHAddAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A25732EC202010AF00C9CC6D /* RHAddAreaViewController.m */; };
 		A25D34DE1FEB60CC00CED82A /* ControlCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A25D34DD1FEB60CC00CED82A /* ControlCollectionViewCell.m */; };
 		A25DC9F62049255A002504B0 /* RHEquipMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A25DC9F52049255A002504B0 /* RHEquipMessageViewController.m */; };
+		A2601C3F2056275500169306 /* RHBandEmilViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2601C3E2056275500169306 /* RHBandEmilViewController.m */; };
 		A262ECB81FE7C47B00B55454 /* WRNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A262ECB41FE7C47B00B55454 /* WRNavigationBar.m */; };
 		A262ECB91FE7C47B00B55454 /* WRCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A262ECB71FE7C47B00B55454 /* WRCustomNavigationBar.m */; };
 		A263CA28204F8A7D00046CF6 /* RHChangePWViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A263CA27204F8A7D00046CF6 /* RHChangePWViewController.m */; };
 		A2684A992005FABA00EC8339 /* RHMyPlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2684A982005FABA00EC8339 /* RHMyPlaceViewController.m */; };
+		A26DD0A22059128000AEF439 /* RHEquipMentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A26DD0A12059128000AEF439 /* RHEquipMentTableViewCell.m */; };
 		A2ABF551204E785800CCA981 /* RHEquipStandardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABF550204E785800CCA981 /* RHEquipStandardViewController.m */; };
 		A2ABF554204E87C100CCA981 /* RHForgotPWViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABF553204E87C100CCA981 /* RHForgotPWViewController.m */; };
 		A2BB686C1FF242B100EB2246 /* RHRightBarButtonItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2BB686B1FF242B100EB2246 /* RHRightBarButtonItemViewController.m */; };
@@ -41,6 +44,7 @@
 		A2E3D1C220074E180076D624 /* RHMyAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E3D1C120074E180076D624 /* RHMyAreaViewController.m */; };
 		A2E3D1C520076F260076D624 /* RHMyEquipmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E3D1C420076F260076D624 /* RHMyEquipmentViewController.m */; };
 		A2E3D1C820076F400076D624 /* RHMyWarningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E3D1C720076F400076D624 /* RHMyWarningViewController.m */; };
+		A2EAA5452057B4DB00E7C89F /* RHMoveToViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EAA5442057B4DB00E7C89F /* RHMoveToViewController.m */; };
 		A2EB2D2C1FE20FCB00B87825 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EB2D2B1FE20FCB00B87825 /* AppDelegate.m */; };
 		A2EB2D2F1FE20FCB00B87825 /* ShujuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EB2D2E1FE20FCB00B87825 /* ShujuViewController.m */; };
 		A2EB2D321FE20FCB00B87825 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2EB2D301FE20FCB00B87825 /* Main.storyboard */; };
@@ -67,6 +71,8 @@
 		A21EA84A1FFDCD2C00AC1C8B /* RHProveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHProveViewController.m; sourceTree = "<group>"; };
 		A222B09220524DB600B0DB6E /* RHJudgeMethod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHJudgeMethod.h; sourceTree = "<group>"; };
 		A222B09320524DB600B0DB6E /* RHJudgeMethod.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHJudgeMethod.m; sourceTree = "<group>"; };
+		A222B09520526D7800B0DB6E /* RHAccConViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHAccConViewController.h; sourceTree = "<group>"; };
+		A222B09620526D7800B0DB6E /* RHAccConViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHAccConViewController.m; sourceTree = "<group>"; };
 		A22F8C9420119BA3008CC997 /* RHPlaceMessageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHPlaceMessageViewController.h; sourceTree = "<group>"; };
 		A22F8C9520119BA3008CC997 /* RHPlaceMessageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHPlaceMessageViewController.m; sourceTree = "<group>"; };
 		A236EA341FF4BC8100063DFC /* RHSignInViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHSignInViewController.h; sourceTree = "<group>"; };
@@ -86,6 +92,8 @@
 		A25D34DD1FEB60CC00CED82A /* ControlCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ControlCollectionViewCell.m; sourceTree = "<group>"; };
 		A25DC9F42049255A002504B0 /* RHEquipMessageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHEquipMessageViewController.h; sourceTree = "<group>"; };
 		A25DC9F52049255A002504B0 /* RHEquipMessageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHEquipMessageViewController.m; sourceTree = "<group>"; };
+		A2601C3D2056275500169306 /* RHBandEmilViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHBandEmilViewController.h; sourceTree = "<group>"; };
+		A2601C3E2056275500169306 /* RHBandEmilViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHBandEmilViewController.m; sourceTree = "<group>"; };
 		A262ECB41FE7C47B00B55454 /* WRNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WRNavigationBar.m; sourceTree = "<group>"; };
 		A262ECB51FE7C47B00B55454 /* WRCustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WRCustomNavigationBar.h; sourceTree = "<group>"; };
 		A262ECB61FE7C47B00B55454 /* WRNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WRNavigationBar.h; sourceTree = "<group>"; };
@@ -94,6 +102,8 @@
 		A263CA27204F8A7D00046CF6 /* RHChangePWViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHChangePWViewController.m; sourceTree = "<group>"; };
 		A2684A972005FABA00EC8339 /* RHMyPlaceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHMyPlaceViewController.h; sourceTree = "<group>"; };
 		A2684A982005FABA00EC8339 /* RHMyPlaceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHMyPlaceViewController.m; sourceTree = "<group>"; };
+		A26DD0A02059128000AEF439 /* RHEquipMentTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHEquipMentTableViewCell.h; sourceTree = "<group>"; };
+		A26DD0A12059128000AEF439 /* RHEquipMentTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHEquipMentTableViewCell.m; sourceTree = "<group>"; };
 		A2ABF54F204E785800CCA981 /* RHEquipStandardViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHEquipStandardViewController.h; sourceTree = "<group>"; };
 		A2ABF550204E785800CCA981 /* RHEquipStandardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHEquipStandardViewController.m; sourceTree = "<group>"; };
 		A2ABF552204E87C100CCA981 /* RHForgotPWViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHForgotPWViewController.h; sourceTree = "<group>"; };
@@ -113,6 +123,8 @@
 		A2E3D1C420076F260076D624 /* RHMyEquipmentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHMyEquipmentViewController.m; sourceTree = "<group>"; };
 		A2E3D1C620076F400076D624 /* RHMyWarningViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHMyWarningViewController.h; sourceTree = "<group>"; };
 		A2E3D1C720076F400076D624 /* RHMyWarningViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHMyWarningViewController.m; sourceTree = "<group>"; };
+		A2EAA5432057B4DB00E7C89F /* RHMoveToViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHMoveToViewController.h; sourceTree = "<group>"; };
+		A2EAA5442057B4DB00E7C89F /* RHMoveToViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHMoveToViewController.m; sourceTree = "<group>"; };
 		A2EB2D271FE20FCB00B87825 /* DinQinChuanGan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DinQinChuanGan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2EB2D2A1FE20FCB00B87825 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A2EB2D2B1FE20FCB00B87825 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -252,6 +264,10 @@
 				A243B3D82050CD6B00975E86 /* RHAccountBDViewController.m */,
 				A243B3DD2050DDCD00975E86 /* RHAccountBTableViewCell.h */,
 				A243B3DE2050DDCD00975E86 /* RHAccountBTableViewCell.m */,
+				A222B09520526D7800B0DB6E /* RHAccConViewController.h */,
+				A222B09620526D7800B0DB6E /* RHAccConViewController.m */,
+				A2601C3D2056275500169306 /* RHBandEmilViewController.h */,
+				A2601C3E2056275500169306 /* RHBandEmilViewController.m */,
 			);
 			path = RHSetAndQRcode;
 			sourceTree = "<group>";
@@ -294,6 +310,8 @@
 				A2E3D1C120074E180076D624 /* RHMyAreaViewController.m */,
 				A23ECB0C2022B22200FA6797 /* RHAreaContentViewController.h */,
 				A23ECB0D2022B22200FA6797 /* RHAreaContentViewController.m */,
+				A2EAA5432057B4DB00E7C89F /* RHMoveToViewController.h */,
+				A2EAA5442057B4DB00E7C89F /* RHMoveToViewController.m */,
 				A25732EB202010AF00C9CC6D /* RHAddAreaViewController.h */,
 				A25732EC202010AF00C9CC6D /* RHAddAreaViewController.m */,
 				A20E04A02021A5C5000AB27A /* RHChoosePicViewController.h */,
@@ -320,6 +338,8 @@
 			children = (
 				A2E3D1C320076F260076D624 /* RHMyEquipmentViewController.h */,
 				A2E3D1C420076F260076D624 /* RHMyEquipmentViewController.m */,
+				A26DD0A02059128000AEF439 /* RHEquipMentTableViewCell.h */,
+				A26DD0A12059128000AEF439 /* RHEquipMentTableViewCell.m */,
 				A25DC9F42049255A002504B0 /* RHEquipMessageViewController.h */,
 				A25DC9F52049255A002504B0 /* RHEquipMessageViewController.m */,
 				A2ABF54F204E785800CCA981 /* RHEquipStandardViewController.h */,
@@ -555,6 +575,7 @@
 			files = (
 				A24990221FE8EBB9004B046F /* ControlTableViewCell.m in Sources */,
 				A2EB2D2F1FE20FCB00B87825 /* ShujuViewController.m in Sources */,
+				A2EAA5452057B4DB00E7C89F /* RHMoveToViewController.m in Sources */,
 				A2D06E341FFC74EF004FB3E4 /* RHBindAccViewController.m in Sources */,
 				A2EB2D3A1FE20FCB00B87825 /* main.m in Sources */,
 				A22F8C9620119BA3008CC997 /* RHPlaceMessageViewController.m in Sources */,
@@ -572,12 +593,15 @@
 				A2CEDC031FFF669D009A9CF9 /* RHAmendPassWViewController.m in Sources */,
 				A262ECB81FE7C47B00B55454 /* WRNavigationBar.m in Sources */,
 				A243B3D92050CD6B00975E86 /* RHAccountBDViewController.m in Sources */,
+				A26DD0A22059128000AEF439 /* RHEquipMentTableViewCell.m in Sources */,
+				A222B09720526D7800B0DB6E /* RHAccConViewController.m in Sources */,
 				A21EA84B1FFDCD2C00AC1C8B /* RHProveViewController.m in Sources */,
 				A243B3DF2050DDCD00975E86 /* RHAccountBTableViewCell.m in Sources */,
 				A2E3D1C220074E180076D624 /* RHMyAreaViewController.m in Sources */,
 				A263CA28204F8A7D00046CF6 /* RHChangePWViewController.m in Sources */,
 				A236EA361FF4BC8100063DFC /* RHSignInViewController.m in Sources */,
 				A25DC9F62049255A002504B0 /* RHEquipMessageViewController.m in Sources */,
+				A2601C3F2056275500169306 /* RHBandEmilViewController.m in Sources */,
 				A2112FA91FE27B6A00891A99 /* RHControlViewController.m in Sources */,
 				A20E04A22021A5C5000AB27A /* RHChoosePicViewController.m in Sources */,
 				A2684A992005FABA00EC8339 /* RHMyPlaceViewController.m in Sources */,

@@ -12,6 +12,7 @@
 #import "AFNetworking.h"
 #import "RHChoosePicViewController.h"
 #import "UIImageView+WebCache.m"
+#import "RHMoveToViewController.h"
 
 @interface RHAreaContentViewController ()<UIScrollViewDelegate,UITextFieldDelegate>
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -32,6 +33,7 @@
 @property (nonatomic, strong) UIBarButtonItem *rightBI;
 @property (nonatomic, copy) NSDictionary *surverPara;
 @property (nonatomic, copy) NSString *areauUrl;
+@property (nonatomic, strong) UILabel *moveLabel;
 
 @end
 
@@ -124,6 +126,12 @@
         make.centerX.equalTo(self.scrollView);
         make.top.equalTo(self.scrollView).with.offset(602);
     }];
+    [self.scrollView addSubview:self.moveLabel];
+    [self.moveLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH - 16, 33));
+        make.top.equalTo(self.scrollView).with.offset(602);
+        make.left.equalTo(self.scrollView).with.offset(0);
+    }];
 //    删除区域
     [self.scrollView addSubview:self.deleteBtn];
     [self.deleteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -163,7 +171,19 @@
 
 //移动区域
 - (void)moveToPlace {
-    NSLog(@"正在移动!");
+    RHMoveToViewController *moveVC=[RHMoveToViewController new];
+    __weak typeof(self) weakSelf=self;
+    moveVC.block = ^(NSString *placeName, NSInteger placeId) {
+        weakSelf.moveLabel.text=placeName;
+//        判断是否是移动区域
+        if (weakSelf.moveLabel.text != nil) {
+            self.placeId=placeId;
+            self.rightBI.tintColor=DEFAULTCOLOR;
+            self.rightBI.enabled=YES;
+        }
+        
+    };
+    [self.navigationController pushViewController:moveVC animated:YES];
 }
 
 //删除区域
@@ -195,19 +215,7 @@
     }];
 }
 
-//编辑后，保存上传
-- (void)upload {
-    AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
-    [manager POST:MANAGE_API parameters:self.doneParameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        NSLog(@"%@",responseObject);
-        NSInteger st=[responseObject[@"head"][@"st"] integerValue];
-        if (st == 0) {
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"===error:%@",error);
-    }];
-}
+
 //上传图片至资源服务器
 - (void)surverRequest {
     NSDateFormatter *formatter=[[NSDateFormatter alloc] init];
@@ -236,7 +244,23 @@
         NSLog(@"error:%@",error);
     }];
 }
-
+//编辑后，保存上传
+- (void)upload {
+    AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
+    [manager POST:MANAGE_API parameters:self.doneParameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //        NSLog(@"%@",responseObject);
+        NSInteger st=[responseObject[@"head"][@"st"] integerValue];
+        if (st == 0) {
+            if (self.moveLabel.text != nil) {
+                [self httpRequest];
+            }else {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"===error:%@",error);
+    }];
+}
 #pragma mark - 初始化
 - (UIScrollView  *)scrollView {
     if (!_scrollView) {
@@ -389,6 +413,15 @@
     return _rightBI;
 }
 
+//移动到显示label
+- (UILabel *)moveLabel {
+    if (!_moveLabel) {
+        _moveLabel=[[UILabel  alloc] init];
+        _moveLabel.textAlignment=NSTextAlignmentRight;
+    }
+    return _moveLabel;
+}
+
 //删除区域参数
 - (NSString *)parameter {
     if (!_parameter) {
@@ -414,6 +447,10 @@
 //修改区域参数
 - (NSString *)doneParameter {
     if (!_doneParameter) {
+        NSInteger areaId=self.areaId;
+        if (self.moveLabel.text != nil) {
+            areaId = 0;
+        }
         NSDictionary *head=@{
                              @"aid": @"1and6uu",
                              @"ver": @"1.0",
@@ -430,7 +467,7 @@
                             @"areaName": self.areaTF.text,
                             @"areaPicture": self.areauUrl,
                             @"area": self.ratioTF.text,
-                            @"areaId": @(self.areaId)
+                            @"areaId": @(areaId)
                             };
         NSDictionary *dict=@{@"head":head, @"con":con};
         NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];

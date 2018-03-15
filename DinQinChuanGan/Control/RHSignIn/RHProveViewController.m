@@ -10,6 +10,7 @@
 #import "Header.h"
 #import "Masonry.h"
 #import "AFNetworking.h"
+#import "RHAccountBDViewController.h"
 
 @interface RHProveViewController ()<UITextFieldDelegate>
 @property (nonatomic, strong) UILabel *tipLabel;
@@ -22,6 +23,8 @@
 @property (nonatomic, copy) NSString *url;
 @property (nonatomic, copy) NSString *parameter;
 @property (nonatomic, assign) BOOL Hiden;
+@property (nonatomic, copy) NSString *confirm;
+
 
 @end
 
@@ -31,7 +34,10 @@
     [super viewDidLoad];
     [self layoutViews];
     self.Hiden=0;
+    self.confirm=[UserDefaults objectForKey:@"numbers"];
 }
+
+
 
 #pragma mark - 处理布局
 - (void)layoutViews {
@@ -41,7 +47,7 @@
 //    提示框已发送
     [self.view addSubview:self.tipLabel];
     [self.tipLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(250, 15));
+        make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH, 15));
         make.left.equalTo(self.view).with.offset(12);
         make.top.equalTo(self.view).with.offset(22);
     }];
@@ -88,6 +94,53 @@
         make.centerX.equalTo(self.view);
         make.top.equalTo(self.view).with.offset(204);
     }];
+}
+
+#pragma mark - 事件处理
+//  绑定点击事件
+- (void)clickBtnAction {
+    [self.textField resignFirstResponder];
+    AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
+    [manager POST:USER_API parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"---%@",MSG);
+        
+        if (STATUS == 0) {
+            if (self.confirm == nil) {
+                NSDictionary *dict=@{@"Hiden":@(0), @"account":self.account, @"corporationNum":self.corporationNum};
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"change" object:self userInfo:dict];
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            }else {
+                for (UIViewController *VC in self.navigationController.viewControllers) {
+                    if ([VC isKindOfClass:[RHAccountBDViewController class]]) {
+                        [self.navigationController popToViewController:VC animated:YES];
+                        [UserDefaults removeObjectForKey:@"numbers"];
+                    }
+                }
+            }
+            
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"====error:%@",error);
+    }];
+    
+}
+
+
+
+
+
+//    代理设置按钮响应状态
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    [self.bindBtn setBackgroundImage:[UIImage imageNamed:@"color"] forState:UIControlStateNormal];
+    self.bindBtn.enabled=YES;
+    self.bindBtn.backgroundColor=nil;
+    return YES;
+}
+
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
 }
 
 #pragma mark - 懒加载
@@ -158,31 +211,6 @@
     return _lineView;
 }
 
-//  绑定点击事件
-- (void)clickBtnAction {
-    [self.textField resignFirstResponder];
-    AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
-    [manager POST:USER_API parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"---%@",MSG);
-        NSDictionary *dict=@{@"Hiden":@(0), @"account":self.account, @"corporationNum":self.corporationNum};
-        if (STATUS == 0) {
-            NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
-            if (self.phoneNumber.length == 11) {
-                [userDefaults setObject:self.phoneNumber forKey:@"phone"];
-            }else {
-                [userDefaults setObject:self.phoneNumber forKey:@"mailbox"];
-            }
-            
-            [userDefaults synchronize];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"change" object:self userInfo:dict];
-            [self.navigationController popToRootViewControllerAnimated:YES];
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"====error:%@",error);
-    }];
-    
-}
-
 //      request参数设置
 - (NSString *)parameter {
     if (!_parameter) {
@@ -204,7 +232,7 @@
         NSDictionary *con=@{
                             @"toolNumber":toolnumber,
                             @"userId":userId,
-                            @"toolType":@1,
+                            @"toolType":@(self.toolType),
                             @"verficationCode":verficationCode
                             };
         NSDictionary *dictJson=@{@"head":head, @"con":con};
@@ -212,20 +240,6 @@
         _parameter=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     }
     return _parameter;
-}
-
-//    代理设置按钮响应状态
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    [self.bindBtn setBackgroundImage:[UIImage imageNamed:@"color"] forState:UIControlStateNormal];
-    self.bindBtn.enabled=YES;
-    self.bindBtn.backgroundColor=nil;
-    return YES;
-}
-
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    return YES;
 }
 
 
