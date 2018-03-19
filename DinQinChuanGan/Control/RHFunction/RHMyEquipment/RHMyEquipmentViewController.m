@@ -23,6 +23,7 @@
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic, copy) NSArray *areaList;
+@property (nonatomic, copy) NSArray *deviceList;
 
 @end
 
@@ -69,13 +70,20 @@ static NSString *identifier=@"cell";
         [self.scrollView addSubview:button];
     
     }
-   
-    
 }
 
 
 
 #pragma mark - dataSource,delegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    self.deviceList=self.areaList[indexPath.section][@"deviceList"];
+    if (self.deviceList.count > 3) {
+        return 238;
+    }else {
+        return 151;
+    }
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.areaList.count;
 }
@@ -85,9 +93,17 @@ static NSString *identifier=@"cell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    RHEquipMentTableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:identifier];
-    cell.textLabel.text=self.areaList[indexPath.section][@"areaName"];
+    RHEquipMentTableViewCell *cell=[tableView cellForRowAtIndexPath:indexPath];
+    if (cell == nil) {
+        cell=[[RHEquipMentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    }
+    cell.nameLabel.text=self.areaList[indexPath.section][@"areaName"];
+    cell.deviceList=self.areaList[indexPath.section][@"deviceList"];
+    cell.selectionStyle=UITableViewCellSelectionStyleNone;
+    NSLog(@"%@",cell.deviceList);
     return cell;
+    
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -169,18 +185,20 @@ static NSString *identifier=@"cell";
 
 - (UITableView *)tableView {
     if (!_tableView) {
-        _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0, (NavBarHeight +60), SCREEN_WIDTH, SCREEN_HEIGHT) style:UITableViewStylePlain];
+        _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) style:UITableViewStylePlain];
         _tableView.backgroundColor=BACKGROUND_COLOR;
         _tableView.delegate=self;
         _tableView.dataSource=self;
-        [_tableView registerClass:[RHEquipMentTableViewCell class] forCellReuseIdentifier:identifier];
         _tableView.sectionHeaderHeight=10;
         _tableView.sectionFooterHeight=0;
         _tableView.tableFooterView=[UIView new];
-        _tableView.contentInset=UIEdgeInsetsMake(-10, 0, 0, 0);
+        _tableView.contentInset=UIEdgeInsetsMake(60, 0, 0, 0);
+//        _tableView.rowHeight=238;
     }
     return _tableView;
 }
+
+
 
 - (NSString *)equipPara:(NSInteger)index {
         int placeId=[self.listArr[index][@"placeId"] intValue];

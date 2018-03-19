@@ -30,8 +30,9 @@
     UIViewController *shujuVC=[ShujuViewController new];
     UIViewController *controlVC=[RHControlViewController new];
     UINavigationController *controlNav=[[UINavigationController alloc] initWithRootViewController:controlVC];
+    UINavigationController *dataNav=[[UINavigationController alloc] initWithRootViewController:shujuVC];
 //   设置item对应的页面控制器
-    self.array=@[shujuVC, controlNav];
+    self.array=@[dataNav, controlNav];
     self.rootTabVC.viewControllers=self.array;
     self.rootTabVC.tabBar.translucent=NO;
     self.rootTabVC.tabBar.tintColor=CONTROL_COLOR;

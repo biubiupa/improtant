@@ -74,6 +74,10 @@ static NSString *ident=@"ident";
     [dropBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [dropBtn addTarget:self action:@selector(clickDropOrPick) forControlEvents:UIControlEventTouchUpInside];
     self.dropBtn=dropBtn;
+//    UIImageView *imgview=[[UIImageView alloc] initWithFrame:CGRectMake(150, 0, 50, 50)];
+//    imgview.image=[UIImage imageNamed:@"online"];
+//    [self.dropBtn addSubview:imgview];
+    
     self.navigationItem.titleView=self.dropBtn;
 //    添加区域
     UIBarButtonItem *rightBI=[[UIBarButtonItem alloc] initWithTitle:@"添加区域" style:UIBarButtonItemStylePlain target:self action:@selector(addAreaAction)];

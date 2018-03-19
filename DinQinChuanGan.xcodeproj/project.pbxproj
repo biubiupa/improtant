@@ -44,6 +44,7 @@
 		A2E3D1C220074E180076D624 /* RHMyAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E3D1C120074E180076D624 /* RHMyAreaViewController.m */; };
 		A2E3D1C520076F260076D624 /* RHMyEquipmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E3D1C420076F260076D624 /* RHMyEquipmentViewController.m */; };
 		A2E3D1C820076F400076D624 /* RHMyWarningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E3D1C720076F400076D624 /* RHMyWarningViewController.m */; };
+		A2E8450B205A3A2A00959AC3 /* RHEquipCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E8450A205A3A2A00959AC3 /* RHEquipCollectionViewCell.m */; };
 		A2EAA5452057B4DB00E7C89F /* RHMoveToViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EAA5442057B4DB00E7C89F /* RHMoveToViewController.m */; };
 		A2EB2D2C1FE20FCB00B87825 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EB2D2B1FE20FCB00B87825 /* AppDelegate.m */; };
 		A2EB2D2F1FE20FCB00B87825 /* ShujuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EB2D2E1FE20FCB00B87825 /* ShujuViewController.m */; };
@@ -123,6 +124,8 @@
 		A2E3D1C420076F260076D624 /* RHMyEquipmentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHMyEquipmentViewController.m; sourceTree = "<group>"; };
 		A2E3D1C620076F400076D624 /* RHMyWarningViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHMyWarningViewController.h; sourceTree = "<group>"; };
 		A2E3D1C720076F400076D624 /* RHMyWarningViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHMyWarningViewController.m; sourceTree = "<group>"; };
+		A2E84509205A3A2A00959AC3 /* RHEquipCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHEquipCollectionViewCell.h; sourceTree = "<group>"; };
+		A2E8450A205A3A2A00959AC3 /* RHEquipCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHEquipCollectionViewCell.m; sourceTree = "<group>"; };
 		A2EAA5432057B4DB00E7C89F /* RHMoveToViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHMoveToViewController.h; sourceTree = "<group>"; };
 		A2EAA5442057B4DB00E7C89F /* RHMoveToViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHMoveToViewController.m; sourceTree = "<group>"; };
 		A2EB2D271FE20FCB00B87825 /* DinQinChuanGan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DinQinChuanGan.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -340,6 +343,8 @@
 				A2E3D1C420076F260076D624 /* RHMyEquipmentViewController.m */,
 				A26DD0A02059128000AEF439 /* RHEquipMentTableViewCell.h */,
 				A26DD0A12059128000AEF439 /* RHEquipMentTableViewCell.m */,
+				A2E84509205A3A2A00959AC3 /* RHEquipCollectionViewCell.h */,
+				A2E8450A205A3A2A00959AC3 /* RHEquipCollectionViewCell.m */,
 				A25DC9F42049255A002504B0 /* RHEquipMessageViewController.h */,
 				A25DC9F52049255A002504B0 /* RHEquipMessageViewController.m */,
 				A2ABF54F204E785800CCA981 /* RHEquipStandardViewController.h */,
@@ -600,6 +605,7 @@
 				A2E3D1C220074E180076D624 /* RHMyAreaViewController.m in Sources */,
 				A263CA28204F8A7D00046CF6 /* RHChangePWViewController.m in Sources */,
 				A236EA361FF4BC8100063DFC /* RHSignInViewController.m in Sources */,
+				A2E8450B205A3A2A00959AC3 /* RHEquipCollectionViewCell.m in Sources */,
 				A25DC9F62049255A002504B0 /* RHEquipMessageViewController.m in Sources */,
 				A2601C3F2056275500169306 /* RHBandEmilViewController.m in Sources */,
 				A2112FA91FE27B6A00891A99 /* RHControlViewController.m in Sources */,

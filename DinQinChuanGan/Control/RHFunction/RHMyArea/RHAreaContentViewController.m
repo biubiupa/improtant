@@ -251,11 +251,9 @@
         //        NSLog(@"%@",responseObject);
         NSInteger st=[responseObject[@"head"][@"st"] integerValue];
         if (st == 0) {
-            if (self.moveLabel.text != nil) {
-                [self httpRequest];
-            }else {
-                [self.navigationController popViewControllerAnimated:YES];
-            }
+
+            [self.navigationController popViewControllerAnimated:YES];
+
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"===error:%@",error);
@@ -447,10 +445,6 @@
 //修改区域参数
 - (NSString *)doneParameter {
     if (!_doneParameter) {
-        NSInteger areaId=self.areaId;
-        if (self.moveLabel.text != nil) {
-            areaId = 0;
-        }
         NSDictionary *head=@{
                              @"aid": @"1and6uu",
                              @"ver": @"1.0",
@@ -467,7 +461,7 @@
                             @"areaName": self.areaTF.text,
                             @"areaPicture": self.areauUrl,
                             @"area": self.ratioTF.text,
-                            @"areaId": @(areaId)
+                            @"areaId": @(self.areaId)
                             };
         NSDictionary *dict=@{@"head":head, @"con":con};
         NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];

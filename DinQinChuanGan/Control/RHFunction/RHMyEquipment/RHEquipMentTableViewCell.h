@@ -9,5 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface RHEquipMentTableViewCell : UITableViewCell
+@property (nonatomic, strong) UIView *colorView;
+@property (nonatomic, strong) UILabel *nameLabel;
+@property (nonatomic, copy) NSArray *deviceList;
+@property (nonatomic, strong) UICollectionView *collectionView;
+
 
 @end

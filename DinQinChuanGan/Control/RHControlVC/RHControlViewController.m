@@ -45,7 +45,6 @@
     [super viewDidLoad];
     [self layoutViews];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeSignIn:) name:@"change" object:nil];
-    
 }
 //处理布局
 - (void)layoutViews {

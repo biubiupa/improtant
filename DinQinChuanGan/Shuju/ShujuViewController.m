@@ -25,6 +25,7 @@
 
 #pragma mark - layoutViews
 - (void)layoutViews {
+    
     self.view.backgroundColor=WhiteColor;
     PNBarChart *barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 200)];
     //设置x的值
