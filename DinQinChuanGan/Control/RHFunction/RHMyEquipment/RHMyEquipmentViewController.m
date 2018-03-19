@@ -24,6 +24,7 @@
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic, copy) NSArray *areaList;
 @property (nonatomic, copy) NSArray *deviceList;
+@property (nonatomic, strong) RHEquipMessageViewController *equipMsgVC;
 
 @end
 
@@ -33,6 +34,7 @@ static NSString *identifier=@"cell";
 #pragma mark - viewDidLoad
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushToVC:) name:@"push" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -70,6 +72,7 @@ static NSString *identifier=@"cell";
         [self.scrollView addSubview:button];
     
     }
+    self.equipMsgVC=[RHEquipMessageViewController new];
 }
 
 
@@ -122,6 +125,8 @@ static NSString *identifier=@"cell";
     }
 }
 
+
+
 #pragma mark - 事件处理
 //切换按钮时，背景色以及字体颜色的改变（按钮多时）
 - (void)btnChangeState:(UIButton *)sender {
@@ -161,14 +166,17 @@ static NSString *identifier=@"cell";
     }];
 }
 
-//设备详细信息
+//添加设备
 - (void)rightAction {
-    self.hidesBottomBarWhenPushed=YES;
-    [self.navigationController pushViewController:[RHEquipMessageViewController new] animated:YES];
+   
 //    [self.navigationController pushViewController:[RHEquipStandardViewController new] animated:YES];
 
 }
-
+//接受通知后的事件处理(设备详细信息)
+- (void)pushToVC:(NSNotification *)notification {
+    self.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:self.equipMsgVC animated:YES];
+}
 
 
 #pragma mark - lazyload
@@ -224,6 +232,10 @@ static NSString *identifier=@"cell";
     return equipPara;
 }
 
+//移除通知
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"push" object:nil];
+}
 
 
 @end

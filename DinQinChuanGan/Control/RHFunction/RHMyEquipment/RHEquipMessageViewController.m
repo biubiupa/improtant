@@ -19,11 +19,20 @@
 @property (nonatomic, strong) UILabel *equipNum;
 @property (nonatomic, strong) UILabel *statu;
 @property (nonatomic, strong) UILabel *describe;
+@property (nonatomic, copy) NSArray *arrAll;
 @property (nonatomic, copy) NSArray *arrZero;
 @property (nonatomic, copy) NSArray *arrOne;
+@property (nonatomic, copy) NSArray *arrTwo;
+@property (nonatomic, copy) NSArray *arrThree;
 @property (nonatomic, strong) UISlider *slider;
 @property (nonatomic, strong) UIView *rightView;
 @property (nonatomic, copy) NSArray *basicarr;
+@property (nonatomic, copy) NSArray *sectionTitle;
+@property (nonatomic, strong) UIView *footerView;
+@property (nonatomic, strong) UIImageView *lastImgView;
+@property (nonatomic, strong) UILabel *lastLabel;
+@property (nonatomic, strong) UIButton *lastBtn;
+@property (nonatomic, strong) UIButton *deletBtn;
 
 
 @end
@@ -44,6 +53,26 @@ static NSString *identifier=@"cell";
     self.view.backgroundColor=[UIColor whiteColor];
     self.navigationItem.title=@"设备";
     [self.view addSubview:self.tableView];
+    self.tableView.tableFooterView=self.footerView;
+    [self.footerView addSubview:self.lastBtn];
+    [self.footerView addSubview:self.deletBtn];
+    [self.lastBtn addSubview:self.lastLabel];
+    [self.lastLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(100, 21));
+        make.centerY.equalTo(self.lastBtn);
+        make.left.equalTo(self.lastBtn).with.offset(20);
+    }];
+    [self.lastBtn addSubview:self.lastImgView];
+    [self.lastImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(10, 19));
+        make.centerY.equalTo(self.lastBtn);
+        make.right.equalTo(self.lastBtn).with.offset(-20);
+    }];
+    [self.deletBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH - 60, 45));
+        make.centerX.equalTo(self.footerView);
+        make.bottom.equalTo(self.footerView).with.offset(-70);
+    }];
     [self.bacView addSubview:self.imageView];
     self.tableView.tableHeaderView=self.bacView;
     [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -73,7 +102,7 @@ static NSString *identifier=@"cell";
         make.right.equalTo(self.bacView).with.offset(-17);
         make.top.equalTo(self.bacView).with.offset(67);
     }];
-    
+    self.arrAll=@[self.arrZero, self.arrOne, self.arrTwo, self.arrThree];
 }
 
 #pragma mark - delegate,datasource
@@ -89,28 +118,36 @@ static NSString *identifier=@"cell";
     return 35;
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (section==0) {
-        return @"传感器寿命";
-    }else {
-        return @"基本信息";
-    }
+    return self.sectionTitle[section];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return section == 0 ? 6:4;
+    switch (section) {
+        case 0:
+            return 6;
+            break;
+        case 1:
+            return 10;
+            break;
+        case 2:
+            return 5;
+            break;
+        default:
+            return 4;
+            break;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:identifier];
+    UITableViewCell *cell=[tableView cellForRowAtIndexPath:indexPath];
     if (cell==nil) {
         cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     if (indexPath.section == 0) {
-        cell.textLabel.text=self.arrZero[indexPath.row];
 //        添加控件slider
         [self createSlider];
         [cell.contentView addSubview:self.slider];
@@ -125,13 +162,12 @@ static NSString *identifier=@"cell";
             make.right.equalTo(cell.contentView).with.offset(0);
         }];
     }else {
-        cell.textLabel.text=self.arrOne[indexPath.row];
         cell.textLabel.font=[UIFont systemFontOfSize:15];
 //        添加控件
         UILabel *label=[[UILabel alloc] init];
         label.textColor=[UIColor grayColor];
         label.font=[UIFont systemFontOfSize:14];
-        label.text=self.basicarr[indexPath.row];
+//        label.text=self.basicarr[indexPath.row];
         label.textAlignment=NSTextAlignmentRight;
         [cell.contentView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -140,7 +176,9 @@ static NSString *identifier=@"cell";
             make.centerY.equalTo(cell.contentView);
         }];
     }
+    cell.textLabel.text=self.arrAll[indexPath.section][indexPath.row];
     cell.userInteractionEnabled=NO;
+    cell.textLabel.textAlignment=NSTextAlignmentLeft;
     return cell;
 }
 
@@ -197,9 +235,6 @@ static NSString *identifier=@"cell";
         _tableView.dataSource=self;
         _tableView.backgroundColor=WhiteColor;
         _tableView.sectionHeaderHeight=35;
-        
-        _tableView.tableFooterView=[UIView new];
-//        _tableView.contentInset=UIEdgeInsetsMake(0, 0, 200, 0);
     }
     return _tableView;
 }
@@ -261,6 +296,52 @@ static NSString *identifier=@"cell";
     return _describe;
 }
 
+- (UIView *)footerView {
+    if (!_footerView) {
+        _footerView=[UIView new];
+        _footerView.frame=CGRectMake(0, 0, SCREEN_WIDTH, 350);
+        _footerView.backgroundColor=WhiteColor;
+    }
+    return _footerView;
+}
+
+- (UIButton *)lastBtn {
+    if (!_lastBtn) {
+        _lastBtn=[UIButton buttonWithType:UIButtonTypeSystem];
+        _lastBtn.frame=CGRectMake(0, 41, SCREEN_WIDTH, 41);
+        _lastBtn.backgroundColor=BACKGROUND_COLOR;
+    }
+    return _lastBtn;
+}
+
+- (UILabel *)lastLabel {
+    if (!_lastLabel) {
+        _lastLabel=[[UILabel alloc] init];
+        _lastLabel.font=[UIFont systemFontOfSize:14];
+        _lastLabel.textAlignment=NSTextAlignmentLeft;
+        _lastLabel.text=@"传感器与测量";
+    }
+    return _lastLabel;
+}
+
+- (UIImageView *)lastImgView {
+    if (!_lastImgView) {
+        _lastImgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"back"]];
+    }
+    return _lastImgView;
+}
+
+- (UIButton *)deletBtn {
+    if (!_deletBtn) {
+        _deletBtn=[UIButton buttonWithType:UIButtonTypeSystem];
+        _deletBtn.backgroundColor=[UIColor redColor];
+        [_deletBtn setTitle:@"删除设备" forState:UIControlStateNormal];
+        [_deletBtn setTitleColor:WhiteColor forState:UIControlStateNormal];
+        _deletBtn.layer.cornerRadius=3;
+    }
+    return _deletBtn;
+}
+
 
 
 - (NSArray *)arrZero {
@@ -272,20 +353,38 @@ static NSString *identifier=@"cell";
 
 - (NSArray *)arrOne {
     if (!_arrOne) {
-        _arrOne=@[@"产品名称", @"产品型号", @"尺寸", @"重量"];
+        _arrOne=@[@"产品名称", @"产品型号", @"尺寸", @"重量", @"无限局域地址", @"蓝牙", @"采集频率", @"软件版本", @"制造商", @"生产商"];
     }
     return _arrOne;
 }
 
+- (NSArray *)arrTwo {
+    if (!_arrTwo) {
+        _arrTwo=@[@"无限规格", @"语音播报", @"指示灯", @"显示屏", @"电池"];
+    }
+    return _arrTwo;
+}
+
+- (NSArray *)arrThree {
+    if (!_arrThree) {
+        _arrThree=@[@"材料(包装盒)", @"尺寸(包装盒)", @"接口(配件)", @"特性(配件)"];
+    }
+    return _arrThree;
+}
+
 - (NSArray *)basicarr {
     if (!_basicarr) {
-//        _basicarr=@[@"室内智能空气检测仪", @"MBM200000000", @"155*155*34mm", @"300g"];
         _basicarr=@[@"室内智能空气检测仪", @"MBM200000000", @"155*155*34mm", @"300g"];
-
     }
     return _basicarr;
 }
 
+- (NSArray *)sectionTitle {
+    if (!_sectionTitle) {
+        _sectionTitle=@[@"传感器寿命", @"基本信息", @"其他规格", @"包装和配件"];
+    }
+    return _sectionTitle;
+}
 
 
 

@@ -76,6 +76,12 @@ static NSString *identifier=@"cellid";
     return cell;
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger index=indexPath.row;
+    NSDictionary *dict=@{@"index":@(index)};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"push" object:self userInfo:dict];
+}
+
 #pragma mark - lazyload
 - (UIView *)colorView {
     if (!_colorView) {
