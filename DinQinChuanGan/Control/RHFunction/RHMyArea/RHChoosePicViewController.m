@@ -10,6 +10,7 @@
 #import "Header.h"
 #import "RHDfaultImageViewController.h"
 #import "RHAddAreaViewController.h"
+#import "RHJudgeMethod.h"
 
 
 @interface RHChoosePicViewController ()<UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
@@ -62,21 +63,23 @@
     UIImagePickerController *imagePC=[[UIImagePickerController alloc] init];
     imagePC.delegate=self;
     imagePC.allowsEditing=YES;
-
+//        从相册选取图片
     if (indexPath.row == 2) {
         imagePC.sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
         [self presentViewController:imagePC animated:YES completion:nil];
+//        拍照选取图片
     }else if (indexPath.row == 1) {
         if ([self isFrantCameraAvailable] || [self isRearCameraAvailable]) {
             imagePC.sourceType=UIImagePickerControllerSourceTypeCamera;
             imagePC.showsCameraControls=YES;
-//            imagePC.cameraDevice=UIImagePickerControllerCameraDeviceFront;
             [self presentViewController:imagePC animated:YES completion:nil];
             
         }else {
             NSLog(@"没有摄像头可用！");
         }
     }else {
+//        默认墙纸
+        self.navigationItem.backBarButtonItem=[RHJudgeMethod creatBBIWithTitle:@"返回" Color:CONTROL_COLOR];
         RHDfaultImageViewController *defaultVC=[RHDfaultImageViewController new];
         [self.navigationController pushViewController:defaultVC animated:YES];
     }
@@ -102,8 +105,9 @@
         UIImageWriteToSavedPhotosAlbum(original, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
     }
 
-    
+    [self.navigationController popViewControllerAnimated:YES];
     [picker dismissViewControllerAnimated:YES completion:nil];
+
 }
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
     if (error == nil) {

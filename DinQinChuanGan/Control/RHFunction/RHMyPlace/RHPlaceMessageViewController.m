@@ -10,8 +10,10 @@
 #import "Header.h"
 #import "Masonry.h"
 #import "AFNetworking.h"
+#import "RHDeletePEViewController.h"
+#import "RHJudgeMethod.h"
 
-@interface RHPlaceMessageViewController ()
+@interface RHPlaceMessageViewController ()<UITextFieldDelegate>
 @property (nonatomic, strong) UILabel *placeLabel;
 @property (nonatomic, strong) UILabel *contentLabel;
 @property (nonatomic, strong) UILabel *equipLabel;
@@ -104,26 +106,38 @@
 
 #pragma mark - 删除场所事件
 - (void)deletePlace {
-    UIAlertController *alertController=[UIAlertController alertControllerWithTitle:@"确认删除该场所" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        判断一下设备数是否为0
-        if ([self.equipTF.text integerValue] == 0) {
+    if ([self.equipTF.text integerValue] == 0) {
+        
+        UIAlertController *alertController=[UIAlertController alertControllerWithTitle:@"确认删除该场所" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//            设备数为0，执行删除操作
             [self deleteRequest];
-        }else {
-            UIAlertController *alertCon=[UIAlertController alertControllerWithTitle:@"移除所有设备才可删除" message:nil preferredStyle:UIAlertControllerStyleAlert];
-            [alertCon addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
-            }]];
-            [alertCon addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
-            }]];
-            [self presentViewController:alertCon animated:YES completion:nil];
-        }
-
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }else {
+        RHDeletePEViewController *placeEquipVC=[RHDeletePEViewController new];
+        __weak typeof(self) weakSelf=self;
+        placeEquipVC.placeBlock = ^(NSString *string) {
+            weakSelf.equipTF.text=string;
+        };
+        UIAlertController *alertCon=[UIAlertController alertControllerWithTitle:@"移除所有设备才可删除" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        [alertCon addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//            设备不为0，先删除该场所下所有设备
+            self.navigationItem.backBarButtonItem=[RHJudgeMethod creatBBIWithTitle:@"取消" Color:CONTROL_COLOR];
+            
+            
+            placeEquipVC.placeId=self.placeId;
+            placeEquipVC.stringTitle=self.titles;
+            [self.navigationController pushViewController:placeEquipVC animated:YES];
+            
+        }]];
+        [alertCon addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }]];
+        [self presentViewController:alertCon animated:YES completion:nil];
+    }
     
-    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - 请求删除场所
@@ -138,6 +152,13 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"--error:%@",error);
     }];
+}
+
+#pragma mark - uitextfield代理
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    self.rightBI.tintColor=CONTROL_COLOR;
+    self.rightBI.enabled=YES;
+    return YES;
 }
 
 #pragma mark - 控件初始化
@@ -210,6 +231,8 @@
 - (UIBarButtonItem *)rightBI {
     if (!_rightBI) {
         _rightBI=[[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(upload)];
+        _rightBI.tintColor=LightGrayColor;
+        _rightBI.enabled=NO;
     }
     return _rightBI;
 }
@@ -247,6 +270,7 @@
         UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 16, 41)];
         _placeTF.leftView=view;
         _placeTF.leftViewMode=UITextFieldViewModeAlways;
+        _placeTF.delegate=self;
     }
     return _placeTF;
 }
@@ -260,6 +284,7 @@
         UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 16, 41)];
         _contentTF.leftView=view;
         _contentTF.leftViewMode=UITextFieldViewModeAlways;
+        _contentTF.delegate=self;
     }
     return _contentTF;
 }

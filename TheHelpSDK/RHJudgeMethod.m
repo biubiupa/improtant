@@ -39,6 +39,15 @@
     
 }
 
+//封装返回UIBarButtonItem
++ (UIBarButtonItem *)creatBBIWithTitle:(NSString *)title Color:(UIColor *)color {
+    UIBarButtonItem *backBBI=[[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:nil action:nil];
+    backBBI.tintColor=color;
+
+    return backBBI;
+}
+
+
 
 
 @end

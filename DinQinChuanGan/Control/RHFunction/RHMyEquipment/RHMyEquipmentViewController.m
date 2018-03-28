@@ -7,6 +7,7 @@
 //
 
 #import "RHMyEquipmentViewController.h"
+#import "RHJudgeMethod.h"
 #import "Masonry.h"
 #import "Header.h"
 #import "AFNetworking.h"
@@ -15,8 +16,11 @@
 #import "RHEquipStandardViewController.h"
 #import "RHEquipMentTableViewCell.h"
 
-#define NavBarHeight [self navBarHeight]
+#define NavBarHeight    [self navBarHeight]
 #define TransFormBound  [self transformBound]
+#define BasicsList      responseObject[@"body"][@"basicslist"]
+#define Spelist         responseObject[@"body"][@"spelist"]
+#define Acclist         responseObject[@"body"][@"acclist"]
 
 @interface RHMyEquipmentViewController ()<UITableViewDelegate, UITableViewDataSource,UIScrollViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
@@ -25,6 +29,8 @@
 @property (nonatomic, copy) NSArray *areaList;
 @property (nonatomic, copy) NSArray *deviceList;
 @property (nonatomic, strong) RHEquipMessageViewController *equipMsgVC;
+@property (nonatomic, assign) NSInteger deviceId;
+@property (nonatomic, copy) NSString *parameter;
 
 @end
 
@@ -35,20 +41,24 @@ static NSString *identifier=@"cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushToVC:) name:@"push" object:nil];
+    [self defaultRequest];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self layoutViews];
-    [self defaultRequest];
 }
 
 - (void)layoutViews {
     self.view.backgroundColor=[UIColor redColor];
     self.navigationItem.title=@"我的设备";
+    self.navigationItem.backBarButtonItem=[RHJudgeMethod creatBBIWithTitle:@"取消" Color:CONTROL_COLOR];
+    
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.scrollView];
     UIBarButtonItem *rightBBI=[[UIBarButtonItem alloc] initWithTitle:@"添加设备" style:UIBarButtonItemStylePlain target:self action:@selector(rightAction)];
+    rightBBI.tintColor=CONTROL_COLOR;
     self.navigationItem.rightBarButtonItem=rightBBI;
 //    批量添加按钮
     for (int i = 0; i < self.listArr.count; ++i) {
@@ -103,10 +113,7 @@ static NSString *identifier=@"cell";
     cell.nameLabel.text=self.areaList[indexPath.section][@"areaName"];
     cell.deviceList=self.areaList[indexPath.section][@"deviceList"];
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
-    NSLog(@"%@",cell.deviceList);
     return cell;
-    
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -158,7 +165,6 @@ static NSString *identifier=@"cell";
 - (void)defaultRequest {
     AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
     [manager POST:MANAGE_API parameters:[self equipPara:0] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"%@",responseObject);
         self.areaList=responseObject[@"body"][@"list"];
         [self.tableView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -174,8 +180,49 @@ static NSString *identifier=@"cell";
 }
 //接受通知后的事件处理(设备详细信息)
 - (void)pushToVC:(NSNotification *)notification {
-    self.hidesBottomBarWhenPushed=YES;
-    [self.navigationController pushViewController:self.equipMsgVC animated:YES];
+    self.deviceId=[notification.userInfo[@"deviceId"] integerValue];
+    self.equipMsgVC.deviceId=self.deviceId;
+    self.equipMsgVC.deviceCode=notification.userInfo[@"deviceCode"];
+    AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
+    [manager POST:MANAGE_API parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"%@",responseObject);
+        if (STATUS == 0) {
+//            设备详情页，基本数据
+            self.equipMsgVC.listArr=responseObject[@"body"][@"list"];
+            NSString *deviceName=BasicsList[@"deviceName"];
+            NSString *deviceVersion=BasicsList[@"deviceVersion"];
+            NSString *deviceSize=BasicsList[@"deviceSize"];
+            NSString *deviceWeight=BasicsList[@"deviceWeight"];
+            NSString *wifiAddress=BasicsList[@"wifiAddress"];
+            NSString *bluetooth=BasicsList[@"bluetooth"];
+            NSString *acpuisitionFre=BasicsList[@"acpuisitionFre"];
+            NSString *softwareVer=BasicsList[@"softwareVer"];
+            NSString *manufacturer=BasicsList[@"manufacturer"];
+            NSString *producer=BasicsList[@"producer"];
+            self.equipMsgVC.state=[BasicsList[@"state"] integerValue];
+            self.equipMsgVC.numberDaty=BasicsList[@"numberDaty"];
+            self.equipMsgVC.wifiAdderss=wifiAddress;
+            self.equipMsgVC.basiclistArr=@[deviceName, deviceVersion, deviceSize,deviceWeight,wifiAddress, bluetooth, acpuisitionFre, softwareVer, manufacturer, producer];
+//            设备详情页，其他规格
+            NSString *voiceAnn=Spelist[@"voiceAnn"];
+            NSString *IndicatorLight=Spelist[@"INDICATOR_LIGHT"];
+            NSString *battery=Spelist[@"battery"];
+            NSString *display=Spelist[@"display"];
+            self.equipMsgVC.spelistArr=@[voiceAnn, IndicatorLight, display, battery];
+//            设备详情页,包装和配件
+            NSString *material=Acclist[@"material"];
+            NSString *packagingSize=Acclist[@"packagingSize"];
+            NSString *accInterface=Acclist[@"accInterface"];
+            NSString *features=Acclist[@"features"];
+            self.equipMsgVC.acclistArr=@[material, packagingSize, accInterface, features];
+            self.hidesBottomBarWhenPushed=YES;
+            [self.navigationController pushViewController:self.equipMsgVC animated:YES];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"-----%@",error);
+    }];
+    
+    
 }
 
 
@@ -207,7 +254,7 @@ static NSString *identifier=@"cell";
 }
 
 
-
+//场所设备参数
 - (NSString *)equipPara:(NSInteger)index {
         int placeId=[self.listArr[index][@"placeId"] intValue];
         NSDictionary *head=@{
@@ -230,6 +277,27 @@ static NSString *identifier=@"cell";
         NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
         NSString *equipPara=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     return equipPara;
+}
+
+//设备详情参数
+- (NSString *)parameter {
+    NSDictionary *head=@{
+                         @"aid": @"1and6uu",
+                         @"ver": @"1.0",
+                         @"ln": @"cn",
+                         @"mod": @"ios",
+                         @"de": @"2017-07-13 00:00:00",
+                         @"sync": @1,
+                         @"uuid": @"188111",
+                         @"cmd": @30015,
+                         @"chcode": @" ef19843298ae8f2134f "
+                         };
+    NSDictionary *con=@{@"deviceId": @(self.deviceId)};
+    NSDictionary *dict=@{@"head":head, @"con":con};
+    NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
+    _parameter=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+    return _parameter;
 }
 
 //移除通知

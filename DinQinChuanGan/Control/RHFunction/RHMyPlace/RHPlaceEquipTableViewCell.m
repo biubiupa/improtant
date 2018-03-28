@@ -1,25 +1,25 @@
 //
-//  RHEquipMentTableViewCell.m
+//  RHPlaceEquipTableViewCell.m
 //  DinQinChuanGan
 //
-//  Created by malf on 2018/3/14.
+//  Created by malf on 2018/3/27.
 //  Copyright © 2018年 DST. All rights reserved.
 //
 
-#import "RHEquipMentTableViewCell.h"
+#import "RHPlaceEquipTableViewCell.h"
 #import "Header.h"
-#import "RHEquipCollectionViewCell.h"
 #import "Masonry.h"
+#import "RHPlaceEquipCollectionViewCell.h"
 
-@interface RHEquipMentTableViewCell()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface RHPlaceEquipTableViewCell()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong) UIImageView *imgView;
 @property (nonatomic, strong) UILabel *tipsLabel;
 
 @end
 
-static NSString *identifier=@"cellid";
+@implementation RHPlaceEquipTableViewCell
 
-@implementation RHEquipMentTableViewCell
+static NSString *identifier=@"cellid";
 
 - (void)layoutSubviews {
     [super layoutSubviews];
@@ -63,7 +63,7 @@ static NSString *identifier=@"cellid";
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    RHEquipCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    RHPlaceEquipCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     cell.codeLabel.text=self.deviceList[indexPath.row][@"deviceCode"];
     cell.state=[self.deviceList[indexPath.row][@"state"] integerValue];
     if (cell.state == 1) {
@@ -72,14 +72,14 @@ static NSString *identifier=@"cellid";
         cell.imageView.image=[UIImage imageNamed:@"offline"];
     }
     cell.backgroundColor = BACKGROUND_COLOR;
-
+    
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString *deviceId=self.deviceList[indexPath.row][@"deviceId"];
     NSString *deviceCode=self.deviceList[indexPath.row][@"deviceCode"];
-//    NSInteger index=indexPath.row;
+    //    NSInteger index=indexPath.row;
     NSDictionary *dict=@{@"deviceId":deviceId, @"deviceCode":deviceCode};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"push" object:self userInfo:dict];
 }
@@ -107,11 +107,11 @@ static NSString *identifier=@"cellid";
         UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
         flowLayout.scrollDirection=UICollectionViewScrollDirectionVertical;
         flowLayout.itemSize=CGSizeMake((SCREEN_WIDTH - 40)/3, 87);
-//        flowLayout.sectionInset=UIEdgeInsetsMake(0, 10, 0, 10);
+        //        flowLayout.sectionInset=UIEdgeInsetsMake(0, 10, 0, 10);
         _collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0, 38, SCREEN_WIDTH, [self collectionViewHeight]) collectionViewLayout:flowLayout];
         _collectionView.delegate=self;
         _collectionView.dataSource=self;
-        [_collectionView registerClass:[RHEquipCollectionViewCell class] forCellWithReuseIdentifier:identifier];
+        [_collectionView registerClass:[RHPlaceEquipCollectionViewCell class] forCellWithReuseIdentifier:identifier];
         _collectionView.backgroundColor=WhiteColor;
     }
     return _collectionView;
@@ -143,7 +143,6 @@ static NSString *identifier=@"cellid";
     }
     return _tipsLabel;
 }
-
 
 
 @end

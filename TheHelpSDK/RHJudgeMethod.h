@@ -19,6 +19,9 @@
 //邮箱是否合法
 + (BOOL)checkEmail:(NSString *)email;
 
+//封装返回barbuttonitem
++ (UIBarButtonItem *)creatBBIWithTitle:(NSString *)title Color:(UIColor *)color;
+
 
 
 

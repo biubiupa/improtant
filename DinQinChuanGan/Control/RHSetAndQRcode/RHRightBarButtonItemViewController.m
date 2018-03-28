@@ -48,6 +48,7 @@
     self.view.backgroundColor=[UIColor purpleColor];
     self.navigationItem.title=@"设置";
     UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
+    backItem.tintColor=CONTROL_COLOR;
     self.navigationItem.backBarButtonItem=backItem;
     [self.view addSubview:self.tableView];
     NSUserDefaults *userd=[NSUserDefaults standardUserDefaults];
@@ -135,10 +136,17 @@
         }
     }else {
 //        退出登录
-        self.accountLabel.text=@"";
-        AppDelegate *appdelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
-        [UserDefaults removeObjectForKey:@"userId"];
-        [appdelegate realloc];
+        UIAlertController *alertController=[UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            //        确认后退出
+            self.accountLabel.text=@"";
+            AppDelegate *appdelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
+            [UserDefaults removeObjectForKey:@"userId"];
+            [appdelegate realloc];
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
+        
     }
     
     

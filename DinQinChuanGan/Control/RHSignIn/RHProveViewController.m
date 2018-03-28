@@ -24,6 +24,8 @@
 @property (nonatomic, copy) NSString *parameter;
 @property (nonatomic, assign) BOOL Hiden;
 @property (nonatomic, copy) NSString *confirm;
+@property (nonatomic, copy) NSString *proString;
+@property (nonatomic, copy) NSString *removePara;
 
 
 @end
@@ -35,6 +37,12 @@
     [self layoutViews];
     self.Hiden=0;
     self.confirm=[UserDefaults objectForKey:@"numbers"];
+//    if (self.toolType == 1) {
+//        self.proString=[UserDefaults objectForKey:@"phone"];
+//    }else {
+//        self.proString=[UserDefaults objectForKey:@"mailBox"];
+//    }
+    self.proString=[UserDefaults objectForKey:@"proveString"];
 }
 
 
@@ -100,12 +108,26 @@
 //  绑定点击事件
 - (void)clickBtnAction {
     [self.textField resignFirstResponder];
+    if (self.proString == nil) {
+//        绑定手机
+        [self bindPhoneOrMailBox];
+    }else {
+//        更换手机号
+        [self removePhoneOrMailBox];
+    }
+    
+    
+    
+}
+
+//绑定手机、邮箱
+- (void)bindPhoneOrMailBox {
     AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
     [manager POST:USER_API parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"---%@",MSG);
         
         if (STATUS == 0) {
-            if (self.confirm == nil) {
+            if (self.confirm == nil && self.proString == nil) {
                 NSDictionary *dict=@{@"Hiden":@(0), @"account":self.account, @"corporationNum":self.corporationNum};
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"change" object:self userInfo:dict];
                 [self.navigationController popToRootViewControllerAnimated:YES];
@@ -114,6 +136,7 @@
                     if ([VC isKindOfClass:[RHAccountBDViewController class]]) {
                         [self.navigationController popToViewController:VC animated:YES];
                         [UserDefaults removeObjectForKey:@"numbers"];
+                        [UserDefaults removeObjectForKey:@"proveString"];
                     }
                 }
             }
@@ -122,9 +145,19 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"====error:%@",error);
     }];
-    
 }
 
+//解绑手机
+- (void)removePhoneOrMailBox {
+    AFHTTPSessionManager *managert=[AFHTTPSessionManager manager];
+    [managert POST:USER_API parameters:self.removePara progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if (STATUS == 0) {
+            [self bindPhoneOrMailBox];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"---%@",error);
+    }];
+}
 
 
 
@@ -211,7 +244,7 @@
     return _lineView;
 }
 
-//      request参数设置
+//      request参数设置(绑定)
 - (NSString *)parameter {
     if (!_parameter) {
         NSUserDefaults *userd=[NSUserDefaults standardUserDefaults];
@@ -240,6 +273,31 @@
         _parameter=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     }
     return _parameter;
+}
+
+//解绑
+- (NSString *)removePara {
+    if (!_removePara) {
+        NSDictionary *head=@{
+                             @"aid": @"1and6uu",
+                             @"ver": @"1.0",
+                             @"ln": @"cn",
+                             @"mod": @"ios",
+                             @"de": @"2017-07-13 00:00:00",
+                             @"sync": @1,
+                             @"uuid": @"188111",
+                             @"cmd": @10006,
+                             @"chcode": @" ef19843298ae8f2134f "
+                             };
+        NSDictionary *con=@{
+                            @"userId": UserId,
+                            @"toolType": @(self.toolType)
+                            };
+        NSDictionary *dict=@{@"head":head, @"con":con};
+        NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
+        _removePara=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    }
+    return _removePara;
 }
 
 

@@ -297,7 +297,9 @@
     AFHTTPSessionManager *managerUser=[AFHTTPSessionManager manager];
     [managerUser POST:USER_API parameters:self.userParameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (STATUS == 0) {
+            NSString *userPicture=[NSString stringWithFormat:@"%@",responseObject[@"body"][@"userPicture"]];
             self.corporationNum=[NSString stringWithFormat:@"%@",responseObject[@"body"][@"corporationNum"]];
+            
             //            判断是否已绑定手机
             if ([self.phone isEqualToString:@""] && [self.email isEqualToString:@""]) {
                 UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -308,7 +310,7 @@
                 [self.navigationController pushViewController:bindVC animated:YES];
             }else {
                 //        block逆向传值
-                NSDictionary *dict=@{@"Hiden":@(0), @"account":self.account.text, @"corporationNum":self.corporationNum};
+                NSDictionary *dict=@{@"Hiden":@(0), @"account":self.account.text, @"corporationNum":self.corporationNum, @"userPicture":userPicture};
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"change" object:self userInfo:dict];
                 
 //                self.callbackBlock(self.Hiden, self.account.text, self.corporationNum);

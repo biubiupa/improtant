@@ -53,7 +53,9 @@
     UIBarButtonItem *backBI=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
 //    barBI.tintColor=[UIColor lightGrayColor];
 //    barBI.enabled=NO;
+    barBI.tintColor=CONTROL_COLOR;
     self.rightBI=barBI;
+    backBI.tintColor=CONTROL_COLOR;
     self.navigationItem.rightBarButtonItem=self.rightBI;
     self.navigationItem.backBarButtonItem=backBI;
     self.chooseVC=[RHChoosePicViewController new];

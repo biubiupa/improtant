@@ -14,6 +14,7 @@
 #import "RHAccConViewController.h"
 #import "RHBandEmilViewController.h"
 #import "RHBindAccViewController.h"
+#import "RHJudgeMethod.h"
 
 @interface RHAccountBDViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
@@ -111,6 +112,8 @@ static NSString *identifier=@"cell";
         
     }
     
+    self.navigationItem.backBarButtonItem=[RHJudgeMethod creatBBIWithTitle:@"返回" Color:CONTROL_COLOR];
+    
 }
 
 #pragma mark - 请求邮箱和手机号
@@ -121,6 +124,11 @@ static NSString *identifier=@"cell";
         if (STATUS == 0) {
             self.phone=responseObject[@"body"][@"phone"];
             self.email=responseObject[@"body"][@"mailBox"];
+//            为更换手机号时作判断
+//            [UserDefaults setObject:self.phone forKey:@"phone"];
+//            [UserDefaults setObject:self.email forKey:@"mailBox"];
+//            [UserDefaults synchronize];
+            
             if (!_phone || !_email) {
                 if (!_phone) {
                     _phone=@"未绑定";

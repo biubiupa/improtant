@@ -10,6 +10,8 @@
 #import "AFNetworking.h"
 #import "Masonry.h"
 #import "Header.h"
+#import "RHBindAccViewController.h"
+#import "RHJudgeMethod.h"
 
 @interface RHAccConViewController ()
 @property (nonatomic, copy) NSString *parameter;
@@ -56,12 +58,19 @@
 }
 
 #pragma mark - 点击事件处理
+//解绑
 - (void)removeAcction {
     UIAlertController *alertCon=[UIAlertController alertControllerWithTitle:self.tipStr message:nil preferredStyle:UIAlertControllerStyleAlert];
     [alertCon addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
         [manager POST:USER_API parameters:self.parameter progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            NSLog(@"%@",MSG);
+            if (STATUS == 0) {
+                if (self.toolType == 1) {
+//                    [UserDefaults removeObjectForKey:@"phone"];
+                }else {
+//                    [UserDefaults removeObjectForKey:@"mailBox"];
+                }
+            }
             [self.navigationController popViewControllerAnimated:YES];
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             NSLog(@"%@",error);
@@ -70,6 +79,17 @@
     [alertCon addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
     [self presentViewController:alertCon animated:YES completion:nil];
     
+}
+
+//更换手机号
+- (void)changePhoneNumber {
+    NSString *str=@"changelalala";
+    [UserDefaults setObject:str forKey:@"proveString"];
+    [UserDefaults synchronize];
+    self.navigationItem.backBarButtonItem=[RHJudgeMethod creatBBIWithTitle:@"取消" Color:CONTROL_COLOR];
+    RHBindAccViewController *bindAccVC=[RHBindAccViewController new];
+    bindAccVC.toolType=self.toolType;
+    [self.navigationController pushViewController:bindAccVC animated:YES];
 }
 
 #pragma mark - lazyLoad
@@ -96,6 +116,7 @@
         _changeBtn.layer.cornerRadius=23;
         [_changeBtn setBackgroundImage:[UIImage imageNamed:@"color"] forState:UIControlStateNormal];
         [_changeBtn setTitleColor:WhiteColor forState:UIControlStateNormal];
+        [_changeBtn addTarget:self action:@selector(changePhoneNumber) forControlEvents:UIControlEventTouchUpInside];
     }
     return _changeBtn;
 }

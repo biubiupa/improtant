@@ -104,8 +104,11 @@ static NSString *identifier=@"identifier";
 
 #pragma mark - setSelected
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *dict=@{@"index":@(indexPath.row)};
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"tiaozhuan" object:self userInfo:dict];
+    if (indexPath.row<3) {
+        NSDictionary *dict=@{@"index":@(indexPath.row)};
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"tiaozhuan" object:self userInfo:dict];
+    } 
 }
+
 
 @end

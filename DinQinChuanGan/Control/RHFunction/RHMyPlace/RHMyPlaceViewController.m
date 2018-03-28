@@ -48,6 +48,7 @@ static NSString *identifier=@"identifier";
     self.view.backgroundColor=BACKGROUND_COLOR;
     self.navigationItem.rightBarButtonItem=self.rightBI;
     UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:nil action:nil];
+    backItem.tintColor=CONTROL_COLOR;
     self.navigationItem.backBarButtonItem=backItem;
     [self.view addSubview:self.tableView];
 }
@@ -168,6 +169,7 @@ static NSString *identifier=@"identifier";
 - (UIBarButtonItem *)rightBI {
     if (!_rightBI) {
         _rightBI=[[UIBarButtonItem alloc] initWithTitle:@"添加场所" style:UIBarButtonItemStylePlain target:self action:@selector(addPlace)];
+        _rightBI.tintColor=CONTROL_COLOR;
     }
     return _rightBI;
 }

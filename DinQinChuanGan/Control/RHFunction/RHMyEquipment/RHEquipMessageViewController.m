@@ -7,9 +7,13 @@
 //
 
 #import "RHEquipMessageViewController.h"
+#import "RHJudgeMethod.h"
 #import "AFNetworking.h"
 #import "Masonry.h"
 #import "Header.h"
+#import "RHEquipStandardViewController.h"
+#import "RHSenAndMeaViewController.h"
+#import "RHMoveOneStepViewController.h"
 
 @interface RHEquipMessageViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
@@ -25,14 +29,24 @@
 @property (nonatomic, copy) NSArray *arrTwo;
 @property (nonatomic, copy) NSArray *arrThree;
 @property (nonatomic, strong) UISlider *slider;
+@property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) UIView *rightView;
-@property (nonatomic, copy) NSArray *basicarr;
 @property (nonatomic, copy) NSArray *sectionTitle;
 @property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, strong) UIImageView *lastImgView;
 @property (nonatomic, strong) UILabel *lastLabel;
 @property (nonatomic, strong) UIButton *lastBtn;
 @property (nonatomic, strong) UIButton *deletBtn;
+@property (nonatomic, strong) UIButton *moveBtn;
+@property (nonatomic, strong) UILabel *moveLabel;
+@property (nonatomic, strong) UILabel *moveTolabel;
+@property (nonatomic, strong) UIImageView *moveImgView;
+@property (nonatomic, copy) NSString *deletePara;
+@property (nonatomic, copy) NSString *placePara;
+@property (nonatomic, assign) NSInteger areaId;
+@property (nonatomic, copy) NSString *movePara;
+@property (nonatomic, strong) UIView *maskView;
+@property (nonatomic, strong) UILabel *dayLabel;
 
 
 @end
@@ -46,19 +60,32 @@ static NSString *identifier=@"cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self layoutViews];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moveAction:) name:@"moveEquipment" object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.totalArr=@[self.basiclistArr, self.spelistArr, self.acclistArr];
+    [self.tableView reloadData];
 }
 
 #pragma mark - 处理GUI
 - (void)layoutViews {
     self.view.backgroundColor=[UIColor whiteColor];
     self.navigationItem.title=@"设备";
+    UIBarButtonItem *rightBBI=[[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(done)];
+    rightBBI.tintColor=LightGrayColor;
+    rightBBI.enabled=NO;
+    self.navigationItem.rightBarButtonItem=rightBBI;
+    
     [self.view addSubview:self.tableView];
+//    尾视图
     self.tableView.tableFooterView=self.footerView;
     [self.footerView addSubview:self.lastBtn];
     [self.footerView addSubview:self.deletBtn];
     [self.lastBtn addSubview:self.lastLabel];
     [self.lastLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(100, 21));
+        make.size.mas_equalTo(CGSizeMake(200, 21));
         make.centerY.equalTo(self.lastBtn);
         make.left.equalTo(self.lastBtn).with.offset(20);
     }];
@@ -68,16 +95,48 @@ static NSString *identifier=@"cell";
         make.centerY.equalTo(self.lastBtn);
         make.right.equalTo(self.lastBtn).with.offset(-20);
     }];
+    [self.footerView addSubview:self.moveBtn];
+    [self.moveBtn addSubview:self.moveLabel];
+    [self.moveLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(100, 41));
+        make.centerY.equalTo(self.moveBtn);
+        make.left.equalTo(self.moveBtn).with.offset(20);
+    }];
+    
+    [self.moveBtn addSubview:self.moveImgView];
+    [self.moveImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(10, 19));
+        make.centerY.equalTo(self.moveBtn);
+        make.right.equalTo(self.moveBtn).with.offset(-20);
+    }];
+    [self.moveBtn addSubview:self.moveTolabel];
+    [self.moveTolabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(200, 41));
+        make.centerY.equalTo(self.moveBtn);
+        make.right.equalTo(self.moveImgView).with.offset(-15);
+    }];
     [self.deletBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH - 60, 45));
         make.centerX.equalTo(self.footerView);
         make.bottom.equalTo(self.footerView).with.offset(-70);
     }];
-    [self.bacView addSubview:self.imageView];
+//    头视图
     self.tableView.tableHeaderView=self.bacView;
-    [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.bacView).with.insets(UIEdgeInsetsMake(7, 8, 7, 8));
-    }];
+    //    根据设备状态改变相应空间显示
+    if (self.state == 1) {
+        self.statu.text=@"在线";
+        self.bacView.backgroundColor=WhiteColor;
+        self.describe.text=[NSString stringWithFormat:@"已为您续航%@天",self.numberDaty];
+        self.describe.hidden=NO;
+        [self.bacView addSubview:self.imageView];
+        [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.bacView).with.insets(UIEdgeInsetsMake(7, 8, 7, 8));
+        }];
+    }else {
+        self.statu.text=@"离线";
+        self.describe.hidden=YES;
+        self.bacView.backgroundColor=[UIColor colorWithRed:194.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1.0f];
+    }
     [self.bacView addSubview:self.equipText];
     [self.equipText mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(65, 17));
@@ -103,6 +162,7 @@ static NSString *identifier=@"cell";
         make.top.equalTo(self.bacView).with.offset(67);
     }];
     self.arrAll=@[self.arrZero, self.arrOne, self.arrTwo, self.arrThree];
+
 }
 
 #pragma mark - delegate,datasource
@@ -161,25 +221,65 @@ static NSString *identifier=@"cell";
             make.centerY.equalTo(cell.contentView);
             make.right.equalTo(cell.contentView).with.offset(0);
         }];
+        
+//        测试数据判断(若真实设备数据,则直接执行else)
+        NSString *str=[NSString stringWithFormat:@"%ld", self.listArr.count];
+        if ([str isEqualToString:@"0"]) {
+            self.dayLabel.text=@"--";
+            self.slider.value=0;
+        }else {
+            NSInteger allDays=[self.listArr[indexPath.row][@"sensorTime"] integerValue];
+            NSInteger useDays=[self.listArr[indexPath.row][@"sensorOldTime"] integerValue];
+            NSInteger leftDays=(allDays - useDays);
+            self.dayLabel.text=[NSString stringWithFormat:@"%ld",leftDays];
+            CGFloat value=(CGFloat)useDays/allDays*100;
+            self.slider.value=value;
+        }
+        
     }else {
-        cell.textLabel.font=[UIFont systemFontOfSize:15];
+//        cell.textLabel.font=[UIFont systemFontOfSize:15];
 //        添加控件
-        UILabel *label=[[UILabel alloc] init];
-        label.textColor=[UIColor grayColor];
-        label.font=[UIFont systemFontOfSize:14];
-//        label.text=self.basicarr[indexPath.row];
-        label.textAlignment=NSTextAlignmentRight;
-        [cell.contentView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH, 21));
-            make.right.equalTo(cell.contentView).with.offset(-19);
-            make.centerY.equalTo(cell.contentView);
-        }];
+        if (indexPath.section == 2) {
+            if (indexPath.row != 0) {
+                [self creatLabel];
+                self.label.text=[NSString stringWithFormat:@"%@",self.totalArr[indexPath.section - 1][indexPath.row - 1]];
+                [cell.contentView addSubview:self.label];
+                [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH, 21));
+                    make.right.equalTo(cell.contentView).with.offset(-19);
+                    make.centerY.equalTo(cell.contentView);
+                }];
+            }
+        }else {
+            [self creatLabel];
+            self.label.text=[NSString stringWithFormat:@"%@",self.totalArr[indexPath.section - 1][indexPath.row]];
+            [cell.contentView addSubview:self.label];
+            [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH, 21));
+                make.right.equalTo(cell.contentView).with.offset(-19);
+                make.centerY.equalTo(cell.contentView);
+            }];
+        }
     }
+    
     cell.textLabel.text=self.arrAll[indexPath.section][indexPath.row];
-    cell.userInteractionEnabled=NO;
     cell.textLabel.textAlignment=NSTextAlignmentLeft;
+    if (indexPath.row == 0 && indexPath.section == 2) {
+        cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+        cell.userInteractionEnabled=YES;
+    }else {
+        cell.userInteractionEnabled=NO;
+    }
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    UIBarButtonItem *backBBI=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem=backBBI;
+    self.navigationItem.backBarButtonItem.tintColor=CONTROL_COLOR;
+    
+    [self.navigationController pushViewController:[RHEquipStandardViewController new] animated:YES];
 }
 
 #pragma mark - 事件处理
@@ -188,13 +288,28 @@ static NSString *identifier=@"cell";
     UISlider *slider=[[UISlider alloc] init];
     slider.minimumValue=0;
     slider.maximumValue=100;
-    slider.value=50;
 //    slider.minimumTrackTintColor=[UIColor colorWithRed:12/255.0 green:167/255.0 blue:60/255.0 alpha:1.0f];
 //    slider.maximumTrackTintColor=[UIColor lightGrayColor];
-    [slider setMinimumTrackImage:[UIImage imageNamed:@"greenimg"] forState:UIControlStateNormal];
-    [slider setMaximumTrackImage:[UIImage imageNamed:@"grayimg"] forState:UIControlStateNormal];
-    [slider setThumbImage:[UIImage imageNamed:@"thumbimg"] forState:UIControlStateNormal];
+    if (self.state == 1) {
+        [slider setMinimumTrackImage:[UIImage imageNamed:@"greenimg"] forState:UIControlStateNormal];
+        [slider setMaximumTrackImage:[UIImage imageNamed:@"grayimg"] forState:UIControlStateNormal];
+        [slider setThumbImage:[UIImage imageNamed:@"thumbimg"] forState:UIControlStateNormal];
+    }else {
+        [slider setMinimumTrackImage:[UIImage imageNamed:@"heavygray"] forState:UIControlStateNormal];
+        [slider setMaximumTrackImage:[UIImage imageNamed:@"grayimg"] forState:UIControlStateNormal];
+        [slider setThumbImage:[UIImage imageNamed:@"thumbimg"] forState:UIControlStateNormal];
+    }
+    
     self.slider=slider;
+}
+
+//空间label
+- (void)creatLabel {
+    UILabel *label=[[UILabel alloc] init];
+    label.textColor=[UIColor grayColor];
+    label.font=[UIFont systemFontOfSize:14];
+    label.textAlignment=NSTextAlignmentRight;
+    self.label=label;
 }
 
 //cell右视图
@@ -202,7 +317,6 @@ static NSString *identifier=@"cell";
     UIView *view=[UIView new];
     UILabel *dayLabel=[[UILabel alloc] init];
     dayLabel.font=[UIFont systemFontOfSize:15];
-    dayLabel.text=@"190";
     dayLabel.textAlignment=NSTextAlignmentCenter;
     [view addSubview:dayLabel];
     [dayLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -210,10 +324,19 @@ static NSString *identifier=@"cell";
         make.top.equalTo(view).with.offset(15);
         make.right.equalTo(view).with.offset(-14);
     }];
-
+    self.dayLabel=dayLabel;
+    
     UILabel *otherLabel=[[UILabel alloc]  init];
     otherLabel.font=[UIFont systemFontOfSize:12];
     otherLabel.text=@"剩余时间(天)";
+    if (self.state == 1) {
+        otherLabel.textColor=[UIColor blackColor];
+        self.dayLabel.textColor=[UIColor blackColor];
+    }else {
+//        otherLabel.textColor=[UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0f];
+        otherLabel.textColor=LightGrayColor;
+        self.dayLabel.textColor=LightGrayColor;
+    }
     otherLabel.textAlignment=NSTextAlignmentCenter;
     [view addSubview:otherLabel];
     [otherLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -221,10 +344,80 @@ static NSString *identifier=@"cell";
         make.top.equalTo(view).with.offset(35);
         make.right.equalTo(view).with.offset(-14);
     }];
+    
     self.rightView=view;
 }
 
+//传感器与测量跳转
+- (void)jumpToVC {
+    RHSenAndMeaViewController *senAndMeaVC=[RHSenAndMeaViewController new];
+    UIBarButtonItem *backBBI=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
+    backBBI.tintColor=CONTROL_COLOR;
+    self.navigationItem.backBarButtonItem=backBBI;
+    senAndMeaVC.deviceCode=self.deviceCode;
+    [self.navigationController pushViewController:senAndMeaVC animated:YES];
+}
 
+//移动设备
+- (void)moveEquipment {
+    AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
+    [manager POST:MANAGE_API parameters:self.placePara progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"%@",responseObject);
+        UIBarButtonItem *backBBI=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:nil action:nil];
+        backBBI.tintColor=CONTROL_COLOR;
+        self.navigationItem.backBarButtonItem=backBBI;
+        
+        RHMoveOneStepViewController *moveOneVC=[RHMoveOneStepViewController new];
+        moveOneVC.placeList=responseObject[@"body"][@"list"];
+        [self.navigationController pushViewController:moveOneVC animated:YES];
+        [moveOneVC.tableView reloadData];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+    }];
+    
+    
+}
+
+//删除设备请求
+- (void)deleteEquipmentRequest {
+    UIAlertController *alertContro=[UIAlertController alertControllerWithTitle:nil message:@"确定删除该设备" preferredStyle:UIAlertControllerStyleAlert];
+    [alertContro addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
+        [manager POST:MANAGE_API parameters:self.deletePara progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSLog(@"%@",MSG);
+            if (STATUS == 0) {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"%@",error);
+        }];
+    }]];
+    [alertContro addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    }]];
+    
+    [self presentViewController:alertContro animated:YES completion:nil];
+}
+
+//通知处理事件
+- (void)moveAction:(NSNotification *)notification {
+    self.navigationItem.rightBarButtonItem.tintColor=CONTROL_COLOR;
+    self.navigationItem.rightBarButtonItem.enabled=YES;
+    NSString *name=notification.userInfo[@"name"];
+    self.moveTolabel.text=name;
+    self.areaId=[notification.userInfo[@"areaId"] integerValue];
+}
+
+//右BBI事件处理
+- (void)done {
+//    我要开始移动设备了
+    AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
+    [manager POST:MANAGE_API parameters:self.movePara progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"%@",MSG);
+        [self.navigationController popViewControllerAnimated:YES];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"---%@",error);
+    }];
+}
 
 
 #pragma mark - lazyLoad
@@ -241,7 +434,6 @@ static NSString *identifier=@"cell";
 - (UIView *)bacView {
     if (!_bacView) {
         _bacView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 116)];
-        _bacView.backgroundColor=WhiteColor;
     }
     return _bacView;
 }
@@ -266,7 +458,7 @@ static NSString *identifier=@"cell";
 - (UILabel *)equipNum {
     if (!_equipNum) {
         _equipNum=[[UILabel alloc] init];
-        _equipNum.text=@"0989474738";
+        _equipNum.text=self.deviceCode;
         _equipNum.textColor=WhiteColor;
         _equipNum.font=[UIFont systemFontOfSize:15];
     }
@@ -276,7 +468,6 @@ static NSString *identifier=@"cell";
 - (UILabel *)statu {
     if (!_statu) {
         _statu=[[UILabel alloc] init];
-        _statu.text=@"在线";
         _statu.textColor=WhiteColor;
         _statu.font=[UIFont systemFontOfSize:14];
         _statu.textAlignment=NSTextAlignmentCenter;
@@ -289,7 +480,6 @@ static NSString *identifier=@"cell";
 - (UILabel *)describe {
     if (!_describe) {
         _describe=[[UILabel alloc] init];
-        _describe.text=@"已为您续航900天";
         _describe.textColor=WhiteColor;
         _describe.font=[UIFont systemFontOfSize:14];
     }
@@ -310,6 +500,7 @@ static NSString *identifier=@"cell";
         _lastBtn=[UIButton buttonWithType:UIButtonTypeSystem];
         _lastBtn.frame=CGRectMake(0, 41, SCREEN_WIDTH, 41);
         _lastBtn.backgroundColor=BACKGROUND_COLOR;
+        [_lastBtn addTarget:self action:@selector(jumpToVC) forControlEvents:UIControlEventTouchUpInside];
     }
     return _lastBtn;
 }
@@ -317,11 +508,38 @@ static NSString *identifier=@"cell";
 - (UILabel *)lastLabel {
     if (!_lastLabel) {
         _lastLabel=[[UILabel alloc] init];
-        _lastLabel.font=[UIFont systemFontOfSize:14];
         _lastLabel.textAlignment=NSTextAlignmentLeft;
         _lastLabel.text=@"传感器与测量";
     }
     return _lastLabel;
+}
+
+- (UIButton *)moveBtn {
+    if (!_moveBtn) {
+        _moveBtn=[UIButton buttonWithType:UIButtonTypeSystem];
+        _moveBtn.frame=CGRectMake(0, 92, SCREEN_WIDTH, 41);
+        _moveBtn.backgroundColor=BACKGROUND_COLOR;
+        [_moveBtn addTarget:self action:@selector(moveEquipment) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _moveBtn;
+}
+
+- (UILabel *)moveLabel {
+    if (!_moveLabel) {
+        _moveLabel=[[UILabel alloc] init];
+        _moveLabel.textAlignment=NSTextAlignmentLeft;
+        _moveLabel.text=@"移动设备";
+    }
+    return _moveLabel;
+}
+
+- (UILabel *)moveTolabel {
+    if (!_moveTolabel) {
+        _moveTolabel=[[UILabel alloc] init];
+        _moveTolabel.textAlignment=NSTextAlignmentRight;
+        _moveTolabel.font=[UIFont systemFontOfSize:14];
+    }
+    return _moveTolabel;
 }
 
 - (UIImageView *)lastImgView {
@@ -331,13 +549,21 @@ static NSString *identifier=@"cell";
     return _lastImgView;
 }
 
+- (UIImageView *)moveImgView {
+    if (!_moveImgView) {
+        _moveImgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"back"]];
+    }
+    return _moveImgView;
+}
+
 - (UIButton *)deletBtn {
     if (!_deletBtn) {
         _deletBtn=[UIButton buttonWithType:UIButtonTypeSystem];
-        _deletBtn.backgroundColor=[UIColor redColor];
+        _deletBtn.backgroundColor=DELETEBTN_COLOR;
         [_deletBtn setTitle:@"删除设备" forState:UIControlStateNormal];
         [_deletBtn setTitleColor:WhiteColor forState:UIControlStateNormal];
-        _deletBtn.layer.cornerRadius=3;
+        _deletBtn.layer.cornerRadius=22;
+        [_deletBtn addTarget:self action:@selector(deleteEquipmentRequest) forControlEvents:UIControlEventTouchUpInside];
     }
     return _deletBtn;
 }
@@ -345,9 +571,13 @@ static NSString *identifier=@"cell";
 
 
 - (NSArray *)arrZero {
-    if (!_arrZero) {
-        _arrZero=@[@"PM2.5", @"CO2", @"Temp", @"RH", @"HCHO", @"TVOC"];
-    }
+        NSString  *str=[NSString stringWithFormat:@"%ld",self.listArr.count];
+        if ([str isEqualToString:@"0"]) {
+            _arrZero=@[@"--",@"--",@"--",@"--",@"--",@"--"];
+
+        }else {
+            _arrZero=@[self.listArr[0][@"sensorName"], self.listArr[1][@"sensorName"], self.listArr[1][@"sensorName"], self.listArr[3][@"sensorName"], self.listArr[4][@"sensorName"], self.listArr[5][@"sensorName"]];
+        }
     return _arrZero;
 }
 
@@ -372,12 +602,7 @@ static NSString *identifier=@"cell";
     return _arrThree;
 }
 
-- (NSArray *)basicarr {
-    if (!_basicarr) {
-        _basicarr=@[@"室内智能空气检测仪", @"MBM200000000", @"155*155*34mm", @"300g"];
-    }
-    return _basicarr;
-}
+
 
 - (NSArray *)sectionTitle {
     if (!_sectionTitle) {
@@ -385,6 +610,83 @@ static NSString *identifier=@"cell";
     }
     return _sectionTitle;
 }
+
+- (NSString *)deletePara {
+    NSDictionary *head=@{
+                         @"aid": @"1and6uu",
+                         @"ver": @"1.0",
+                         @"ln": @"cn",
+                         @"mod": @"ios",
+                         @"de": @"2017-07-13 00:00:00",
+                         @"sync": @1,
+                         @"uuid": @"188111",
+                         @"cmd": @30013,
+                         @"chcode": @" ef19843298ae8f2134f "
+                         };
+    NSDictionary *con=@{@"deviceList": @[@{@"deviceCode":self.deviceCode}]};
+    NSDictionary *dict=@{@"head":head, @"con":con};
+    NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
+    _deletePara=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
+    return _deletePara;
+}
+
+- (NSString *)placePara {
+    if (!_placePara) {
+        NSInteger userId=[UserId integerValue];
+        NSDictionary *head=@{
+                             @"aid": @"1and6uu",
+                             @"ver": @"1.0",
+                             @"ln": @"cn",
+                             @"mod": @"ios",
+                             @"de": @"2017-07-13 00:00:00",
+                             @"sync": @1,
+                             @"uuid": @"188111",
+                             @"cmd": @30003,
+                             @"chcode": @" ef19843298ae8f2134f "
+                             };
+        NSDictionary *con=@{@"userId": @(userId)};
+        NSDictionary  *dict=@{@"head":head, @"con":con};
+        
+        NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
+        _placePara=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    }
+    return _placePara;
+}
+
+- (NSString *)movePara {
+    NSInteger userId=[UserId integerValue];
+    
+    NSDictionary *head=@{
+                         @"aid": @"1and6uu",
+                         @"ver": @"1.0",
+                         @"ln": @"cn",
+                         @"mod": @"ios",
+                         @"de": @"2017-07-13 00:00:00",
+                         @"sync": @1,
+                         @"uuid": @"188111",
+                         @"cmd": @30010,
+                         @"chcode": @" ef19843298ae8f2134f "
+                         };
+    NSDictionary *con=@{
+                        @"deviceCode": self.deviceCode,
+                        @"areaId": @(self.areaId),
+                        @"userId": @(userId),
+                        @"operataionType": @(2),
+                        @"wifiAdderss": self.wifiAdderss
+                        };
+    NSDictionary *dict=@{@"head":head, @"con":con};
+    NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
+    _movePara=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
+    return _movePara;
+}
+
+//释放内存
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"moveEquipment" object:nil];
+}
+
 
 
 

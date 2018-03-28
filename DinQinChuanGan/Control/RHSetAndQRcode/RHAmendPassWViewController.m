@@ -23,6 +23,7 @@
 @property (nonatomic, copy) NSString *parameter;
 @property (nonatomic, copy) NSString *oldPassword;
 @property (nonatomic, copy) NSString *newsPassword;
+@property (nonatomic, strong) UIBarButtonItem *rightBBI;
 
 
 @end
@@ -41,11 +42,22 @@
     self.edgesForExtendedLayout=UIRectEdgeNone;
     self.view.backgroundColor=BACKGROUND_COLOR;
     self.navigationItem.title=@"重置密码";
-    UIBarButtonItem *rightBBI=[[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(changePassword)];
-    self.navigationItem.rightBarButtonItem=rightBBI;
+    self.rightBBI=[[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(changePassword)];
+    self.rightBBI.tintColor=LightGrayColor;
+    self.rightBBI.enabled=NO;
+    self.navigationItem.rightBarButtonItem=self.rightBBI;
     UIBarButtonItem *backBBI=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem=backBBI;
     //    the year which of 2018 is begin,you must be very hard,ok?fighting!believe your self;
+    
+    UIView *oneview=[UIView new];
+    oneview.backgroundColor=BACKGROUND_COLOR;
+    UIView *twoview=[UIView new];
+    twoview.backgroundColor=BACKGROUND_COLOR;
+    UIView *threeview=[UIView new];
+    threeview.backgroundColor=BACKGROUND_COLOR;
+    
+    
     [self.view addSubview: self.bacView];
     [self.bacView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT - 10));
@@ -82,10 +94,42 @@
         make.left.equalTo(self.bacView).with.offset(20);
         make.top.equalTo(self.bacView).with.offset(180);
     }];
+    [self.bacView addSubview:oneview];
+    [oneview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH - 40, 1));
+        make.centerX.equalTo(self.bacView);
+        make.top.equalTo(self.bacView).with.offset(82);
+    }];
+    [self.bacView addSubview:twoview];
+    [twoview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH - 40, 1));
+        make.centerX.equalTo(self.bacView);
+        make.top.equalTo(self.bacView).with.offset(123);
+    }];
+    [self.bacView addSubview:threeview];
+    [threeview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH - 40, 1));
+        make.centerX.equalTo(self.bacView);
+        make.top.equalTo(self.bacView).with.offset(164);
+    }];
+    
+    
     
 }
 
-#pragma mark - events
+#pragma mark - uitextfielddelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    self.rightBBI.tintColor=CONTROL_COLOR;
+    self.rightBBI.enabled=YES;
+    return YES;
+}
+
+#pragma mark - 事件处理
 //请求修改密码
 - (void)changePassword {
     if ([self.confirmTF.text isEqualToString:self.newsPsTF.text]) {
@@ -116,36 +160,6 @@
 }
 
 #pragma mark - lazyLoad
-
-- (NSString *)parameter {
-    if (!_parameter) {
-        NSUserDefaults *user=[NSUserDefaults standardUserDefaults];
-        NSString *str=[user objectForKey:@"userId"];
-        NSInteger userId=[str integerValue];
-        NSDictionary *head=@{
-            @"aid": @"1and6uu",
-            @"ver": @"1.0",
-            @"ln": @"cn",
-            @"mod": @"ios",
-            @"de": @"2017-11-14 00:00:00",
-            @"sync": @1,
-            @"uuid": @"188111",
-            @"cmd": @10002,
-            @"chcode": @" ef19843298ae8f2134f "
-            };
-        self.oldPassword=[self MD5:self.oldsPsTF.text];
-        self.newsPassword=[self MD5:self.newsPsTF.text];
-        NSDictionary *con=@{
-                            @"passwordold": self.oldPassword,
-                            @"passwordnew": self.newsPassword,
-                            @"userId": @(userId)
-                            };
-        NSDictionary *dict=@{@"head":head, @"con":con};
-        NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
-        _parameter=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    }
-    return _parameter;
-}
 
 - (UIView *)bacView {
     if (!_bacView) {
@@ -183,6 +197,7 @@
         [leftView addSubview:label];
         _oldsPsTF.leftView=leftView;
         _oldsPsTF.leftViewMode=UITextFieldViewModeAlways;
+        _oldsPsTF.delegate=self;
     }
     return _oldsPsTF;
 }
@@ -197,6 +212,7 @@
         [leftView addSubview:label];
         _newsPsTF.leftView=leftView;
         _newsPsTF.leftViewMode=UITextFieldViewModeAlways;
+        _newsPsTF.delegate=self;
     }
     return _newsPsTF;
 }
@@ -211,6 +227,7 @@
         _confirmTF.placeholder=@"请再次输入登录密码";
         _confirmTF.leftView=leftView;
         _confirmTF.leftViewMode=UITextFieldViewModeAlways;
+        _confirmTF.delegate=self;
     }
     return _confirmTF;
 }
@@ -223,6 +240,37 @@
         _tipsLabel.font=[UIFont systemFontOfSize:10];
     }
     return _tipsLabel;
+}
+
+//参数
+- (NSString *)parameter {
+    if (!_parameter) {
+        NSUserDefaults *user=[NSUserDefaults standardUserDefaults];
+        NSString *str=[user objectForKey:@"userId"];
+        NSInteger userId=[str integerValue];
+        NSDictionary *head=@{
+                             @"aid": @"1and6uu",
+                             @"ver": @"1.0",
+                             @"ln": @"cn",
+                             @"mod": @"ios",
+                             @"de": @"2017-11-14 00:00:00",
+                             @"sync": @1,
+                             @"uuid": @"188111",
+                             @"cmd": @10002,
+                             @"chcode": @" ef19843298ae8f2134f "
+                             };
+        self.oldPassword=[self MD5:self.oldsPsTF.text];
+        self.newsPassword=[self MD5:self.newsPsTF.text];
+        NSDictionary *con=@{
+                            @"passwordold": self.oldPassword,
+                            @"passwordnew": self.newsPassword,
+                            @"userId": @(userId)
+                            };
+        NSDictionary *dict=@{@"head":head, @"con":con};
+        NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
+        _parameter=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    }
+    return _parameter;
 }
 
 

@@ -106,6 +106,7 @@
 - (UIBarButtonItem *)rightBI {
     if (!_rightBI) {
         _rightBI=[[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(actionBack)];
+        _rightBI.tintColor=CONTROL_COLOR;
     }
     return _rightBI;
 }

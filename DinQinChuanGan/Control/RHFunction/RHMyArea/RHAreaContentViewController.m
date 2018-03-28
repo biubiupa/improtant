@@ -13,6 +13,7 @@
 #import "RHChoosePicViewController.h"
 #import "UIImageView+WebCache.m"
 #import "RHMoveToViewController.h"
+#import "RHDeleteAreaEquipViewController.h"
 
 @interface RHAreaContentViewController ()<UIScrollViewDelegate,UITextFieldDelegate>
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -43,6 +44,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self layoutViews];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeDefaultImg:) name:@"imgurl" object:nil];
 }
 
 #pragma mark - 控件，视图处理
@@ -51,6 +53,7 @@
     self.edgesForExtendedLayout=UIRectEdgeNone;
     self.navigationItem.title=self.titleN;
     UIBarButtonItem *backBI=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:nil action:nil];
+    backBI.tintColor=CONTROL_COLOR;
     self.navigationItem.backBarButtonItem=backBI;
     self.navigationItem.rightBarButtonItem=self.rightBI;
     
@@ -150,22 +153,31 @@
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    self.rightBI.tintColor=DEFAULTCOLOR;
+    self.rightBI.tintColor=CONTROL_COLOR;
     self.rightBI.enabled=YES;
     
     return YES;
 }
 
 #pragma mark - 更换背景/移动区域/删除区域/编辑保存
+//更换为默认背景
+- (void)changeDefaultImg:(NSNotification *)notification {
+    NSString *urlString=notification.userInfo[@"imgurl"];
+    [self.imageView sd_setImageWithURL:[NSURL URLWithString:urlString]];
+    self.rightBI.tintColor=CONTROL_COLOR;
+    self.rightBI.enabled=YES;
+}
+
 //更换背景
 - (void)changeBacImage {
     __weak typeof(self) weakSelf=self;
     RHChoosePicViewController *chooseVC=[RHChoosePicViewController new];
     chooseVC.block = ^(UIImage *image) {
         weakSelf.imageView.image=image;
+        self.rightBI.tintColor=CONTROL_COLOR;
+        self.rightBI.enabled=YES;
     };
-    self.rightBI.tintColor=DEFAULTCOLOR;
-    self.rightBI.enabled=YES;
+    
     [self.navigationController pushViewController:chooseVC animated:YES];
 }
 
@@ -188,21 +200,33 @@
 
 //删除区域
 - (void)deleteAreaRequest {
-    UIAlertController *alertController=[UIAlertController alertControllerWithTitle:@"确认删除该区域" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        if ([self.equipTF.text intValue] == 0) {
+//    设备为0台，可以直接删除设备
+    
+    if ([self.equipTF.text intValue] == 0) {
+        UIAlertController *alertController=[UIAlertController alertControllerWithTitle:@"确认删除该区域" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self httpRequest];
-        }else {
-            UIAlertController *alertCon=[UIAlertController alertControllerWithTitle:@"移除所有设备才可删除" message:nil preferredStyle:UIAlertControllerStyleAlert];
-            [alertCon addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                
-            }]];
-            [alertCon addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
-            [self presentViewController:alertCon animated:YES completion:nil];
-        }
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
-    [self presentViewController:alertController animated:YES completion:nil];
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
+//        有设备，先删除设备
+    }else {
+        RHDeleteAreaEquipViewController *areaEquipVC=[RHDeleteAreaEquipViewController new];
+        __weak typeof(self) weakSelf=self;
+        areaEquipVC.backBlock = ^(NSString *zeroStr) {
+            weakSelf.equipTF.text=zeroStr;
+        };
+        UIAlertController *alertCon=[UIAlertController alertControllerWithTitle:@"移除所有设备才可删除" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        [alertCon addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            areaEquipVC.itemTitle=self.titleN;
+            areaEquipVC.areaId=self.areaId;
+            [self.navigationController pushViewController:areaEquipVC animated:YES];
+            
+        }]];
+        [alertCon addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+        [self presentViewController:alertCon animated:YES completion:nil];
+    }
+    
 }
 //删除区域事件
 - (void)httpRequest {
@@ -481,7 +505,9 @@
     return _surverPara;
 }
 
-
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"imgurl" object:nil];
+}
 
 
 

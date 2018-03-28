@@ -8,6 +8,7 @@
 
 #import "RHMyAreaViewController.h"
 #import "Header.h"
+#import "Masonry.h"
 #import "MJRefresh.h"
 #import "AFNetworking.h"
 #import "RHAddAreaViewController.h"
@@ -25,6 +26,7 @@
 @property (nonatomic, copy) NSMutableArray *areaList;
 @property (nonatomic, copy) NSArray *arr;
 @property (nonatomic, assign) NSInteger areaId;
+@property (nonatomic, strong) UIImageView *dropImageView;
 
 
 
@@ -74,16 +76,22 @@ static NSString *ident=@"ident";
     [dropBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [dropBtn addTarget:self action:@selector(clickDropOrPick) forControlEvents:UIControlEventTouchUpInside];
     self.dropBtn=dropBtn;
-//    UIImageView *imgview=[[UIImageView alloc] initWithFrame:CGRectMake(150, 0, 50, 50)];
-//    imgview.image=[UIImage imageNamed:@"online"];
-//    [self.dropBtn addSubview:imgview];
+    [self.dropBtn addSubview:self.dropImageView];
+    [self.dropImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(13, 7));
+        make.centerY.equalTo(self.dropBtn);
+        make.right.equalTo(self.dropBtn).with.offset(15);
+    }];
     
     self.navigationItem.titleView=self.dropBtn;
 //    添加区域
     UIBarButtonItem *rightBI=[[UIBarButtonItem alloc] initWithTitle:@"添加区域" style:UIBarButtonItemStylePlain target:self action:@selector(addAreaAction)];
-    UIBarButtonItem *backBI=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem=backBI;
+    [rightBI setTintColor:CONTROL_COLOR];
     self.navigationItem.rightBarButtonItem=rightBI;
+
+    UIBarButtonItem *backBI=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
+    backBI.tintColor=CONTROL_COLOR;
+    self.navigationItem.backBarButtonItem=backBI;
     
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.markView];
@@ -196,7 +204,10 @@ static NSString *ident=@"ident";
 - (void)dropDownAnimation {
     CGRect frame=self.listView.frame;
     frame.size.height=self.dropBtn.frame.size.height * self.list.count;
+    CGAffineTransform transform=CGAffineTransformMakeRotation(M_PI);
+
     [UIView animateWithDuration:0.3 animations:^{
+        self.dropImageView.transform=transform;
         self.listView.frame=frame;
         self.markView.alpha=0.5;
         self.markView.backgroundColor=[UIColor lightGrayColor];
@@ -209,7 +220,10 @@ static NSString *ident=@"ident";
 - (void)pickUpAnimation {
     CGRect frame=self.listView.frame;
     frame.size.height=0;
+    CGAffineTransform transform=CGAffineTransformMakeRotation(0);
+
     [UIView animateWithDuration:0.3 animations:^{
+        self.dropImageView.transform=transform;
         self.listView.frame=frame;
         self.markView.alpha=0;
         self.markView.userInteractionEnabled=YES;
@@ -280,6 +294,14 @@ static NSString *ident=@"ident";
         _markView.alpha=0;
     }
     return _markView;
+}
+
+- (UIImageView *)dropImageView {
+    if (!_dropImageView) {
+        _dropImageView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"drop"]];
+        _dropImageView.transform=CGAffineTransformMakeRotation(0);
+    }
+    return _dropImageView;
 }
 
 //区域列表请求参数

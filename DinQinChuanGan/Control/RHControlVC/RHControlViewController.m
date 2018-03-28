@@ -10,6 +10,7 @@
 #import "Header.h"
 #import "Masonry.h"
 #import "AFNetworking.h"
+#import "UIImageView+WebCache.h"
 #import "WRNavigationBar.h"
 #import "WRCustomNavigationBar.h"
 #import "ControlTableViewCell.h"
@@ -18,10 +19,11 @@
 #import "RHMyPlaceViewController.h"
 #import "RHMyAreaViewController.h"
 #import "RHMyEquipmentViewController.h"
+#import "RHJudgeMethod.h"
 
 #define CONTROL_COLOR [UIColor colorWithRed:114.0/255.0 green:132.0/255.0 blue:235.0/255.0 alpha:1.0]
 
-@interface RHControlViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface RHControlViewController ()<UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *topView;
 @property (nonatomic, strong) UIView *backgroundView;
@@ -32,10 +34,16 @@
 @property (nonatomic, strong) ControlTableViewCell *cellTwo;
 @property (nonatomic, strong) RHMyAreaViewController *areaVC;
 @property (nonatomic, strong) RHMyPlaceViewController *placeVC;
-@property (nonatomic, strong) RHRightBarButtonItemViewController *setVC;
+//@property (nonatomic, strong) RHRightBarButtonItemViewController *setVC;
 @property (nonatomic, strong) RHMyEquipmentViewController *equipmentVC;
 @property (nonatomic, copy) NSString *paraPlace;
 @property (nonatomic, copy) NSArray *arr;
+@property (nonatomic, strong) UIButton *iconBtn;
+@property (nonatomic, copy) NSDictionary *surverPara;
+@property (nonatomic, strong) UIImage *editedImage;
+@property (nonatomic, copy) NSString *imageUrl;
+@property (nonatomic, copy) NSString *reviseAccPara;
+@property (nonatomic, copy) NSString *userPicture;
 
 @end
 
@@ -46,15 +54,24 @@
     [self layoutViews];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeSignIn:) name:@"change" object:nil];
 }
+
+#pragma mark - viewWillAppear
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tiaozhuan:) name:@"tiaozhuan" object:nil];
+}
+
 //处理布局
 - (void)layoutViews {
-    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem=backItem;
+    
+    
     self.view.backgroundColor=[UIColor whiteColor];
     [self.view addSubview:self.tableView];
 //    [self.view addSubview:self.topView];
     [self.topView addSubview:self.backgroundView];
-    
+    [self.backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.topView).with.insets(UIEdgeInsetsMake(12, 12, 0, 12));
+    }];
     self.tableView.tableHeaderView=self.topView;
     
     
@@ -65,8 +82,11 @@
         make.top.equalTo(self.backgroundView).with.offset(19);
         make.centerX.equalTo(self.backgroundView);
     }];
-    [self.backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.topView).with.insets(UIEdgeInsetsMake(12, 12, 0, 12));
+    [self.backgroundView addSubview:self.iconBtn];
+    [self.iconBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(62, 62));
+        make.top.equalTo(self.backgroundView).with.offset(19);
+        make.centerX.equalTo(self.backgroundView);
     }];
     //    帐号
     [self.backgroundView addSubview:self.accountLabel];
@@ -78,7 +98,7 @@
     //    企业编号
     [self.backgroundView addSubview:self.numberLabel];
     [self.numberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(120, 16));
+        make.size.mas_equalTo(CGSizeMake(200, 16));
         make.centerX.equalTo(self.iconView);
         make.bottom.equalTo(self.iconView).with.offset(55);
     }];
@@ -100,14 +120,24 @@
     self.iconView.hidden=YES;
     self.accountLabel.hidden=YES;
     self.numberLabel.hidden=YES;
-//    RHMyAreaViewController *areaVC=[RHMyAreaViewController new];
-//    RHMyPlaceViewController *placeVC=[RHMyPlaceViewController new];
-//    RHRightBarButtonItemViewController *setVC=[RHRightBarButtonItemViewController new];
-//    self.equipmentVC=[RHMyEquipmentViewController new];
-//    self.setVC=setVC;
-//    self.areaVC=areaVC;
-//    self.placeVC=placeVC;
+
 }
+//设置导航栏属性
+#pragma mark - 导航栏属性
+- (void)setNavigationBar {
+    //左右buttonitem
+    UIBarButtonItem *rightBI=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"set"] style:UIBarButtonItemStylePlain target:self action:@selector(rightbtnAction)];
+    //    rightBI.tintColor=CONTROL_COLOR;
+    UIBarButtonItem *leftBI=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"qrcode"] style:UIBarButtonItemStylePlain target:self action:nil];
+    //    leftBI.tintColor=CONTROL_COLOR;
+    self.navigationItem.rightBarButtonItem=rightBI;
+    self.navigationItem.leftBarButtonItem=leftBI;
+    //    [self wr_setNavBarBackgroundAlpha:0];
+    self.navigationController.navigationBar.barTintColor=[UIColor whiteColor];
+    self.title=@"管理";
+    [self wr_setStatusBarStyle:UIStatusBarStyleDefault];
+}
+
 #pragma mark - delegate / datasorce
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -133,31 +163,20 @@
     return 450.0;
 }
 
-//设置导航栏属性
-#pragma mark - 导航栏属性
-- (void)setNavigationBar {
-//左右buttonitem
-    UIBarButtonItem *rightBI=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"set"] style:UIBarButtonItemStylePlain target:self action:@selector(rightbtnAction)];
-//    rightBI.tintColor=CONTROL_COLOR;
-    UIBarButtonItem *leftBI=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"qrcode"] style:UIBarButtonItemStylePlain target:self action:nil];
-//    leftBI.tintColor=CONTROL_COLOR;
-    self.navigationItem.rightBarButtonItem=rightBI;
-    self.navigationItem.leftBarButtonItem=leftBI;
-//    [self wr_setNavBarBackgroundAlpha:0];
-    self.navigationController.navigationBar.barTintColor=[UIColor whiteColor];
-    self.title=@"管理";
-    [self wr_setStatusBarStyle:UIStatusBarStyleDefault];
-}
 
-#pragma mark - 设置
+
+#pragma mark - 事件处理
+//右BBI点击进入设置界面
 - (void)rightbtnAction {
     if (UserId) {
-        [self.navigationController pushViewController:self.setVC animated:YES];
+        self.navigationItem.backBarButtonItem=[RHJudgeMethod creatBBIWithTitle:@"返回" Color:CONTROL_COLOR];
+        RHRightBarButtonItemViewController *setVC=[RHRightBarButtonItemViewController new];
+        self.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:setVC animated:YES];
     }
 }
 
-#pragma mark -点击事件
- //button点击事件
+ //登录
 - (void)signInAcction {
     RHSignInViewController *rhVC=[RHSignInViewController new];
     UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -166,12 +185,14 @@
     [self.navigationController pushViewController:rhVC animated:YES];
     self.hidesBottomBarWhenPushed=NO;
 }
-//接收通知后的处理事件
+//接收通知后改变header view的布局视图
 - (void)changeSignIn:(NSNotification *)notification {
     NSDictionary *dict=notification.userInfo;
     BOOL hiden=[dict[@"Hiden"] boolValue];
     NSString *account=dict[@"account"];
     NSString *corporationNum=dict[@"corporationNum"];
+    self.userPicture=dict[@"userPicture"];
+    NSURL *imgUrl=[NSURL URLWithString:self.userPicture];
     self.signInLabel.hidden=!hiden;
     self.signInBtn.hidden=!hiden;
     self.iconView.hidden=hiden;
@@ -179,22 +200,23 @@
     self.numberLabel.hidden=hiden;
     self.accountLabel.text=[NSString stringWithFormat:@"帐号%@",account];
     self.numberLabel.text=[NSString stringWithFormat:@"企业编号%@",corporationNum];
+    self.iconBtn.enabled=YES;
+    [self.iconView sd_setImageWithURL:imgUrl];
 }
-//    跳转
+//    点击item跳转
 - (void)tiaozhuan:(NSNotification *)notification {
+    self.navigationItem.backBarButtonItem=[RHJudgeMethod creatBBIWithTitle:@"返回" Color:CONTROL_COLOR];
+    
     RHMyAreaViewController *areaVC=[RHMyAreaViewController new];
     RHMyPlaceViewController *placeVC=[RHMyPlaceViewController new];
-    RHRightBarButtonItemViewController *setVC=[RHRightBarButtonItemViewController new];
+    
     self.equipmentVC=[RHMyEquipmentViewController new];
-    self.setVC=setVC;
     self.areaVC=areaVC;
     self.placeVC=placeVC;
     
     NSDictionary *dict=notification.userInfo;
     int index=[dict[@"index"] intValue];
     self.arr=@[self.placeVC, self.areaVC, self.equipmentVC];
-    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem=backItem;
     NSUserDefaults *userDef=[NSUserDefaults standardUserDefaults];
     self.userId=[userDef stringForKey:@"userId"];
     if (self.userId) {
@@ -212,28 +234,107 @@
     
 }
 
-#pragma mark - 请求场所列表
-//场所请求参数
-- (NSString *)paraPlace {
-    if (!_paraPlace) {
-        NSDictionary *head=@{
-                             @"aid": @"1and6uu",
-                             @"ver": @"1.0",
-                             @"ln": @"cn",
-                             @"mod": @"ios",
-                             @"de": @"2017-07-13 00:00:00",
-                             @"sync": @1,
-                             @"uuid": @"188111",
-                             @"cmd": @30003,
-                             @"chcode": @" ef19843298ae8f2134f "
-                             };
-        NSDictionary *con=@{@"userId": self.userId};
-        NSDictionary *dict=@{@"head":head, @"con":con};
-        NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
-        _paraPlace=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    }
-    return _paraPlace;
+//自定义头像
+- (void)changeIconImage {
+    UIImagePickerController *imagePC=[[UIImagePickerController alloc] init];
+    imagePC.delegate=self;
+    imagePC.allowsEditing=YES;
+    UIAlertController *alertController=[UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//        确定sourcetype为相机
+        if ([self isFrontCameraAvailable] || [self isRearCameraAvailable]) {
+            imagePC.sourceType=UIImagePickerControllerSourceTypeCamera;
+            [self presentViewController:imagePC animated:YES completion:nil];
+        }else {
+            NSLog(@"相机不可用!");
+        }
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"从手机相册选择" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        imagePC.sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
+        [self presentViewController:imagePC animated:YES completion:nil];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
+    
 }
+
+//判断相机是否可用
+- (BOOL)isFrontCameraAvailable {
+    return [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront];
+}
+
+- (BOOL)isRearCameraAvailable {
+    return [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear];
+}
+
+//取消拍照
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+//确认编辑
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    UIImage *editedImage=[info objectForKey:UIImagePickerControllerEditedImage];
+    UIImage *original=[info objectForKey:UIImagePickerControllerOriginalImage];
+    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        UIImageWriteToSavedPhotosAlbum(original, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+    }
+    self.editedImage=editedImage;
+    [self uploadFile];
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
+    if (error == nil) {
+        NSLog(@"成功保存图片");
+    }
+    else{
+        ///图片未能保存到本地
+    }
+}
+
+//上传图片之资源服务器
+- (void)uploadFile {
+    NSDateFormatter *formatter=[[NSDateFormatter alloc] init];
+    formatter.dateFormat=@"yyyyMMddHHmmSS";
+    NSString *str=[formatter stringFromDate:[NSDate date]];
+    NSData *imageData=UIImageJPEGRepresentation(self.editedImage, 1.0f);
+    NSString *fileName=[NSString stringWithFormat:@"%@.jpeg",str];
+    NSString *mineType=@"image/jpg";
+    if (imageData == nil) {
+        imageData=UIImagePNGRepresentation(self.editedImage);
+        fileName=[NSString stringWithFormat:@"%@.png",str];
+        mineType=@"image/png";
+    }
+    
+    AFHTTPSessionManager *mange=[AFHTTPSessionManager manager];
+    [mange POST:ASSETSERVER_API parameters:self.surverPara constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        [formData appendPartWithFileData:imageData name:@"file" fileName:fileName mimeType:mineType];
+    } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if (STATUS == 0) {
+            self.imageUrl=[NSString stringWithFormat:@"%@",responseObject[@"fileUrl"]];
+            self.iconView.image=self.editedImage;
+            [self reviseAccImageRequest];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"error:%@",error);
+    }];
+}
+
+//把上传的图片和用户ID绑定修改上传
+- (void)reviseAccImageRequest {
+    AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
+    [manager POST:USER_API parameters:self.reviseAccPara progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if (STATUS == 0) {
+            NSLog(@"修改成功");
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"---%@",error);
+    }];
+}
+
+
+#pragma mark - 请求场所列表
+
 - (void)placeRequest {
     AFHTTPSessionManager *manager=[AFHTTPSessionManager manager];
     [manager POST:MANAGE_API parameters:self.paraPlace progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -283,6 +384,8 @@
         _iconView=[[UIImageView alloc] init];
         _iconView.bounds=CGRectMake(0, 0, 62, 62);
         _iconView.image=[UIImage imageNamed:@"cat.jpg"];
+        _iconView.layer.masksToBounds=YES;
+        _iconView.layer.cornerRadius=31;
     }
     return _iconView;
     
@@ -332,12 +435,71 @@
     return _signInBtn;
 }
 
-
-#pragma mark - viewWillAppear
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tiaozhuan:) name:@"tiaozhuan" object:nil];
+//自定义头像按钮
+- (UIButton *)iconBtn {
+    if (!_iconBtn) {
+        _iconBtn=[UIButton buttonWithType:UIButtonTypeSystem];
+        _iconBtn.layer.cornerRadius=31;
+        _iconBtn.enabled=NO;
+        [_iconBtn addTarget:self action:@selector(changeIconImage) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _iconBtn;
 }
+
+//场所请求参数
+- (NSString *)paraPlace {
+    if (!_paraPlace) {
+        NSDictionary *head=@{
+                             @"aid": @"1and6uu",
+                             @"ver": @"1.0",
+                             @"ln": @"cn",
+                             @"mod": @"ios",
+                             @"de": @"2017-07-13 00:00:00",
+                             @"sync": @1,
+                             @"uuid": @"188111",
+                             @"cmd": @30003,
+                             @"chcode": @" ef19843298ae8f2134f "
+                             };
+        NSDictionary *con=@{@"userId": self.userId};
+        NSDictionary *dict=@{@"head":head, @"con":con};
+        NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
+        _paraPlace=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    }
+    return _paraPlace;
+}
+
+//上传资源服务器参数
+- (NSDictionary *)surverPara {
+    if (!_surverPara) {
+        NSInteger userId=[UserId integerValue];
+        _surverPara=@{@"userId":@(userId), @"fileType":@0, @"file":@""};
+    }
+    return _surverPara;
+}
+
+//修改用户信息(参数)
+- (NSString *)reviseAccPara {
+        NSInteger userId=[UserId integerValue];
+        NSDictionary *head=@{
+                             @"aid": @"1and6uu",
+                             @"ver": @"1.0",
+                             @"ln": @"cn",
+                             @"mod": @"ios",
+                             @"de": @"2017-07-13 00:00:00",
+                             @"sync": @1,
+                             @"uuid": @"188111",
+                             @"cmd": @10007,
+                             @"chcode": @" ef19843298ae8f2134f "
+                             };
+        NSDictionary *con=@{@"userId": @(userId),@"userPicture": self.imageUrl};
+        NSDictionary *dict=@{@"head":head, @"con":con};
+        NSData *data=[NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:nil];
+    _reviseAccPara=[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
+    return _reviseAccPara;
+}
+
+
 
 
 
