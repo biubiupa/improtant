@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "Header.h"
-#import "ShujuViewController.h"
+#import "RHShujuViewController.h"
 #import "RHControlViewController.h"
 @interface AppDelegate ()
 @property (nonatomic, copy) NSArray *array;
@@ -22,12 +22,13 @@
     self.window=[[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self realloc];
     [self.window makeKeyAndVisible];
+//    [NSThread sleepForTimeInterval:2.0];
     return YES;
 }
 
 - (void)realloc {
     self.rootTabVC=[[UITabBarController alloc] init];
-    UIViewController *shujuVC=[ShujuViewController new];
+    UIViewController *shujuVC=[RHShujuViewController new];
     UIViewController *controlVC=[RHControlViewController new];
     UINavigationController *controlNav=[[UINavigationController alloc] initWithRootViewController:controlVC];
     UINavigationController *dataNav=[[UINavigationController alloc] initWithRootViewController:shujuVC];
@@ -36,13 +37,13 @@
     self.rootTabVC.viewControllers=self.array;
     self.rootTabVC.tabBar.translucent=NO;
     self.rootTabVC.tabBar.tintColor=CONTROL_COLOR;
-    self.rootTabVC.selectedIndex=1;
+    self.rootTabVC.selectedIndex=0;
 //设置item的图片
     UITabBarItem *item0=[self.rootTabVC.tabBar.items objectAtIndex:0];
     UITabBarItem *item1=[self.rootTabVC.tabBar.items objectAtIndex:1];
 //    UITabBarItem *item2=[self.rootTabVC.tabBar.items objectAtIndex:2];
     item0.title=@"数据";
-    item1.title=@"自动化";
+    item1.title=@"管理";
 //    item2.title=@"管理";
     item0.image=[UIImage imageNamed:@"database"];
     item1.image=[UIImage imageNamed:@"control"];

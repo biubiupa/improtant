@@ -190,7 +190,7 @@
 //        判断是否是移动区域
         if (weakSelf.moveLabel.text != nil) {
             self.placeId=placeId;
-            self.rightBI.tintColor=DEFAULTCOLOR;
+            self.rightBI.tintColor=CONTROL_COLOR;
             self.rightBI.enabled=YES;
         }
         

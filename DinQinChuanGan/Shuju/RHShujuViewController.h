@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ShujuViewController : UIViewController
+@interface RHShujuViewController : UIViewController
 
 
 @end

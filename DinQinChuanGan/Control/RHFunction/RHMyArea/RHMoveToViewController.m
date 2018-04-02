@@ -75,7 +75,7 @@ static NSString *identifier=@"cell";
     cell.textLabel.textColor=CONTROL_COLOR;
     cell.accessoryType=UITableViewCellAccessoryCheckmark;
     self.navigationItem.rightBarButtonItem.enabled=YES;
-    self.navigationItem.rightBarButtonItem.tintColor=DEFAULTCOLOR;
+    self.navigationItem.rightBarButtonItem.tintColor=CONTROL_COLOR;
     self.block(cell.textLabel.text, [self.listArr[indexPath.section][@"placeId"] integerValue]);
 }
 

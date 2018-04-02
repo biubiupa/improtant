@@ -127,9 +127,9 @@
 - (void)setNavigationBar {
     //左右buttonitem
     UIBarButtonItem *rightBI=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"set"] style:UIBarButtonItemStylePlain target:self action:@selector(rightbtnAction)];
-    //    rightBI.tintColor=CONTROL_COLOR;
+        rightBI.tintColor=CONTROL_COLOR;
     UIBarButtonItem *leftBI=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"qrcode"] style:UIBarButtonItemStylePlain target:self action:nil];
-    //    leftBI.tintColor=CONTROL_COLOR;
+        leftBI.tintColor=CONTROL_COLOR;
     self.navigationItem.rightBarButtonItem=rightBI;
     self.navigationItem.leftBarButtonItem=leftBI;
     //    [self wr_setNavBarBackgroundAlpha:0];
@@ -173,6 +173,7 @@
         RHRightBarButtonItemViewController *setVC=[RHRightBarButtonItemViewController new];
         self.hidesBottomBarWhenPushed=YES;
         [self.navigationController pushViewController:setVC animated:YES];
+        self.hidesBottomBarWhenPushed=NO;
     }
 }
 

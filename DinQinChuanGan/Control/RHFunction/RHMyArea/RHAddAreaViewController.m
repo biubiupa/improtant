@@ -119,7 +119,7 @@
 //UITextFieldDelegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     self.rightBI.enabled=YES;
-    self.rightBI.tintColor=DEFAULTCOLOR;
+    self.rightBI.tintColor=CONTROL_COLOR;
     return YES;
 }
 

@@ -197,7 +197,11 @@
 - (void)setTextValue:(float)value
 {
     if (self.attributedFormatBlock != nil) {
-        self.attributedText = self.attributedFormatBlock(value);
+        if (@available(iOS 6.0, *)) {
+            self.attributedText = self.attributedFormatBlock(value);
+        } else {
+            // Fallback on earlier versions
+        }
     }
     else if(self.formatBlock != nil)
     {

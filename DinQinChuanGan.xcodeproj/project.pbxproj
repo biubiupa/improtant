@@ -9,10 +9,6 @@
 /* Begin PBXBuildFile section */
 		02193B2377721D8C6608F586 /* libPods-DinQinChuanGan.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 273F8BF59F656DA022A81BEB /* libPods-DinQinChuanGan.a */; };
 		A20E04A22021A5C5000AB27A /* RHChoosePicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A20E04A12021A5C5000AB27A /* RHChoosePicViewController.m */; };
-		A20E04B12021B2FA000AB27A /* three.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A20E04AD2021B2F9000AB27A /* three.jpeg */; };
-		A20E04B22021B2FA000AB27A /* bacimage.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A20E04AE2021B2F9000AB27A /* bacimage.jpeg */; };
-		A20E04B32021B2FA000AB27A /* one.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A20E04AF2021B2F9000AB27A /* one.jpeg */; };
-		A20E04B42021B2FA000AB27A /* two.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A20E04B02021B2FA000AB27A /* two.jpeg */; };
 		A2112FA61FE27B5A00891A99 /* AutomateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2112FA51FE27B5A00891A99 /* AutomateViewController.m */; };
 		A2112FA91FE27B6A00891A99 /* RHControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2112FA81FE27B6A00891A99 /* RHControlViewController.m */; };
 		A212BDD420085A9000C3941B /* RHAddPlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A212BDD320085A9000C3941B /* RHAddPlaceViewController.m */; };
@@ -28,9 +24,15 @@
 		A23ECB0E2022B22200FA6797 /* RHAreaContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A23ECB0D2022B22200FA6797 /* RHAreaContentViewController.m */; };
 		A243B3D92050CD6B00975E86 /* RHAccountBDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A243B3D82050CD6B00975E86 /* RHAccountBDViewController.m */; };
 		A243B3DF2050DDCD00975E86 /* RHAccountBTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A243B3DE2050DDCD00975E86 /* RHAccountBTableViewCell.m */; };
+		A24701052071CCBC0043AF35 /* more.png in Resources */ = {isa = PBXBuildFile; fileRef = A24701042071CCBC0043AF35 /* more.png */; };
+		A24701082071DAF50043AF35 /* RHIndexCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A24701072071DAF50043AF35 /* RHIndexCollectionViewCell.m */; };
 		A2497950206398590025A2E4 /* RHMoveOneStepViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A249794F206398590025A2E4 /* RHMoveOneStepViewController.m */; };
 		A2497953206398750025A2E4 /* RHMoveTwoStepViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2497952206398750025A2E4 /* RHMoveTwoStepViewController.m */; };
 		A24990221FE8EBB9004B046F /* ControlTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A24990211FE8EBB9004B046F /* ControlTableViewCell.m */; };
+		A24B0226206CB909009A20D1 /* RHIHAITableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A24B0225206CB909009A20D1 /* RHIHAITableViewCell.m */; };
+		A24B0229206CB9B2009A20D1 /* RHAirIndexTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A24B0228206CB9B2009A20D1 /* RHAirIndexTableViewCell.m */; };
+		A24B022C206CB9D0009A20D1 /* RHAirParameterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A24B022B206CB9D0009A20D1 /* RHAirParameterTableViewCell.m */; };
+		A24B022F206CBA2D009A20D1 /* RHPollutionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A24B022E206CBA2D009A20D1 /* RHPollutionTableViewCell.m */; };
 		A250FB862061F3770076B1D0 /* RHSenTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A250FB852061F3770076B1D0 /* RHSenTableViewCell.m */; };
 		A250FB892061F3930076B1D0 /* RHMeasureTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A250FB882061F3930076B1D0 /* RHMeasureTableViewCell.m */; };
 		A255FB612064DD78005DBDB3 /* RHDeleteAreaEquipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A255FB602064DD78005DBDB3 /* RHDeleteAreaEquipViewController.m */; };
@@ -48,9 +50,9 @@
 		A2ABF551204E785800CCA981 /* RHEquipStandardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABF550204E785800CCA981 /* RHEquipStandardViewController.m */; };
 		A2ABF554204E87C100CCA981 /* RHForgotPWViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABF553204E87C100CCA981 /* RHForgotPWViewController.m */; };
 		A2BB686C1FF242B100EB2246 /* RHRightBarButtonItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2BB686B1FF242B100EB2246 /* RHRightBarButtonItemViewController.m */; };
-		A2BBDF5A1FF3985F00CCE9DF /* cat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A2BBDF591FF3985F00CCE9DF /* cat.jpg */; };
 		A2C45B762024660B00387B6D /* RHDfaultImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2C45B752024660B00387B6D /* RHDfaultImageViewController.m */; };
 		A2CEDC031FFF669D009A9CF9 /* RHAmendPassWViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2CEDC021FFF669D009A9CF9 /* RHAmendPassWViewController.m */; };
+		A2CFD4F1206DFE08004459C6 /* RHWaveView.m in Sources */ = {isa = PBXBuildFile; fileRef = A2CFD4F0206DFE08004459C6 /* RHWaveView.m */; };
 		A2D06E341FFC74EF004FB3E4 /* RHBindAccViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2D06E331FFC74EF004FB3E4 /* RHBindAccViewController.m */; };
 		A2E3D1C220074E180076D624 /* RHMyAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E3D1C120074E180076D624 /* RHMyAreaViewController.m */; };
 		A2E3D1C520076F260076D624 /* RHMyEquipmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E3D1C420076F260076D624 /* RHMyEquipmentViewController.m */; };
@@ -58,7 +60,7 @@
 		A2E8450B205A3A2A00959AC3 /* RHEquipCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E8450A205A3A2A00959AC3 /* RHEquipCollectionViewCell.m */; };
 		A2EAA5452057B4DB00E7C89F /* RHMoveToViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EAA5442057B4DB00E7C89F /* RHMoveToViewController.m */; };
 		A2EB2D2C1FE20FCB00B87825 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EB2D2B1FE20FCB00B87825 /* AppDelegate.m */; };
-		A2EB2D2F1FE20FCB00B87825 /* ShujuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EB2D2E1FE20FCB00B87825 /* ShujuViewController.m */; };
+		A2EB2D2F1FE20FCB00B87825 /* RHShujuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EB2D2E1FE20FCB00B87825 /* RHShujuViewController.m */; };
 		A2EB2D321FE20FCB00B87825 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2EB2D301FE20FCB00B87825 /* Main.storyboard */; };
 		A2EB2D341FE20FCB00B87825 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2EB2D331FE20FCB00B87825 /* Assets.xcassets */; };
 		A2EB2D371FE20FCB00B87825 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2EB2D351FE20FCB00B87825 /* LaunchScreen.storyboard */; };
@@ -70,10 +72,6 @@
 		273F8BF59F656DA022A81BEB /* libPods-DinQinChuanGan.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DinQinChuanGan.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A20E04A02021A5C5000AB27A /* RHChoosePicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHChoosePicViewController.h; sourceTree = "<group>"; };
 		A20E04A12021A5C5000AB27A /* RHChoosePicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHChoosePicViewController.m; sourceTree = "<group>"; };
-		A20E04AD2021B2F9000AB27A /* three.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = three.jpeg; path = ImagePictures/three.jpeg; sourceTree = "<group>"; };
-		A20E04AE2021B2F9000AB27A /* bacimage.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = bacimage.jpeg; path = ImagePictures/bacimage.jpeg; sourceTree = "<group>"; };
-		A20E04AF2021B2F9000AB27A /* one.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = one.jpeg; path = ImagePictures/one.jpeg; sourceTree = "<group>"; };
-		A20E04B02021B2FA000AB27A /* two.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = two.jpeg; path = ImagePictures/two.jpeg; sourceTree = "<group>"; };
 		A2112FA41FE27B5A00891A99 /* AutomateViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutomateViewController.h; sourceTree = "<group>"; };
 		A2112FA51FE27B5A00891A99 /* AutomateViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutomateViewController.m; sourceTree = "<group>"; };
 		A2112FA71FE27B6A00891A99 /* RHControlViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHControlViewController.h; sourceTree = "<group>"; };
@@ -104,6 +102,9 @@
 		A243B3D82050CD6B00975E86 /* RHAccountBDViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHAccountBDViewController.m; sourceTree = "<group>"; };
 		A243B3DD2050DDCD00975E86 /* RHAccountBTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHAccountBTableViewCell.h; sourceTree = "<group>"; };
 		A243B3DE2050DDCD00975E86 /* RHAccountBTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHAccountBTableViewCell.m; sourceTree = "<group>"; };
+		A24701042071CCBC0043AF35 /* more.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = more.png; sourceTree = "<group>"; };
+		A24701062071DAF50043AF35 /* RHIndexCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHIndexCollectionViewCell.h; sourceTree = "<group>"; };
+		A24701072071DAF50043AF35 /* RHIndexCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHIndexCollectionViewCell.m; sourceTree = "<group>"; };
 		A249794E206398590025A2E4 /* RHMoveOneStepViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHMoveOneStepViewController.h; sourceTree = "<group>"; };
 		A249794F206398590025A2E4 /* RHMoveOneStepViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHMoveOneStepViewController.m; sourceTree = "<group>"; };
 		A2497951206398750025A2E4 /* RHMoveTwoStepViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHMoveTwoStepViewController.h; sourceTree = "<group>"; };
@@ -111,6 +112,14 @@
 		A24990201FE8EBB9004B046F /* ControlTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControlTableViewCell.h; sourceTree = "<group>"; };
 		A24990211FE8EBB9004B046F /* ControlTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ControlTableViewCell.m; sourceTree = "<group>"; };
 		A24990271FE911CF004B046F /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
+		A24B0224206CB909009A20D1 /* RHIHAITableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHIHAITableViewCell.h; sourceTree = "<group>"; };
+		A24B0225206CB909009A20D1 /* RHIHAITableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHIHAITableViewCell.m; sourceTree = "<group>"; };
+		A24B0227206CB9B2009A20D1 /* RHAirIndexTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHAirIndexTableViewCell.h; sourceTree = "<group>"; };
+		A24B0228206CB9B2009A20D1 /* RHAirIndexTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHAirIndexTableViewCell.m; sourceTree = "<group>"; };
+		A24B022A206CB9D0009A20D1 /* RHAirParameterTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHAirParameterTableViewCell.h; sourceTree = "<group>"; };
+		A24B022B206CB9D0009A20D1 /* RHAirParameterTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHAirParameterTableViewCell.m; sourceTree = "<group>"; };
+		A24B022D206CBA2D009A20D1 /* RHPollutionTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHPollutionTableViewCell.h; sourceTree = "<group>"; };
+		A24B022E206CBA2D009A20D1 /* RHPollutionTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHPollutionTableViewCell.m; sourceTree = "<group>"; };
 		A250FB842061F3770076B1D0 /* RHSenTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHSenTableViewCell.h; sourceTree = "<group>"; };
 		A250FB852061F3770076B1D0 /* RHSenTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHSenTableViewCell.m; sourceTree = "<group>"; };
 		A250FB872061F3930076B1D0 /* RHMeasureTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHMeasureTableViewCell.h; sourceTree = "<group>"; };
@@ -145,11 +154,12 @@
 		A2ABF553204E87C100CCA981 /* RHForgotPWViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHForgotPWViewController.m; sourceTree = "<group>"; };
 		A2BB686A1FF242B100EB2246 /* RHRightBarButtonItemViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHRightBarButtonItemViewController.h; sourceTree = "<group>"; };
 		A2BB686B1FF242B100EB2246 /* RHRightBarButtonItemViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHRightBarButtonItemViewController.m; sourceTree = "<group>"; };
-		A2BBDF591FF3985F00CCE9DF /* cat.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cat.jpg; sourceTree = "<group>"; };
 		A2C45B742024660B00387B6D /* RHDfaultImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHDfaultImageViewController.h; sourceTree = "<group>"; };
 		A2C45B752024660B00387B6D /* RHDfaultImageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHDfaultImageViewController.m; sourceTree = "<group>"; };
 		A2CEDC011FFF669D009A9CF9 /* RHAmendPassWViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHAmendPassWViewController.h; sourceTree = "<group>"; };
 		A2CEDC021FFF669D009A9CF9 /* RHAmendPassWViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHAmendPassWViewController.m; sourceTree = "<group>"; };
+		A2CFD4EF206DFE08004459C6 /* RHWaveView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHWaveView.h; sourceTree = "<group>"; };
+		A2CFD4F0206DFE08004459C6 /* RHWaveView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHWaveView.m; sourceTree = "<group>"; };
 		A2D06E321FFC74EF004FB3E4 /* RHBindAccViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHBindAccViewController.h; sourceTree = "<group>"; };
 		A2D06E331FFC74EF004FB3E4 /* RHBindAccViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHBindAccViewController.m; sourceTree = "<group>"; };
 		A2E3D1C020074E180076D624 /* RHMyAreaViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHMyAreaViewController.h; sourceTree = "<group>"; };
@@ -165,8 +175,8 @@
 		A2EB2D271FE20FCB00B87825 /* DinQinChuanGan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DinQinChuanGan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2EB2D2A1FE20FCB00B87825 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A2EB2D2B1FE20FCB00B87825 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		A2EB2D2D1FE20FCB00B87825 /* ShujuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShujuViewController.h; sourceTree = "<group>"; };
-		A2EB2D2E1FE20FCB00B87825 /* ShujuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShujuViewController.m; sourceTree = "<group>"; };
+		A2EB2D2D1FE20FCB00B87825 /* RHShujuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHShujuViewController.h; sourceTree = "<group>"; };
+		A2EB2D2E1FE20FCB00B87825 /* RHShujuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHShujuViewController.m; sourceTree = "<group>"; };
 		A2EB2D311FE20FCB00B87825 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A2EB2D331FE20FCB00B87825 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A2EB2D361FE20FCB00B87825 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -217,6 +227,14 @@
 			path = TheHelpSDK;
 			sourceTree = "<group>";
 		};
+		A24701032071CC010043AF35 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				A24701042071CCBC0043AF35 /* more.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		A24990231FE8EBF2004B046F /* Control */ = {
 			isa = PBXGroup;
 			children = (
@@ -231,8 +249,20 @@
 		A24990241FE8EC68004B046F /* Shuju */ = {
 			isa = PBXGroup;
 			children = (
-				A2EB2D2D1FE20FCB00B87825 /* ShujuViewController.h */,
-				A2EB2D2E1FE20FCB00B87825 /* ShujuViewController.m */,
+				A2EB2D2D1FE20FCB00B87825 /* RHShujuViewController.h */,
+				A2EB2D2E1FE20FCB00B87825 /* RHShujuViewController.m */,
+				A2CFD4EF206DFE08004459C6 /* RHWaveView.h */,
+				A2CFD4F0206DFE08004459C6 /* RHWaveView.m */,
+				A24B0224206CB909009A20D1 /* RHIHAITableViewCell.h */,
+				A24B0225206CB909009A20D1 /* RHIHAITableViewCell.m */,
+				A24B0227206CB9B2009A20D1 /* RHAirIndexTableViewCell.h */,
+				A24B0228206CB9B2009A20D1 /* RHAirIndexTableViewCell.m */,
+				A24701062071DAF50043AF35 /* RHIndexCollectionViewCell.h */,
+				A24701072071DAF50043AF35 /* RHIndexCollectionViewCell.m */,
+				A24B022A206CB9D0009A20D1 /* RHAirParameterTableViewCell.h */,
+				A24B022B206CB9D0009A20D1 /* RHAirParameterTableViewCell.m */,
+				A24B022D206CBA2D009A20D1 /* RHPollutionTableViewCell.h */,
+				A24B022E206CBA2D009A20D1 /* RHPollutionTableViewCell.m */,
 			);
 			path = Shuju;
 			sourceTree = "<group>";
@@ -467,6 +497,7 @@
 		A2EB2D1E1FE20FCB00B87825 = {
 			isa = PBXGroup;
 			children = (
+				A24701032071CC010043AF35 /* Images */,
 				A2112F0F1FE24BD600891A99 /* TheHelpSDK */,
 				A2EB2D291FE20FCB00B87825 /* DinQinChuanGan */,
 				A2EB2D281FE20FCB00B87825 /* Products */,
@@ -494,11 +525,6 @@
 				A2EB2D301FE20FCB00B87825 /* Main.storyboard */,
 				A2EB2D351FE20FCB00B87825 /* LaunchScreen.storyboard */,
 				A2EB2D381FE20FCB00B87825 /* Info.plist */,
-				A2BBDF591FF3985F00CCE9DF /* cat.jpg */,
-				A20E04AE2021B2F9000AB27A /* bacimage.jpeg */,
-				A20E04AF2021B2F9000AB27A /* one.jpeg */,
-				A20E04AD2021B2F9000AB27A /* three.jpeg */,
-				A20E04B02021B2FA000AB27A /* two.jpeg */,
 				A2EB2D331FE20FCB00B87825 /* Assets.xcassets */,
 				A2EB2D391FE20FCB00B87825 /* main.m */,
 			);
@@ -568,12 +594,8 @@
 			files = (
 				A2EB2D371FE20FCB00B87825 /* LaunchScreen.storyboard in Resources */,
 				A2EB2D341FE20FCB00B87825 /* Assets.xcassets in Resources */,
-				A2BBDF5A1FF3985F00CCE9DF /* cat.jpg in Resources */,
+				A24701052071CCBC0043AF35 /* more.png in Resources */,
 				A2EB2D321FE20FCB00B87825 /* Main.storyboard in Resources */,
-				A20E04B22021B2FA000AB27A /* bacimage.jpeg in Resources */,
-				A20E04B32021B2FA000AB27A /* one.jpeg in Resources */,
-				A20E04B42021B2FA000AB27A /* two.jpeg in Resources */,
-				A20E04B12021B2FA000AB27A /* three.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -639,18 +661,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				A24990221FE8EBB9004B046F /* ControlTableViewCell.m in Sources */,
-				A2EB2D2F1FE20FCB00B87825 /* ShujuViewController.m in Sources */,
+				A2EB2D2F1FE20FCB00B87825 /* RHShujuViewController.m in Sources */,
 				A2EAA5452057B4DB00E7C89F /* RHMoveToViewController.m in Sources */,
 				A2D06E341FFC74EF004FB3E4 /* RHBindAccViewController.m in Sources */,
 				A2959E372068C4930071DD18 /* RHDeleteEquipCollectionViewCell.m in Sources */,
 				A2EB2D3A1FE20FCB00B87825 /* main.m in Sources */,
 				A22F8C9620119BA3008CC997 /* RHPlaceMessageViewController.m in Sources */,
 				A25732ED202010AF00C9CC6D /* RHAddAreaViewController.m in Sources */,
+				A24B022F206CBA2D009A20D1 /* RHPollutionTableViewCell.m in Sources */,
 				A2C45B762024660B00387B6D /* RHDfaultImageViewController.m in Sources */,
 				A222B09420524DB600B0DB6E /* RHJudgeMethod.m in Sources */,
 				A212BDD420085A9000C3941B /* RHAddPlaceViewController.m in Sources */,
+				A24B0226206CB909009A20D1 /* RHIHAITableViewCell.m in Sources */,
 				A2112FA61FE27B5A00891A99 /* AutomateViewController.m in Sources */,
 				A262ECB91FE7C47B00B55454 /* WRCustomNavigationBar.m in Sources */,
+				A2CFD4F1206DFE08004459C6 /* RHWaveView.m in Sources */,
 				A2ABF554204E87C100CCA981 /* RHForgotPWViewController.m in Sources */,
 				A2E3D1C520076F260076D624 /* RHMyEquipmentViewController.m in Sources */,
 				A2EB2D2C1FE20FCB00B87825 /* AppDelegate.m in Sources */,
@@ -663,6 +688,7 @@
 				A243B3D92050CD6B00975E86 /* RHAccountBDViewController.m in Sources */,
 				A26DD0A22059128000AEF439 /* RHEquipMentTableViewCell.m in Sources */,
 				A222B09720526D7800B0DB6E /* RHAccConViewController.m in Sources */,
+				A24B022C206CB9D0009A20D1 /* RHAirParameterTableViewCell.m in Sources */,
 				A21EA84B1FFDCD2C00AC1C8B /* RHProveViewController.m in Sources */,
 				A243B3DF2050DDCD00975E86 /* RHAccountBTableViewCell.m in Sources */,
 				A2497953206398750025A2E4 /* RHMoveTwoStepViewController.m in Sources */,
@@ -679,7 +705,9 @@
 				A2601C3F2056275500169306 /* RHBandEmilViewController.m in Sources */,
 				A2112FA91FE27B6A00891A99 /* RHControlViewController.m in Sources */,
 				A20E04A22021A5C5000AB27A /* RHChoosePicViewController.m in Sources */,
+				A24B0229206CB9B2009A20D1 /* RHAirIndexTableViewCell.m in Sources */,
 				A2684A992005FABA00EC8339 /* RHMyPlaceViewController.m in Sources */,
+				A24701082071DAF50043AF35 /* RHIndexCollectionViewCell.m in Sources */,
 				A23ECB0E2022B22200FA6797 /* RHAreaContentViewController.m in Sources */,
 				A2BB686C1FF242B100EB2246 /* RHRightBarButtonItemViewController.m in Sources */,
 				A250FB862061F3770076B1D0 /* RHSenTableViewCell.m in Sources */,
