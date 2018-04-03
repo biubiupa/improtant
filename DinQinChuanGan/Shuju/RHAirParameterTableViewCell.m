@@ -9,6 +9,7 @@
 #import "RHAirParameterTableViewCell.h"
 #import "Header.h"
 #import "Masonry.h"
+#import "PNChart.h"
 
 @interface RHAirParameterTableViewCell()
 @property (nonatomic, strong) UIView *markView;
@@ -43,6 +44,39 @@
         make.top.equalTo(self.contentView).with.offset(21);
         make.left.equalTo(self.contentView).with.offset(30);
     }];
+    
+    PNBarChart *barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 135.0, SCREEN_WIDTH, 200.0)];
+    // 是否显示xy 轴的数字
+    barChart.showLabel = YES;
+    // 是否显示水平线 但把柱子压低上移了
+//        barChart.showLevelLine = YES;
+    //是否显示xy 轴
+    barChart.showChartBorder = YES;
+    // 是否显示柿子的数值
+    barChart.isShowNumbers = YES;
+    // 立体显示
+    barChart.isGradientShow = YES;
+    // 设置柱子的圆角
+    barChart.barRadius = 5;
+    // 设置bar color
+    barChart.strokeColor = [UIColor redColor];
+    
+    barChart.xLabels = @[@"1",@"2",@"3",@"4",@"5"];
+    
+    barChart.yValues = @[@"2",@"4",@"1",@"10",@"9"];
+    
+    barChart.yLabelFormatter = ^ (CGFloat yLabelValue) {
+        
+        return [NSString stringWithFormat:@"%f",yLabelValue];
+    };
+    
+    [barChart strokeChart];
+    
+    [self.contentView addSubview:barChart];
+    
+    
+    
+    
 }
 
 #pragma mark - lazyload
