@@ -44,7 +44,7 @@ static NSString *identifier=@"itemid";
 - (void)layoutSubviews {
     [super layoutSubviews];
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH, 202));
+        make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH, 206));
         make.centerX.equalTo(self.contentView);
         make.top.equalTo(self.contentView).with.offset(59);
     }];
@@ -76,7 +76,8 @@ static NSString *identifier=@"itemid";
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     RHIndexCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1];
+//    cell.backgroundColor = [UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1];
+    cell.backgroundColor=WhiteColor;
     return cell;
 }
 
@@ -86,9 +87,9 @@ static NSString *identifier=@"itemid";
     if (!_collectionView) {
         UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
         flowLayout.scrollDirection=UICollectionViewScrollDirectionVertical;
-        flowLayout.sectionInset=UIEdgeInsetsMake(0, 20, 0, 20);
+        flowLayout.sectionInset=UIEdgeInsetsMake(2, 20, 2, 20);
         flowLayout.itemSize=CGSizeMake((SCREEN_WIDTH - 60)/3, 96);
-        _collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 202) collectionViewLayout:flowLayout];
+        _collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 206) collectionViewLayout:flowLayout];
         _collectionView.backgroundColor=WhiteColor;
         _collectionView.delegate=self;
         _collectionView.dataSource=self;

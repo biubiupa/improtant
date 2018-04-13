@@ -11,6 +11,8 @@
 		A20E04A22021A5C5000AB27A /* RHChoosePicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A20E04A12021A5C5000AB27A /* RHChoosePicViewController.m */; };
 		A2112FA61FE27B5A00891A99 /* AutomateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2112FA51FE27B5A00891A99 /* AutomateViewController.m */; };
 		A2112FA91FE27B6A00891A99 /* RHControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2112FA81FE27B6A00891A99 /* RHControlViewController.m */; };
+		A2117E8B207DABC600160CD5 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A246E48E2079C47600A094F1 /* Charts.framework */; };
+		A2117E8C207DABC600160CD5 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A246E48E2079C47600A094F1 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A212BDD420085A9000C3941B /* RHAddPlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A212BDD320085A9000C3941B /* RHAddPlaceViewController.m */; };
 		A21EA84B1FFDCD2C00AC1C8B /* RHProveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A21EA84A1FFDCD2C00AC1C8B /* RHProveViewController.m */; };
 		A222B09420524DB600B0DB6E /* RHJudgeMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = A222B09320524DB600B0DB6E /* RHJudgeMethod.m */; };
@@ -20,6 +22,7 @@
 		A22F5B222069E76B005A5650 /* RHPlaceEquipCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A22F5B212069E76B005A5650 /* RHPlaceEquipCollectionViewCell.m */; };
 		A22F5B25206A69F8005A5650 /* RHDefaultCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A22F5B24206A69F8005A5650 /* RHDefaultCollectionViewCell.m */; };
 		A22F8C9620119BA3008CC997 /* RHPlaceMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A22F8C9520119BA3008CC997 /* RHPlaceMessageViewController.m */; };
+		A234725D20804FDF000E270C /* RHArrowView.m in Sources */ = {isa = PBXBuildFile; fileRef = A234725C20804FDF000E270C /* RHArrowView.m */; };
 		A236EA361FF4BC8100063DFC /* RHSignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A236EA351FF4BC8100063DFC /* RHSignInViewController.m */; };
 		A23ECB0E2022B22200FA6797 /* RHAreaContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A23ECB0D2022B22200FA6797 /* RHAreaContentViewController.m */; };
 		A243B3D92050CD6B00975E86 /* RHAccountBDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A243B3D82050CD6B00975E86 /* RHAccountBDViewController.m */; };
@@ -68,8 +71,47 @@
 		A2FF4B0C2060EF6E008C3299 /* RHSenAndMeaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2FF4B0B2060EF6E008C3299 /* RHSenAndMeaViewController.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		A2117E8D207DABC600160CD5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A246E4882079C47600A094F1 /* Charts.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A58A4ED274A941CA248EA921;
+			remoteInfo = Charts;
+		};
+		A246E48D2079C47600A094F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A246E4882079C47600A094F1 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65AD9E95D9ED4DC0BD73A743;
+			remoteInfo = Charts;
+		};
+		A246E48F2079C47600A094F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A246E4882079C47600A094F1 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1CBBC58C6CE1EBEE9852CE41;
+			remoteInfo = ChartsTests;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A201A7FD207368570007DEFD /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A2117E8C207DABC600160CD5 /* Charts.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		273F8BF59F656DA022A81BEB /* libPods-DinQinChuanGan.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DinQinChuanGan.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A201A7F82073677F0007DEFD /* Charts-bridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Charts-bridging.h"; sourceTree = "<group>"; };
 		A20E04A02021A5C5000AB27A /* RHChoosePicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHChoosePicViewController.h; sourceTree = "<group>"; };
 		A20E04A12021A5C5000AB27A /* RHChoosePicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHChoosePicViewController.m; sourceTree = "<group>"; };
 		A2112FA41FE27B5A00891A99 /* AutomateViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutomateViewController.h; sourceTree = "<group>"; };
@@ -94,6 +136,8 @@
 		A22F5B24206A69F8005A5650 /* RHDefaultCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHDefaultCollectionViewCell.m; sourceTree = "<group>"; };
 		A22F8C9420119BA3008CC997 /* RHPlaceMessageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHPlaceMessageViewController.h; sourceTree = "<group>"; };
 		A22F8C9520119BA3008CC997 /* RHPlaceMessageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHPlaceMessageViewController.m; sourceTree = "<group>"; };
+		A234725B20804FDF000E270C /* RHArrowView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHArrowView.h; sourceTree = "<group>"; };
+		A234725C20804FDF000E270C /* RHArrowView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHArrowView.m; sourceTree = "<group>"; };
 		A236EA341FF4BC8100063DFC /* RHSignInViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHSignInViewController.h; sourceTree = "<group>"; };
 		A236EA351FF4BC8100063DFC /* RHSignInViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHSignInViewController.m; sourceTree = "<group>"; };
 		A23ECB0C2022B22200FA6797 /* RHAreaContentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHAreaContentViewController.h; sourceTree = "<group>"; };
@@ -102,6 +146,7 @@
 		A243B3D82050CD6B00975E86 /* RHAccountBDViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHAccountBDViewController.m; sourceTree = "<group>"; };
 		A243B3DD2050DDCD00975E86 /* RHAccountBTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHAccountBTableViewCell.h; sourceTree = "<group>"; };
 		A243B3DE2050DDCD00975E86 /* RHAccountBTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHAccountBTableViewCell.m; sourceTree = "<group>"; };
+		A246E4882079C47600A094F1 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "../malf/Charts-master/Charts.xcodeproj"; sourceTree = "<group>"; };
 		A24701042071CCBC0043AF35 /* more.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = more.png; sourceTree = "<group>"; };
 		A24701062071DAF50043AF35 /* RHIndexCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHIndexCollectionViewCell.h; sourceTree = "<group>"; };
 		A24701072071DAF50043AF35 /* RHIndexCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHIndexCollectionViewCell.m; sourceTree = "<group>"; };
@@ -194,6 +239,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				02193B2377721D8C6608F586 /* libPods-DinQinChuanGan.a in Frameworks */,
+				A2117E8B207DABC600160CD5 /* Charts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,6 +273,15 @@
 			path = TheHelpSDK;
 			sourceTree = "<group>";
 		};
+		A246E4892079C47600A094F1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A246E48E2079C47600A094F1 /* Charts.framework */,
+				A246E4902079C47600A094F1 /* ChartsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		A24701032071CC010043AF35 /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -249,10 +304,12 @@
 		A24990241FE8EC68004B046F /* Shuju */ = {
 			isa = PBXGroup;
 			children = (
-				A2EB2D2D1FE20FCB00B87825 /* RHShujuViewController.h */,
-				A2EB2D2E1FE20FCB00B87825 /* RHShujuViewController.m */,
 				A2CFD4EF206DFE08004459C6 /* RHWaveView.h */,
 				A2CFD4F0206DFE08004459C6 /* RHWaveView.m */,
+				A234725B20804FDF000E270C /* RHArrowView.h */,
+				A234725C20804FDF000E270C /* RHArrowView.m */,
+				A2EB2D2D1FE20FCB00B87825 /* RHShujuViewController.h */,
+				A2EB2D2E1FE20FCB00B87825 /* RHShujuViewController.m */,
 				A24B0224206CB909009A20D1 /* RHIHAITableViewCell.h */,
 				A24B0225206CB909009A20D1 /* RHIHAITableViewCell.m */,
 				A24B0227206CB9B2009A20D1 /* RHAirIndexTableViewCell.h */,
@@ -497,6 +554,7 @@
 		A2EB2D1E1FE20FCB00B87825 = {
 			isa = PBXGroup;
 			children = (
+				A246E4882079C47600A094F1 /* Charts.xcodeproj */,
 				A24701032071CC010043AF35 /* Images */,
 				A2112F0F1FE24BD600891A99 /* TheHelpSDK */,
 				A2EB2D291FE20FCB00B87825 /* DinQinChuanGan */,
@@ -518,6 +576,7 @@
 			isa = PBXGroup;
 			children = (
 				A24990271FE911CF004B046F /* Header.h */,
+				A201A7F82073677F0007DEFD /* Charts-bridging.h */,
 				A24990261FE8EC8C004B046F /* AppDelegate */,
 				A24990241FE8EC68004B046F /* Shuju */,
 				A24990251FE8EC77004B046F /* Automate */,
@@ -544,10 +603,12 @@
 				A2EB2D251FE20FCB00B87825 /* Resources */,
 				DA59AD80EEA05D9DB711C492 /* [CP] Embed Pods Frameworks */,
 				769094E1FD3FE77561AB6417 /* [CP] Copy Pods Resources */,
+				A201A7FD207368570007DEFD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A2117E8E207DABC600160CD5 /* PBXTargetDependency */,
 			);
 			name = DinQinChuanGan;
 			productName = DinQinChuanGan;
@@ -565,6 +626,7 @@
 				TargetAttributes = {
 					A2EB2D261FE20FCB00B87825 = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0930;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -580,12 +642,35 @@
 			mainGroup = A2EB2D1E1FE20FCB00B87825;
 			productRefGroup = A2EB2D281FE20FCB00B87825 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = A246E4892079C47600A094F1 /* Products */;
+					ProjectRef = A246E4882079C47600A094F1 /* Charts.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				A2EB2D261FE20FCB00B87825 /* DinQinChuanGan */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		A246E48E2079C47600A094F1 /* Charts.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Charts.framework;
+			remoteRef = A246E48D2079C47600A094F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A246E4902079C47600A094F1 /* ChartsTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ChartsTests.xctest;
+			remoteRef = A246E48F2079C47600A094F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		A2EB2D251FE20FCB00B87825 /* Resources */ = {
@@ -680,6 +765,7 @@
 				A2E3D1C520076F260076D624 /* RHMyEquipmentViewController.m in Sources */,
 				A2EB2D2C1FE20FCB00B87825 /* AppDelegate.m in Sources */,
 				A2ABF551204E785800CCA981 /* RHEquipStandardViewController.m in Sources */,
+				A234725D20804FDF000E270C /* RHArrowView.m in Sources */,
 				A25D34DE1FEB60CC00CED82A /* ControlCollectionViewCell.m in Sources */,
 				A2959E3420689F290071DD18 /* RHDeleteEquipTableViewCell.m in Sources */,
 				A2CEDC031FFF669D009A9CF9 /* RHAmendPassWViewController.m in Sources */,
@@ -718,6 +804,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A2117E8E207DABC600160CD5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Charts;
+			targetProxy = A2117E8D207DABC600160CD5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		A2EB2D301FE20FCB00B87825 /* Main.storyboard */ = {
@@ -847,14 +941,19 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DF35EC4D0E54DC8EDEFE12CE /* Pods-DinQinChuanGan.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 83AC958D2B;
 				INFOPLIST_FILE = DinQinChuanGan/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = iOS.DinQinChuanGan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Charts-bridging.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
@@ -864,14 +963,18 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EF90125198D4604D8FE41545 /* Pods-DinQinChuanGan.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 83AC958D2B;
 				INFOPLIST_FILE = DinQinChuanGan/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = iOS.DinQinChuanGan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Charts-bridging.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};

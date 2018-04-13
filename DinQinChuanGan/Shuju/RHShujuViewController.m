@@ -9,7 +9,6 @@
 #import "RHShujuViewController.h"
 #import "Masonry.h"
 #import "Header.h"
-#import "PNChart.h"
 #import "AFNetworking.h"
 #import "WRNavigationBar.h"
 #import "RHJudgeMethod.h"

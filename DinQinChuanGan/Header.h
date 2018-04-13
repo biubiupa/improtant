@@ -25,6 +25,8 @@
 #define UserDefaults    [NSUserDefaults standardUserDefaults]
 #define UserId  [UserDefaults stringForKey:@"userId"]
 
+#define RGBACOLOR(r, g, b, a)   [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:(a)]
+#define RGBCOLOR(r, g, b)       [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:1]
 #define WhiteColor  [UIColor whiteColor]
 #define GrayColor   [UIColor grayColor]
 #define LightGrayColor  [UIColor lightGrayColor]

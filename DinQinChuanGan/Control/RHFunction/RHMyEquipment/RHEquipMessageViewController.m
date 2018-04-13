@@ -533,6 +533,13 @@ static NSString *identifier=@"cell";
     return _moveLabel;
 }
 
+- (UIImageView *)moveImgView {
+    if (!_moveImgView) {
+        _moveImgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"back"]];
+    }
+    return _moveImgView;
+}
+
 - (UILabel *)moveTolabel {
     if (!_moveTolabel) {
         _moveTolabel=[[UILabel alloc] init];
@@ -549,12 +556,7 @@ static NSString *identifier=@"cell";
     return _lastImgView;
 }
 
-- (UIImageView *)moveImgView {
-    if (!_moveImgView) {
-        _moveImgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"back"]];
-    }
-    return _moveImgView;
-}
+
 
 - (UIButton *)deletBtn {
     if (!_deletBtn) {

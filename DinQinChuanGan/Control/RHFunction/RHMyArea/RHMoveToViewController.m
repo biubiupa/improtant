@@ -15,6 +15,8 @@
 @property (nonatomic, copy) NSString *parameter;
 @property (nonatomic, copy) NSArray *listArr;
 @property (nonatomic, copy) NSString *delePara;
+@property (nonatomic, copy) NSString *moveText;
+@property (nonatomic, assign) NSInteger movePlaceId;
 
 @end
 
@@ -76,7 +78,9 @@ static NSString *identifier=@"cell";
     cell.accessoryType=UITableViewCellAccessoryCheckmark;
     self.navigationItem.rightBarButtonItem.enabled=YES;
     self.navigationItem.rightBarButtonItem.tintColor=CONTROL_COLOR;
-    self.block(cell.textLabel.text, [self.listArr[indexPath.section][@"placeId"] integerValue]);
+    self.moveText=cell.textLabel.text;
+    self.movePlaceId=[self.listArr[indexPath.section][@"placeId"] integerValue];
+    
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -101,6 +105,7 @@ static NSString *identifier=@"cell";
 }
 
 - (void)doneRequest {
+    self.block(self.moveText, self.movePlaceId);
     [self.navigationController popViewControllerAnimated:YES];
 }
 
