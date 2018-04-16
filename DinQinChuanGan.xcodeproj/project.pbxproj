@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		02193B2377721D8C6608F586 /* libPods-DinQinChuanGan.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 273F8BF59F656DA022A81BEB /* libPods-DinQinChuanGan.a */; };
 		A20E04A22021A5C5000AB27A /* RHChoosePicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A20E04A12021A5C5000AB27A /* RHChoosePicViewController.m */; };
-		A2112FA61FE27B5A00891A99 /* AutomateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2112FA51FE27B5A00891A99 /* AutomateViewController.m */; };
 		A2112FA91FE27B6A00891A99 /* RHControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2112FA81FE27B6A00891A99 /* RHControlViewController.m */; };
 		A2117E8B207DABC600160CD5 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A246E48E2079C47600A094F1 /* Charts.framework */; };
 		A2117E8C207DABC600160CD5 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A246E48E2079C47600A094F1 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -114,8 +113,6 @@
 		A201A7F82073677F0007DEFD /* Charts-bridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Charts-bridging.h"; sourceTree = "<group>"; };
 		A20E04A02021A5C5000AB27A /* RHChoosePicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHChoosePicViewController.h; sourceTree = "<group>"; };
 		A20E04A12021A5C5000AB27A /* RHChoosePicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHChoosePicViewController.m; sourceTree = "<group>"; };
-		A2112FA41FE27B5A00891A99 /* AutomateViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutomateViewController.h; sourceTree = "<group>"; };
-		A2112FA51FE27B5A00891A99 /* AutomateViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutomateViewController.m; sourceTree = "<group>"; };
 		A2112FA71FE27B6A00891A99 /* RHControlViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHControlViewController.h; sourceTree = "<group>"; };
 		A2112FA81FE27B6A00891A99 /* RHControlViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHControlViewController.m; sourceTree = "<group>"; };
 		A212BDD220085A9000C3941B /* RHAddPlaceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHAddPlaceViewController.h; sourceTree = "<group>"; };
@@ -324,15 +321,6 @@
 			path = Shuju;
 			sourceTree = "<group>";
 		};
-		A24990251FE8EC77004B046F /* Automate */ = {
-			isa = PBXGroup;
-			children = (
-				A2112FA41FE27B5A00891A99 /* AutomateViewController.h */,
-				A2112FA51FE27B5A00891A99 /* AutomateViewController.m */,
-			);
-			path = Automate;
-			sourceTree = "<group>";
-		};
 		A24990261FE8EC8C004B046F /* AppDelegate */ = {
 			isa = PBXGroup;
 			children = (
@@ -351,6 +339,13 @@
 				A262ECB41FE7C47B00B55454 /* WRNavigationBar.m */,
 			);
 			path = WRNavigationBar;
+			sourceTree = "<group>";
+		};
+		A265382720843F4800777624 /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Comments;
 			sourceTree = "<group>";
 		};
 		A2684A882005F20F00EC8339 /* RHControlVC */ = {
@@ -577,9 +572,9 @@
 			children = (
 				A24990271FE911CF004B046F /* Header.h */,
 				A201A7F82073677F0007DEFD /* Charts-bridging.h */,
+				A265382720843F4800777624 /* Comments */,
 				A24990261FE8EC8C004B046F /* AppDelegate */,
 				A24990241FE8EC68004B046F /* Shuju */,
-				A24990251FE8EC77004B046F /* Automate */,
 				A24990231FE8EBF2004B046F /* Control */,
 				A2EB2D301FE20FCB00B87825 /* Main.storyboard */,
 				A2EB2D351FE20FCB00B87825 /* LaunchScreen.storyboard */,
@@ -758,7 +753,6 @@
 				A222B09420524DB600B0DB6E /* RHJudgeMethod.m in Sources */,
 				A212BDD420085A9000C3941B /* RHAddPlaceViewController.m in Sources */,
 				A24B0226206CB909009A20D1 /* RHIHAITableViewCell.m in Sources */,
-				A2112FA61FE27B5A00891A99 /* AutomateViewController.m in Sources */,
 				A262ECB91FE7C47B00B55454 /* WRCustomNavigationBar.m in Sources */,
 				A2CFD4F1206DFE08004459C6 /* RHWaveView.m in Sources */,
 				A2ABF554204E87C100CCA981 /* RHForgotPWViewController.m in Sources */,

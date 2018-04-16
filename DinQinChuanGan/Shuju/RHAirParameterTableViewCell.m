@@ -12,7 +12,6 @@
 #import "Charts-bridging.h"
 #import "RHArrowView.h"
 
-
 @interface RHAirParameterTableViewCell()<ChartViewDelegate, IChartAxisValueFormatter>
 @property (nonatomic, strong) UIView *markView;
 @property (nonatomic, strong) UILabel *paraLabel;
@@ -22,6 +21,10 @@
 @property (nonatomic, strong) UIImageView *allImgView;
 @property (nonatomic, strong) UIButton *dateBtn;
 @property (nonatomic, strong) UIButton *kindBtn;
+@property (nonatomic, strong) UIImageView *dateImgView;
+@property (nonatomic, strong) UIImageView *kindImgView;
+@property (nonatomic, strong) RHArrowView *kindView;
+@property (nonatomic, strong) RHArrowView *dateView;
 
 @end
 
@@ -85,16 +88,29 @@
         make.right.equalTo(self.contentView).with.offset(-8);
     }];
     
-    RHArrowView *arrowView=[[RHArrowView alloc] init];
-    arrowView.backgroundColor=[UIColor clearColor];
-    
-    [self.contentView addSubview:arrowView];
-    [arrowView mas_makeConstraints:^(MASConstraintMaker *make) {
+//    带尖头的view
+    self.kindView=[[RHArrowView alloc] init];
+    self.kindView.backgroundColor=[UIColor clearColor];
+    [self.contentView addSubview:self.kindView];
+    [self.kindView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(94, 138));
         make.top.equalTo(self.kindBtn).with.offset(21);
         make.right.equalTo(self.contentView).with.offset(-8);
     }];
+    
+    self.dateView=[[RHArrowView alloc] init];
+    self.dateView.backgroundColor=[UIColor clearColor];
+    [self.contentView addSubview:self.dateView];
+    [self.dateView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(94, 138));
+        make.top.equalTo(self.dateBtn).with.offset(21);
+        make.right.equalTo(self.self.dateBtn).with.offset(0);
+    }];
+    
+    
 }
+
+//
 
 //柱状图
 - (void)buildChartView {
@@ -219,7 +235,6 @@
 }
 
 - (void)chartValueSelected:(ChartViewBase *)chartView entry:(ChartDataEntry *)entry highlight:(ChartHighlight *)highlight {
-    NSLog(@"我点!!!");
 }
 
 - (void)chartTranslated:(ChartViewBase * _Nonnull)chartView dX:(CGFloat)dX dY:(CGFloat)dY{
@@ -294,6 +309,20 @@
         _kindBtn.layer.borderColor=RGBCOLOR(211, 211, 211).CGColor;
     }
     return _kindBtn;
+}
+
+- (UIImageView *)dateImgView {
+    if (!_dateImgView) {
+        _dateImgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"drop"]];
+    }
+    return _dateImgView;
+}
+
+- (UIImageView *)kindImgView {
+    if (!_kindImgView) {
+        _kindImgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"drop"]];
+    }
+    return _kindImgView;
 }
 
 @end
