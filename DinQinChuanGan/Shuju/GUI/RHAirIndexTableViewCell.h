@@ -1,5 +1,5 @@
 //
-//  RHAirParameterTableViewCell.h
+//  RHIndexTableViewCell.h
 //  DinQinChuanGan
 //
 //  Created by malf on 2018/3/29.
@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RHAirParameterTableViewCell : UITableViewCell
+@interface RHAirIndexTableViewCell : UITableViewCell
+@property (nonatomic, copy) NSArray *indexArr;
 
 @end

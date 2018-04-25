@@ -25,6 +25,12 @@
         make.edges.equalTo(self.contentView).with.insets(UIEdgeInsetsMake(15, 10, 65, 10));
     }];
     
+    [self.contentView addSubview:self.dataLabel];
+    [self.dataLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(25, 20));
+        make.center.equalTo(self.contentView);
+    }];
+    
 }
 
 #pragma mark - lazyload
@@ -32,11 +38,22 @@
     if (!_indexLabel) {
         _indexLabel=[[UILabel alloc] init];
         _indexLabel.textAlignment=NSTextAlignmentLeft;
-        _indexLabel.font=[UIFont systemFontOfSize:14.0f];
+        _indexLabel.font=[UIFont systemFontOfSize:13.0f];
         _indexLabel.textColor=RGBCOLOR(50, 50, 50);
-        _indexLabel.text=@"保湿指数";
+        _indexLabel.text=@"--";
     }
     return _indexLabel;
+}
+
+- (UILabel *)dataLabel {
+    if (!_dataLabel) {
+        _dataLabel=[[UILabel alloc] init];
+        _dataLabel.textAlignment=NSTextAlignmentCenter;
+        _dataLabel.font=[UIFont systemFontOfSize:14.0f];
+        _dataLabel.textColor=RGBCOLOR(50, 50, 50);
+        _dataLabel.text=@"--";
+    }
+    return _dataLabel;
 }
 
 @end

@@ -69,7 +69,7 @@
         make.left.equalTo(self.contentView).with.offset(54);
     }];
     [self.levelLabelP mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(25, 14));
+        make.size.mas_equalTo(CGSizeMake(40, 14));
         make.top.equalTo(self.contentView).with.offset(93);
         make.left.equalTo(self.contentView).with.offset(55);
     }];
@@ -89,10 +89,16 @@
         make.left.equalTo(self.contentView).with.offset(54);
     }];
     [self.levelLabelC mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(25, 14));
+        make.size.mas_equalTo(CGSizeMake(40, 14));
         make.top.equalTo(self.contentView).with.offset(171);
         make.left.equalTo(self.contentView).with.offset(55);
     }];
+    
+    if (self.dict != nil) {
+        self.levelLabelP.text=[NSString stringWithFormat:@"%@",self.dict[@"Physical"][@"suggest"]];
+        self.levelLabelC.text=[NSString stringWithFormat:@"%@",self.dict[@"Chemistry"][@"suggest"]];
+    }
+    
 }
 
 #pragma mark - lazyload
@@ -153,7 +159,7 @@
         _levelLabelP=[[UILabel alloc] init];
         _levelLabelP.font=[UIFont systemFontOfSize:12];
         _levelLabelP.textAlignment=NSTextAlignmentLeft;
-        _levelLabelP.text=@"良";
+        _levelLabelP.text=@"--";
     }
     return _levelLabelP;
 }
@@ -163,7 +169,7 @@
         _levelLabelC=[[UILabel alloc] init];
         _levelLabelC.font=[UIFont systemFontOfSize:12];
         _levelLabelC.textAlignment=NSTextAlignmentLeft;
-        _levelLabelC.text=@"严重";
+        _levelLabelC.text=@"--";
     }
     return _levelLabelC;
 }

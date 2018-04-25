@@ -1,5 +1,5 @@
 //
-//  RHIndexTableViewCell.h
+//  RHPollutionTableViewCell.h
 //  DinQinChuanGan
 //
 //  Created by malf on 2018/3/29.
@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RHAirIndexTableViewCell : UITableViewCell
+@interface RHPollutionTableViewCell : UITableViewCell
+@property (nonatomic, copy) NSDictionary *dict;
 
 @end

@@ -10,5 +10,5 @@
 
 @interface RHIndexCollectionViewCell : UICollectionViewCell
 @property (nonatomic, strong) UILabel *indexLabel;
-
+@property (nonatomic, strong) UILabel *dataLabel;
 @end

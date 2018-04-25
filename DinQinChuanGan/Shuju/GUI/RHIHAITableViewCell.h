@@ -16,7 +16,7 @@
 @property (nonatomic, strong) UILabel *hPMLabel;
 @property (nonatomic, strong) CAShapeLayer *bacShapeLayer;
 @property (nonatomic, strong) CAShapeLayer *frontShapeLayer;
-
+@property (nonatomic, copy) NSDictionary *dataDict;
 
 
 @end

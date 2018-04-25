@@ -12,7 +12,8 @@
 #import "Charts-bridging.h"
 #import "RHArrowView.h"
 
-@interface RHAirParameterTableViewCell()<ChartViewDelegate, IChartAxisValueFormatter>
+@interface RHAirParameterTableViewCell()<ChartViewDelegate, IChartAxisValueFormatter, UITableViewDelegate, UITableViewDataSource>
+
 @property (nonatomic, strong) UIView *markView;
 @property (nonatomic, strong) UILabel *paraLabel;
 @property (nonatomic, strong) BarChartView *barChartView;
@@ -21,10 +22,18 @@
 @property (nonatomic, strong) UIImageView *allImgView;
 @property (nonatomic, strong) UIButton *dateBtn;
 @property (nonatomic, strong) UIButton *kindBtn;
+@property (nonatomic, strong) UILabel *dateLabel;
+@property (nonatomic, strong) UILabel *kindLabel;
 @property (nonatomic, strong) UIImageView *dateImgView;
 @property (nonatomic, strong) UIImageView *kindImgView;
 @property (nonatomic, strong) RHArrowView *kindView;
 @property (nonatomic, strong) RHArrowView *dateView;
+@property (nonatomic, copy) NSArray *dateArr;
+@property (nonatomic, copy) NSArray *kindArr;
+@property (nonatomic, assign) BOOL listState;
+@property (nonatomic, assign) NSInteger tager;
+@property (nonatomic, strong) UIView *maskView;
+
 
 @end
 
@@ -39,6 +48,12 @@
         [self.contentView addSubview:self.paraLabel];
         [self.contentView addSubview:self.dateBtn];
         [self.contentView addSubview:self.kindBtn];
+        [self.dateBtn addSubview:self.dateLabel];
+        [self.dateBtn addSubview:self.dateImgView];
+        [self.kindBtn addSubview:self.kindLabel];
+        [self.kindBtn addSubview:self.kindImgView];
+        self.listState=YES;
+
     }
     
     return self;
@@ -89,28 +104,67 @@
     }];
     
 //    带尖头的view
+    self.dateView=[[RHArrowView alloc] initWithFrame:CGRectMake(0, 0, 94, 6)];
+    self.dateView.backgroundColor=[UIColor clearColor];
+    [self.contentView addSubview:self.dateView];
+    [self.dateView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(94, 6));
+        make.top.equalTo(self.dateBtn).with.offset(21);
+        make.right.equalTo(self.dateBtn).with.offset(0);
+    }];
+    
     self.kindView=[[RHArrowView alloc] init];
     self.kindView.backgroundColor=[UIColor clearColor];
     [self.contentView addSubview:self.kindView];
     [self.kindView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(94, 138));
+        make.size.mas_equalTo(CGSizeMake(94, 6));
         make.top.equalTo(self.kindBtn).with.offset(21);
-        make.right.equalTo(self.contentView).with.offset(-8);
-    }];
-    
-    self.dateView=[[RHArrowView alloc] init];
-    self.dateView.backgroundColor=[UIColor clearColor];
-    [self.contentView addSubview:self.dateView];
-    [self.dateView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(94, 138));
-        make.top.equalTo(self.dateBtn).with.offset(21);
-        make.right.equalTo(self.self.dateBtn).with.offset(0);
+        make.right.equalTo(self.kindBtn).with.offset(0);
     }];
     
     
+    
+    //    添加视图
+    [self.contentView addSubview:self.dateTableView];
+    [self.dateTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(94, 0));
+        make.top.equalTo(self.dateBtn).with.offset(27);
+        make.right.equalTo(self.dateBtn).with.offset(0);
+    }];
+    [self.contentView addSubview:self.kindTableView];
+    [self.kindTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(94, 0));
+        make.top.equalTo(self.kindBtn).with.offset(27);
+        make.right.equalTo(self.kindBtn).with.offset(0);
+    }];
+    
+
+    //    日期和污染种类按钮子视图布局
+    [self.dateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(15, 20));
+        make.centerY.equalTo(self.dateBtn);
+        make.left.equalTo(self.dateBtn).with.offset(25);
+    }];
+    [self.dateImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(5, 4));
+        make.centerY.equalTo(self.dateLabel);
+        make.left.equalTo(self.dateLabel).with.offset(18);
+    }];
+    
+    [self.kindLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(45, 20));
+        make.centerY.equalTo(self.kindBtn);
+        make.left.equalTo(self.kindBtn).with.offset(10);
+    }];
+    [self.kindImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(5, 4));
+        make.centerY.equalTo(self.kindLabel);
+        make.right.equalTo(self.kindLabel).with.offset(8);
+    }];
+
 }
 
-//
+
 
 //柱状图
 - (void)buildChartView {
@@ -244,8 +298,133 @@
 - (void)chartScaled:(ChartViewBase *)chartView scaleX:(CGFloat)scaleX scaleY:(CGFloat)scaleY {
 }
 
+#pragma mark - delegate,datasource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (tableView == self.dateTableView) {
+        return self.dateArr.count;
+    }else {
+        return self.envirLists.count;
+    }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (tableView == self.dateTableView) {
+        UITableViewCell *cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        cell.textLabel.text=self.dateArr[indexPath.row];
+        cell.textLabel.font=SYSTEMFONT(14);
+        cell.textLabel.textAlignment=NSTextAlignmentCenter;
+        cell.textLabel.textColor=RGBCOLOR(50, 50, 50);
+        cell.selectionStyle=UITableViewCellSelectionStyleNone;
+        return cell;
+    }else {
+        UITableViewCell *cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        cell.textLabel.text=[NSString stringWithFormat:@"%@",self.envirLists[indexPath.row][@"parameter"]];
+        cell.textLabel.font=SYSTEMFONT(14);
+        cell.textLabel.textAlignment=NSTextAlignmentCenter;
+        cell.textLabel.textColor=RGBCOLOR(50, 50, 50);
+        cell.selectionStyle=UITableViewCellSelectionStyleNone;
+
+        return cell;
+    }
+    
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell=[tableView cellForRowAtIndexPath:indexPath];
+    if (tableView == self.dateTableView) {
+        self.dateLabel.text=cell.textLabel.text;
+    }else {
+        self.kindLabel.text=cell.textLabel.text;
+    }
+    [self pullList];
+    self.listState=!self.listState;
+}
+
+
+
+#pragma mark - all of kinds actions
+- (void)dropList {
+    CGRect frame;
+    
+    if (self.tager == 100) {
+        frame=self.dateTableView.frame;
+        frame.size.height=self.dateArr.count * 28;
+
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            self.dateTableView.frame=frame;
+        }];
+    }else {
+        frame=self.kindTableView.frame;
+        frame.size.height=self.envirLists.count * 28;
+        
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            self.kindTableView.frame=frame;
+        }];
+    }
+    
+}
+
+- (void)pullList {
+    CGRect frame;
+    if (self.tager == 100) {
+        frame=self.dateTableView.frame;
+        frame.size.height=0;
+        
+       
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            self.dateTableView.frame=frame;
+        }];
+    }else {
+        frame=self.kindTableView.frame;
+        frame.size.height=0;
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            self.kindTableView.frame=frame;
+        }];
+    }
+}
+
+- (void)dropAndPullAction:(UIButton *)sender {
+    self.tager=sender.tag;
+    self.listState ? [self dropList] :[self pullList];
+    self.listState=!self.listState;
+}
 
 #pragma mark - lazyload
+- (UITableView *)dateTableView {
+    if (!_dateTableView) {
+        _dateTableView=[[UITableView alloc] initWithFrame:CGRectMake(0, 6, 94, 0) style:UITableViewStylePlain];
+        _dateTableView.delegate=self;
+        _dateTableView.dataSource=self;
+        _dateTableView.rowHeight=28;
+    }
+    return _dateTableView;
+}
+
+- (UITableView *)kindTableView {
+    if (!_kindTableView) {
+        _kindTableView=[[UITableView alloc] initWithFrame:CGRectMake(0, 6, 94, 0) style:UITableViewStylePlain];
+        _kindTableView.delegate=self;
+        _kindTableView.dataSource=self;
+        _kindTableView.rowHeight=28;
+    }
+    return _kindTableView;
+}
+
+- (NSArray *)dateArr {
+    if (!_dateArr) {
+        _dateArr=@[@"日",@"周",@"月",@"年"];
+    }
+    return _dateArr;
+}
+
 - (UIView *)markView {
     if (!_markView) {
         _markView=[UIView new];
@@ -294,9 +473,11 @@
 - (UIButton *)dateBtn {
     if (!_dateBtn) {
         _dateBtn=[UIButton buttonWithType:UIButtonTypeSystem];
+        _dateBtn.tag=100;
         _dateBtn.layer.cornerRadius=10;
         _dateBtn.layer.borderWidth=1;
         _dateBtn.layer.borderColor=RGBCOLOR(211, 211, 211).CGColor;
+        [_dateBtn addTarget:self action:@selector(dropAndPullAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _dateBtn;
 }
@@ -304,11 +485,35 @@
 - (UIButton *)kindBtn {
     if (!_kindBtn) {
         _kindBtn=[UIButton buttonWithType:UIButtonTypeSystem];
+        _kindBtn.tag=200;
         _kindBtn.layer.cornerRadius=10;
         _kindBtn.layer.borderWidth=1;
         _kindBtn.layer.borderColor=RGBCOLOR(211, 211, 211).CGColor;
+        [_kindBtn addTarget:self action:@selector(dropAndPullAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _kindBtn;
+}
+
+- (UILabel *)dateLabel {
+    if (!_dateLabel) {
+        _dateLabel=[[UILabel alloc] init];
+        _dateLabel.font=[UIFont systemFontOfSize:14];
+        _dateLabel.textAlignment=NSTextAlignmentRight;
+        _dateLabel.textColor=RGBCOLOR(50, 50, 50);
+        _dateLabel.text=@"日";
+    }
+    return _dateLabel;
+}
+
+- (UILabel *)kindLabel {
+    if (!_kindLabel) {
+        _kindLabel=[[UILabel alloc] init];
+        _kindLabel.font=[UIFont systemFontOfSize:14];
+        _kindLabel.textAlignment=NSTextAlignmentRight;
+        _kindLabel.text=@"PM2.5";
+        _kindLabel.textColor=RGBCOLOR(50, 50, 50);
+    }
+    return _kindLabel;
 }
 
 - (UIImageView *)dateImgView {
@@ -324,5 +529,15 @@
     }
     return _kindImgView;
 }
+
+- (UIView *)maskView {
+    if (!_maskView) {
+        _maskView=[[UIView alloc] initWithFrame:self.bounds];
+        _maskView.alpha=0;
+    }
+    return _maskView;
+}
+
+
 
 @end

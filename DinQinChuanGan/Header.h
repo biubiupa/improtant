@@ -21,10 +21,13 @@
 
 #define STATUS  [responseObject[@"head"][@"st"] integerValue]
 #define MSG     responseObject[@"head"][@"msg"]
+#define RESPONSE_BODY   responseObject[@"body"]
 
 #define UserDefaults    [NSUserDefaults standardUserDefaults]
 #define UserId  [UserDefaults stringForKey:@"userId"]
 
+
+#define SYSTEMFONT(f)           [UIFont systemFontOfSize:(f)]
 #define RGBACOLOR(r, g, b, a)   [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:(a)]
 #define RGBCOLOR(r, g, b)       [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:1]
 #define WhiteColor  [UIColor whiteColor]

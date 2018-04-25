@@ -78,6 +78,8 @@ static NSString *identifier=@"itemid";
     RHIndexCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 //    cell.backgroundColor = [UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1];
     cell.backgroundColor=WhiteColor;
+    cell.indexLabel.text=[NSString stringWithFormat:@"%@",self.indexArr[indexPath.row][@"indexName"]];
+    cell.dataLabel.text=[NSString stringWithFormat:@"%@",self.indexArr[indexPath.row][@"indexNum"]];
     return cell;
 }
 
@@ -87,8 +89,8 @@ static NSString *identifier=@"itemid";
     if (!_collectionView) {
         UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
         flowLayout.scrollDirection=UICollectionViewScrollDirectionVertical;
-        flowLayout.sectionInset=UIEdgeInsetsMake(2, 20, 2, 20);
-        flowLayout.itemSize=CGSizeMake((SCREEN_WIDTH - 60)/3, 96);
+        flowLayout.sectionInset=UIEdgeInsetsMake(2, 10, 2, 10);
+        flowLayout.itemSize=CGSizeMake((SCREEN_WIDTH - 40)/3, 96);
         _collectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 206) collectionViewLayout:flowLayout];
         _collectionView.backgroundColor=WhiteColor;
         _collectionView.delegate=self;

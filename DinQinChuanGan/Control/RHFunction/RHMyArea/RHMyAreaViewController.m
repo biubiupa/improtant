@@ -186,7 +186,7 @@ static NSString *ident=@"ident";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (tableView == self.listView) {
-        return self.dropBtn.frame.size.height;
+        return 40;
     } else {
         return 99;
     }
@@ -203,10 +203,10 @@ static NSString *ident=@"ident";
 //添加下拉，收起动画
 - (void)dropDownAnimation {
     CGRect frame=self.listView.frame;
-    frame.size.height=self.dropBtn.frame.size.height * self.list.count;
+    frame.size.height=40 * self.list.count;
     CGAffineTransform transform=CGAffineTransformMakeRotation(M_PI);
 
-    [UIView animateWithDuration:0.3 animations:^{
+    [UIView animateWithDuration:0.2 animations:^{
         self.dropImageView.transform=transform;
         self.listView.frame=frame;
         self.markView.alpha=0.5;
@@ -222,7 +222,7 @@ static NSString *ident=@"ident";
     frame.size.height=0;
     CGAffineTransform transform=CGAffineTransformMakeRotation(0);
 
-    [UIView animateWithDuration:0.3 animations:^{
+    [UIView animateWithDuration:0.2 animations:^{
         self.dropImageView.transform=transform;
         self.listView.frame=frame;
         self.markView.alpha=0;

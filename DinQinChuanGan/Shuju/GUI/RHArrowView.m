@@ -98,11 +98,9 @@
     
     CGContextClosePath(ctx);
     
-    CGContextSetFillColorWithColor(ctx, LightGrayColor.CGColor);
+    CGContextSetFillColorWithColor(ctx, WhiteColor.CGColor);
     
     CGContextFillPath(ctx);
-    self.layer.masksToBounds=YES;
-    self.layer.cornerRadius=2;
 }
 
 

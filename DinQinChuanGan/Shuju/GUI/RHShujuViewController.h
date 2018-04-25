@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class RHAirParameterTableViewCell;
 @interface RHShujuViewController : UIViewController
 
 
