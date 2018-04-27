@@ -498,7 +498,7 @@
     if (!_dateLabel) {
         _dateLabel=[[UILabel alloc] init];
         _dateLabel.font=[UIFont systemFontOfSize:14];
-        _dateLabel.textAlignment=NSTextAlignmentRight;
+        _dateLabel.textAlignment=NSTextAlignmentCenter;
         _dateLabel.textColor=RGBCOLOR(50, 50, 50);
         _dateLabel.text=@"日";
     }
@@ -509,7 +509,7 @@
     if (!_kindLabel) {
         _kindLabel=[[UILabel alloc] init];
         _kindLabel.font=[UIFont systemFontOfSize:14];
-        _kindLabel.textAlignment=NSTextAlignmentRight;
+        _kindLabel.textAlignment=NSTextAlignmentCenter;
         _kindLabel.text=@"PM2.5";
         _kindLabel.textColor=RGBCOLOR(50, 50, 50);
     }

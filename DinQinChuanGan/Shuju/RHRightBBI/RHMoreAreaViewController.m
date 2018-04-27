@@ -12,7 +12,9 @@
 #import "Header.h"
 #import "RHMoreTableViewCell.h"
 
-@interface RHMoreAreaViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface RHMoreAreaViewController ()<UITableViewDelegate, UITableViewDataSource,UISearchResultsUpdating,UISearchControllerDelegate>
+@property (nonatomic, strong) UISearchController *searchController;
+@property (nonatomic, copy) NSMutableArray *searchArr;
 
 @end
 
@@ -24,13 +26,29 @@ static NSString *identifier=@"cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self layoutviews];
-    
 }
 
 - (void)layoutviews {
     self.view.backgroundColor=WhiteColor;
     self.navigationItem.title=self.textTitle;
     [self.view addSubview:self.tableView];
+    self.searchController=[[UISearchController alloc] initWithSearchResultsController:nil];
+    //    代理
+    self.searchController.delegate=self;
+    self.searchController.searchResultsUpdater=self;
+    
+    //    searchbar颜色
+    self.searchController.searchBar.barTintColor=BACKGROUND_COLOR;
+    self.searchController.searchBar.placeholder=@"搜索";
+    
+    //    点击时属性设置
+    self.searchController.dimsBackgroundDuringPresentation=NO;
+    self.searchController.hidesNavigationBarDuringPresentation=YES;
+    //添加search bar到headerview
+    [self.searchController.searchBar  sizeToFit];
+    self.tableView.tableHeaderView=self.searchController.searchBar;
+    self.definesPresentationContext=YES;
+
 }
 
 #pragma mark - delegate,datasource
@@ -55,6 +73,23 @@ static NSString *identifier=@"cell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 6;
+}
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    searchController.searchBar.showsCancelButton = YES;
+        for(id sousuo in [searchController.searchBar subviews])
+        {
+            for (id zz in [sousuo subviews])
+            {
+                if([zz isKindOfClass:[UIButton class]]){
+                    UIButton *btn = (UIButton *)zz;
+                    [btn setTitle:@"取消" forState:UIControlStateNormal];
+                    [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                }
+            }
+        }
+    
+    
 }
 
 #pragma mark - lazyload
