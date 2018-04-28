@@ -76,6 +76,7 @@ static NSString *identifier=@"cell";
 }
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+//    设置搜索栏的cancel按钮
     searchController.searchBar.showsCancelButton = YES;
         for(id sousuo in [searchController.searchBar subviews])
         {
